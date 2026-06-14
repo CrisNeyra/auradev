@@ -1,5 +1,3 @@
-import { handleContacto } from '../backend/src/handlers/contacto.js'
-
 async function parseBody(req) {
   if (req.body && typeof req.body === 'object') return req.body
   const chunks = []
@@ -27,5 +25,19 @@ export default async function handler(req, res) {
   }
 
   req.body = await parseBody(req)
+
+  const missing =
+    !process.env.FB_DATABASE ||
+    !process.env.FB_HOST ||
+    /^(pending|change_me|todo)$/i.test(String(process.env.FB_DATABASE || '')) ||
+    /^(pending|change_me|todo)$/i.test(String(process.env.FB_HOST || ''))
+
+  if (missing) {
+    return res.status(503).json({
+      error: 'Servicio temporalmente no disponible. Contacto en mantenimiento.',
+    })
+  }
+
+  const { handleContacto } = await import('../backend/src/handlers/contacto.js')
   return handleContacto(req, res)
 }
