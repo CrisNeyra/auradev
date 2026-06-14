@@ -1,0 +1,223 @@
+.servicios {
+  position: relative;
+  background: var(--blanco);
+  overflow: hidden;
+}
+
+.servicios__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+
+.servicios::before,
+.servicios::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.servicios::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--blanco), transparent);
+}
+
+.servicios::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--blanco), transparent);
+}
+
+.servicios__contenedor {
+  position: relative;
+  z-index: 2;
+}
+
+.servicios__top {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  align-items: center;
+  gap: 48px;
+  margin-bottom: 56px;
+}
+
+.servicios__top .seccion-head {
+  margin-bottom: 0;
+}
+
+/* Contenedor de codigo (movido desde el Hero) */
+.servicios__visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 240px;
+}
+
+.servicios__code {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  background: var(--negro);
+  color: #f2f2f2;
+  border-radius: var(--radio);
+  padding: 22px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+}
+
+.servicios__dots {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+.servicios__dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #444;
+}
+
+.servicios__dots span:nth-child(1) {
+  background: var(--rojo);
+}
+
+.servicios__dots span:nth-child(2) {
+  background: var(--amarillo);
+}
+
+.servicios__dots span:nth-child(3) {
+  background: #2ecc71;
+}
+
+.servicios__code pre {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  color: #cfe3ff;
+  margin: 0;
+}
+
+.servicios__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(6px);
+  z-index: 1;
+}
+
+.servicios__blob--amarillo {
+  width: 130px;
+  height: 130px;
+  background: var(--amarillo);
+  top: -28px;
+  right: 6px;
+  opacity: 0.9;
+}
+
+.servicios__blob--rojo {
+  width: 90px;
+  height: 90px;
+  background: var(--rojo);
+  bottom: -20px;
+  left: 10px;
+  opacity: 0.85;
+}
+
+.servicios__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.servicio-card {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 34px 30px;
+  transition: transform var(--transicion), box-shadow var(--transicion),
+    border-color var(--transicion);
+  position: relative;
+  overflow: hidden;
+}
+
+.servicio-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--amarillo);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transicion);
+}
+
+.servicio-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: transparent;
+}
+
+.servicio-card:hover::before {
+  transform: scaleX(1);
+}
+
+.servicio-card__icono {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--gris-claro);
+  font-size: 1.6rem;
+  color: var(--rojo);
+  margin-bottom: 22px;
+  transition: background var(--transicion), color var(--transicion);
+}
+
+.servicio-card:hover .servicio-card__icono {
+  background: var(--negro);
+  color: var(--amarillo);
+}
+
+.servicio-card__titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.servicio-card__texto {
+  color: var(--gris);
+  font-size: 0.98rem;
+}
+
+@media (max-width: 900px) {
+  .servicios__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .servicios__top {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .servicios__visual {
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 560px) {
+  .servicios__grid {
+    grid-template-columns: 1fr;
+  }
+}

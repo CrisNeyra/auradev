@@ -1,0 +1,130 @@
+.contacto__inner {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.contacto__datos {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.contacto__datos li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.contacto__icono {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--negro);
+  color: var(--amarillo);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.contacto__datos strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--gris);
+  font-weight: 600;
+}
+
+.contacto__datos a {
+  font-weight: 600;
+  transition: color var(--transicion);
+}
+
+.contacto__datos a:hover {
+  color: var(--rojo);
+}
+
+.contacto__form {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 34px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05);
+}
+
+.campo-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.campo {
+  margin-bottom: 20px;
+}
+
+.campo label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--borde);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.98rem;
+  color: var(--negro);
+  background: var(--blanco);
+  transition: border-color var(--transicion), box-shadow var(--transicion);
+  resize: vertical;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: var(--rojo);
+  box-shadow: 0 0 0 3px rgba(230, 51, 41, 0.12);
+}
+
+.form-msg {
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+}
+
+.form-msg--error {
+  background: rgba(230, 51, 41, 0.1);
+  color: var(--rojo);
+}
+
+.form-msg--ok {
+  background: rgba(46, 204, 113, 0.12);
+  color: #1d7a45;
+}
+
+.contacto__submit {
+  width: 100%;
+}
+
+.contacto__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 900px) {
+  .contacto__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
