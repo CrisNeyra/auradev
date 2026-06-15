@@ -1,3 +1,6 @@
+import fondoNosotros from '../img/quienes-somos.jpg'
+import avatarAuraA from '../img/socio-aura-a.jpg'
+import avatarDevD from '../img/socio-dev-d.jpg'
 import Reveal from './Reveal.jsx'
 import './QuienesSomos.css'
 
@@ -17,13 +20,26 @@ const valores = [
 ]
 
 const socios = [
-  { inicial: 'A', nombre: 'Socio 1', rol: 'Co-fundador y Desarrollo' },
-  { inicial: 'D', nombre: 'Socio 2', rol: 'Co-fundador y Producto' },
+  {
+    imagen: avatarAuraA,
+    nombre: 'Ezequiel Ramirez',
+    rol: 'Co-fundador y Desarrollo',
+  },
+  {
+    imagen: avatarDevD,
+    nombre: 'Cristian Neyra',
+    rol: 'Co-fundador y Producto',
+  },
 ]
 
 export default function QuienesSomos() {
   return (
     <section id="nosotros" className="seccion nosotros">
+      <div
+        className="nosotros__bg"
+        aria-hidden="true"
+        style={{ backgroundImage: `url(${fondoNosotros})` }}
+      />
       <div className="contenedor nosotros__inner">
         <Reveal className="nosotros__texto">
           <span className="seccion-eyebrow">Quiénes Somos</span>
@@ -53,7 +69,13 @@ export default function QuienesSomos() {
         <Reveal className="nosotros__socios" delay={120}>
           {socios.map((s) => (
             <div className="socio-card" key={s.nombre}>
-              <div className="socio-card__avatar">{s.inicial}</div>
+              <img
+                className="socio-card__avatar"
+                src={s.imagen}
+                alt=""
+                width={54}
+                height={54}
+              />
               <div>
                 <h4>{s.nombre}</h4>
                 <span>{s.rol}</span>

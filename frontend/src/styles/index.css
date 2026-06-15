@@ -12,6 +12,7 @@
   --max-ancho: 1180px;
   --radio: 16px;
   --transicion: 0.25s ease;
+  --fondo-seccion-opacity: 0.4;
 }
 
 * {
@@ -22,7 +23,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 100px;
 }
 
 body {

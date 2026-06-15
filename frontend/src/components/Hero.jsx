@@ -76,7 +76,7 @@ export default function Hero() {
             muted
             autoPlay={i === 0}
             playsInline
-            preload="metadata"
+            preload={i === 0 ? 'auto' : 'metadata'}
             onEnded={avanzar}
           >
             <source src={v.webm} type="video/webm" />

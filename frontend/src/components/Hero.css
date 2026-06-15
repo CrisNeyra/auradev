@@ -1,5 +1,8 @@
 .hero {
-  padding: 140px 0 100px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 96px 0 60px;
   position: relative;
   overflow: hidden;
   background: var(--blanco);
@@ -19,6 +22,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   opacity: 0;
   transition: opacity 1s ease;
   transform: translateZ(0);
@@ -26,7 +30,7 @@
 }
 
 .hero__video.is-activo {
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
 /* Scrim para asegurar legibilidad del texto sobre el video */
@@ -35,12 +39,7 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.88) 0%,
-    rgba(255, 255, 255, 0.45) 55%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .hero::after {
@@ -156,6 +155,6 @@
   }
 
   .hero__video.is-activo {
-    opacity: 0.5;
+    opacity: 0.6;
   }
 }

@@ -1,4 +1,43 @@
+.contacto {
+  position: relative;
+  overflow: hidden;
+  background: var(--blanco);
+}
+
+.contacto__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: var(--fondo-seccion-opacity);
+}
+
+.contacto::before,
+.contacto::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.contacto::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--blanco), transparent);
+}
+
+.contacto::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--blanco), transparent);
+}
+
 .contacto__inner {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: 56px;

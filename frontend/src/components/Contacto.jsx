@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import fondoContacto from '../img/contacto.jpg'
 import Reveal from './Reveal.jsx'
 import './Contacto.css'
 
@@ -60,7 +61,12 @@ export default function Contacto() {
   }
 
   return (
-    <section id="contacto" className="seccion seccion-alt contacto">
+    <section id="contacto" className="seccion contacto">
+      <div
+        className="contacto__bg"
+        aria-hidden="true"
+        style={{ backgroundImage: `url(${fondoContacto})` }}
+      />
       <div className="contenedor contacto__inner">
         <Reveal className="contacto__info">
           <span className="seccion-eyebrow">Contacto</span>

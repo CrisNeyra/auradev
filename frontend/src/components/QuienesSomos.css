@@ -1,4 +1,43 @@
+.nosotros {
+  position: relative;
+  overflow: hidden;
+  background: var(--blanco);
+}
+
+.nosotros__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: var(--fondo-seccion-opacity);
+}
+
+.nosotros::before,
+.nosotros::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.nosotros::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--blanco), transparent);
+}
+
+.nosotros::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--blanco), transparent);
+}
+
 .nosotros__inner {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 60px;
@@ -57,16 +96,12 @@
 }
 
 .socio-card__avatar {
-  display: grid;
-  place-items: center;
   width: 54px;
   height: 54px;
-  border-radius: 50%;
-  background: var(--negro);
-  color: var(--amarillo);
-  font-weight: 800;
-  font-size: 1.4rem;
+  border-radius: 12px;
+  object-fit: cover;
   flex-shrink: 0;
+  background: var(--gris-claro);
 }
 
 .socio-card h4 {

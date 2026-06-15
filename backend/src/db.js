@@ -1,6 +1,6 @@
 import Firebird from 'node-firebird'
 
-const options = {}
+export const options = {}
 
 if (process.env.FB_HOST) options.host = process.env.FB_HOST
 if (process.env.FB_PORT) options.port = parseInt(process.env.FB_PORT, 10)
@@ -10,6 +10,10 @@ if (process.env.FB_PASSWORD) options.password = process.env.FB_PASSWORD
 options.lowercase_keys = false
 options.role = null
 options.pageSize = 4096
+// Firebird 3 negocia WireCrypt; node-firebird lo desactiva con 0 (WIRE_CRYPT_DISABLE)
+options.wireCrypt = 0
+// Usar autenticacion Legacy_Auth (evita el bug de SRP de node-firebird con Firebird 3)
+options.pluginName = 'Legacy_Auth'
 
 if (!options.database) {
   console.warn(
