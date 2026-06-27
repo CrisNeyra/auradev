@@ -1,57 +1,68 @@
+import { Link } from 'react-router-dom'
 import fondoPortafolio from '../img/portafolio.jpg'
+import {
+  proyectos,
+  getProyectoHref,
+  isLinkExterno,
+} from '../data/proyectos.js'
 import Reveal from './Reveal.jsx'
 import './Portafolio.css'
 
-const proyectos = [
-  {
-    nombre: 'Nexus CRM',
-    categoria: 'Sistema CRM',
-    descripcion:
-      'Plataforma de gestión de clientes y ventas con tablero en tiempo real para una empresa comercial.',
-    tags: ['React', 'Node.js', 'PostgreSQL'],
-    color: 'rojo',
-  },
-  {
-    nombre: 'AutoFlow',
-    categoria: 'Automatización',
-    descripcion:
-      'Automatización de facturación y reportes que ahorra más de 40 horas de trabajo manual al mes.',
-    tags: ['Python', 'APIs', 'n8n'],
-    color: 'amarillo',
-  },
-  {
-    nombre: 'TiendaViva',
-    categoria: 'E-commerce',
-    descripcion:
-      'Tienda online a medida con pasarela de pagos, gestión de stock y panel de administración.',
-    tags: ['Next.js', 'Stripe', 'Tailwind'],
-    color: 'negro',
-  },
-  {
-    nombre: 'RutaApp',
-    categoria: 'App Móvil',
-    descripcion:
-      'Aplicación móvil de logística para seguimiento de entregas y optimización de rutas.',
-    tags: ['React Native', 'Maps API'],
-    color: 'amarillo',
-  },
-  {
-    nombre: 'DataPulse',
-    categoria: 'Software a Medida',
-    descripcion:
-      'Dashboard analítico que centraliza métricas de negocio desde múltiples fuentes de datos.',
-    tags: ['React', 'Express', 'Charts'],
-    color: 'rojo',
-  },
-  {
-    nombre: 'ConectaAPI',
-    categoria: 'Integración',
-    descripcion:
-      'Integración de sistemas internos con servicios externos mediante una API unificada.',
-    tags: ['Node.js', 'REST', 'Webhooks'],
-    color: 'negro',
-  },
-]
+function ProyectoCard({ proyecto, delay }) {
+  const href = getProyectoHref(proyecto)
+  const externo = isLinkExterno(proyecto)
+
+  const contenido = (
+    <>
+      <div className="proyecto-card__cover">
+        <img
+          className="proyecto-card__img"
+          src={proyecto.imagen}
+          alt={`Captura del proyecto ${proyecto.nombre}`}
+          loading="lazy"
+        />
+        <span className="proyecto-card__categoria">{proyecto.categoria}</span>
+      </div>
+      <div className="proyecto-card__body">
+        <h3 className="proyecto-card__nombre">{proyecto.nombre}</h3>
+        <p className="proyecto-card__desc">{proyecto.descripcion}</p>
+        <ul className="proyecto-card__tags">
+          {proyecto.tags.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+      </div>
+    </>
+  )
+
+  if (externo) {
+    return (
+      <Reveal as="article" className="proyecto-card" delay={delay}>
+        <a
+          className="proyecto-card__link"
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Ver proyecto ${proyecto.nombre}`}
+        >
+          {contenido}
+        </a>
+      </Reveal>
+    )
+  }
+
+  return (
+    <Reveal as="article" className="proyecto-card" delay={delay}>
+      <Link
+        className="proyecto-card__link"
+        to={href}
+        aria-label={`Ver proyecto ${proyecto.nombre}`}
+      >
+        {contenido}
+      </Link>
+    </Reveal>
+  )
+}
 
 export default function Portafolio() {
   return (
@@ -73,23 +84,7 @@ export default function Portafolio() {
 
         <div className="portafolio__grid">
           {proyectos.map((p, i) => (
-            <Reveal as="article" className="proyecto-card" key={i} delay={(i % 3) * 90}>
-              <div className={`proyecto-card__cover proyecto-card__cover--${p.color}`}>
-                <span className="proyecto-card__categoria">{p.categoria}</span>
-                <span className="proyecto-card__inicial">
-                  {p.nombre.charAt(0)}
-                </span>
-              </div>
-              <div className="proyecto-card__body">
-                <h3 className="proyecto-card__nombre">{p.nombre}</h3>
-                <p className="proyecto-card__desc">{p.descripcion}</p>
-                <ul className="proyecto-card__tags">
-                  {p.tags.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
+            <ProyectoCard key={p.slug} proyecto={p} delay={(i % 3) * 90} />
           ))}
         </div>
       </div>

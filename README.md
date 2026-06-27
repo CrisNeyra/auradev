@@ -1,100 +1,162 @@
 # AuraDev
 
-Sitio web minimalista para **AuraDev**, un estudio de desarrollo digital. Incluye un frontend en **React + Vite** y un backend en **Node.js + Express** con **Firebird** que recibe los mensajes del formulario de contacto (los guarda en la base de datos y envía una notificación por email con Nodemailer).
+Sitio web del estudio **AuraDev** — desarrollo digital a medida. Incluye landing page con portafolio, formulario de contacto y backend con base de datos Firebird.
 
-## Secciones del sitio
+**Demo en vivo:** [auradev-eta.vercel.app](https://auradev-eta.vercel.app)
 
-- **Inicio** (Hero Section)
-- **Nuestros Servicios** (software a medida, apps, automatizaciones, CRM, integraciones, soporte)
-- **Portafolio** (proyectos)
-- **Quiénes Somos**
-- **Contacto** (formulario conectado al backend)
+## Secciones
 
-Paleta de colores: blanco, negro, amarillo y rojo.
+| Sección | Contenido |
+|---------|-----------|
+| **Inicio** | Hero con video de fondo, estadísticas y CTAs |
+| **Servicios** | 6 servicios con iconos SVG y fondo multimedia |
+| **Portafolio** | 6 proyectos con imagen, descripción y enlace a detalle o sitio en vivo |
+| **Quiénes Somos** | Historia, valores y perfiles de socios |
+| **Contacto** | Formulario conectado al backend + datos de contacto |
 
-## Estructura
+Paleta: blanco, negro, amarillo y rojo.
+
+## Stack
+
+| Capa | Tecnología |
+|------|------------|
+| Frontend | React 18, Vite 6, React Router |
+| Backend | Node.js, Express |
+| Base de datos | Firebird 3 (local) |
+| Email | Nodemailer (SMTP opcional) |
+| Deploy | Vercel (frontend estático + funciones serverless) |
+
+## Estructura del repositorio
 
 ```
 AuraDev/
-├── frontend/        # React + Vite (interfaz del sitio)
+├── frontend/                 # React + Vite
 │   └── src/
-│       ├── components/   # Una sección por componente
-│       └── styles/
-└── backend/         # API Express + Firebird + Nodemailer
-    ├── src/
-    └── schema.sql
+│       ├── components/       # Secciones del sitio
+│       ├── pages/            # Home y detalle de proyecto
+│       ├── data/             # Proyectos del portafolio
+│       ├── config/           # Email, WhatsApp, redes
+│       └── img/              # Assets multimedia
+├── backend/                  # API Express + Firebird
+│   ├── src/
+│   └── scripts/migrate.js
+├── api/                      # Funciones serverless (Vercel)
+└── vercel.json
 ```
 
 ## Requisitos
 
-- Node.js 18 o superior
-- Firebird 3.0 o superior
+- Node.js 18+
+- Firebird 3.0+ (solo para desarrollo local con formulario)
 
-## Puesta en marcha
+## Instalación
 
-### 1. Backend
+```bash
+git clone https://github.com/CrisNeyra/auradev.git
+cd auradev
+npm run install:all
+```
+
+### Backend (local)
 
 ```bash
 cd backend
-npm install
-cp .env.example .env   # En Windows (PowerShell): Copy-Item .env.example .env
-```
-
-Editá `backend/.env` con tus datos:
-
-- `FB_HOST`, `FB_PORT`, `FB_DATABASE`, `FB_USER`, `FB_PASSWORD`: credenciales de conexión a tu base Firebird.
-- `SMTP_*`, `MAIL_FROM`, `MAIL_TO`: credenciales SMTP para enviar las notificaciones.
-- `CORS_ORIGIN`: URL del frontend (por defecto `http://localhost:5173`).
-
-Creá la tabla en tu base de datos (puedes usar el script de migración si la base ya existe):
-
-```bash
+Copy-Item .env.example .env   # Windows PowerShell
 npm run db:migrate
 ```
 
-Levantá el servidor:
+Variables en `backend/.env`:
 
-```bash
-npm run dev      # con recarga automática (nodemon)
-# o
-npm start        # producción
-```
+- `FB_HOST`, `FB_PORT`, `FB_DATABASE`, `FB_USER`, `FB_PASSWORD`
+- `SMTP_*`, `MAIL_FROM`, `MAIL_TO` (opcional)
+- `CORS_ORIGIN` (por defecto `http://localhost:5173`)
 
-La API queda disponible en `http://localhost:4000`.
-
-> Nota: si no configurás SMTP, el mensaje igual se guarda en la base de datos y simplemente se omite el envío de email (queda registrado en consola).
-
-### 2. Frontend
+### Frontend
 
 ```bash
 cd frontend
-npm install
-cp .env.example .env   # En Windows (PowerShell): Copy-Item .env.example .env
+Copy-Item .env.example .env
+```
+
+Variable `VITE_API_URL` → URL del backend (`http://localhost:4000` en local).
+
+### Levantar todo
+
+Desde la raíz del proyecto:
+
+```bash
 npm run dev
 ```
 
-El sitio queda disponible en `http://localhost:5173`. La variable `VITE_API_URL` debe apuntar a la URL del backend.
+- Frontend: [http://localhost:5173](http://localhost:5173)
+- Backend: [http://localhost:4000](http://localhost:4000)
 
-Para generar la versión de producción:
+Build de producción:
 
 ```bash
 npm run build
-npm run preview
 ```
 
 ## API
 
-| Método | Ruta            | Descripción                                  |
-| ------ | --------------- | -------------------------------------------- |
-| GET    | `/api/health`   | Estado del servicio.                         |
-| POST   | `/api/contacto` | Recibe `{ nombre, email, mensaje }`.         |
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/health` | Estado del servicio |
+| POST | `/api/contacto` | Recibe `{ nombre, email, mensaje }` |
 
-`POST /api/contacto` valida los campos, guarda el mensaje en la tabla `mensajes` y envía una notificación por email. Responde `201` en caso de éxito.
+El formulario valida campos, guarda en Firebird y envía email si SMTP está configurado. Responde `201` en éxito.
 
 ## Personalización
 
-- **Servicios:** editá el arreglo `servicios` en `frontend/src/components/Servicios.jsx`.
-- **Proyectos:** editá el arreglo `proyectos` en `frontend/src/components/Portafolio.jsx`.
-- **Equipo / socios:** editá `frontend/src/components/QuienesSomos.jsx`.
-- **Datos de contacto (email, WhatsApp, redes):** editá `Contacto.jsx` y `Footer.jsx`.
-- **Colores:** variables CSS en `frontend/src/styles/index.css` (`--blanco`, `--negro`, `--amarillo`, `--rojo`).
+| Qué cambiar | Archivo |
+|-------------|---------|
+| Email, WhatsApp, redes | [`frontend/src/config/contacto.js`](frontend/src/config/contacto.js) |
+| Proyectos del portafolio | [`frontend/src/data/proyectos.js`](frontend/src/data/proyectos.js) |
+| Imágenes de proyectos | `frontend/src/img/portafolio/` |
+| Fotos de socios | `frontend/src/img/socios/` (`ezequiel.jpg`, `cristian.jpg`) |
+| Servicios | [`frontend/src/components/Servicios.jsx`](frontend/src/components/Servicios.jsx) |
+| Colores globales | [`frontend/src/styles/index.css`](frontend/src/styles/index.css) |
+
+### Imágenes del portafolio
+
+Colocar en `frontend/src/img/portafolio/`:
+
+| Archivo | Proyecto |
+|---------|----------|
+| `portfolio-cristian.jpg` | Portfolio Cristian |
+| `aura-pro.jpg` | Aura PRO |
+| `mobile-suite.jpg` | Mobile Suite |
+| `modo-zen.jpg` | Modo Zen |
+| `crowforza.jpg` | Crowforza |
+| `laxmar.jpg` | Laxmar |
+
+Para links externos, editar `tipoLink: 'externo'` y `url` en `proyectos.js`.
+
+## Producción (Vercel)
+
+| Entorno | Frontend | Formulario |
+|---------|----------|------------|
+| **Local** | OK | OK (con Firebird configurado) |
+| **Vercel** | OK | Responde **503** hasta conectar Firebird remoto o habilitar solo email |
+
+### Opción A — Firebird en VPS
+
+1. Instalar Firebird 3 en un servidor accesible desde Vercel.
+2. Correr `npm run db:migrate` en el servidor.
+3. Configurar variables `FB_*` y `SMTP_*` en Vercel → Settings → Environment Variables.
+4. Redeploy.
+
+### Opción B — Solo email en producción
+
+1. Configurar SMTP (Resend, SendGrid, Gmail, etc.) en Vercel.
+2. Adaptar `api/contacto.js` para enviar email sin Firebird cuando no haya base remota.
+3. Mantener Firebird solo en local.
+
+## Contacto AuraDev
+
+- **Email:** cristian.neyra.dev@gmail.com
+- **WhatsApp:** +54 011 782111489
+
+---
+
+© AuraDev — Estudio de Desarrollo Digital

@@ -1,6 +1,6 @@
 import fondoNosotros from '../img/quienes-somos.jpg'
-import avatarAuraA from '../img/socio-aura-a.jpg'
-import avatarDevD from '../img/socio-dev-d.jpg'
+import avatarEzequiel from '../img/socios/ezequiel.jpg'
+import avatarCristian from '../img/socios/cristian.jpg'
 import Reveal from './Reveal.jsx'
 import './QuienesSomos.css'
 
@@ -21,12 +21,12 @@ const valores = [
 
 const socios = [
   {
-    imagen: avatarAuraA,
+    imagen: avatarEzequiel,
     nombre: 'Ezequiel Ramirez',
     rol: 'Co-fundador y Desarrollo',
   },
   {
-    imagen: avatarDevD,
+    imagen: avatarCristian,
     nombre: 'Cristian Neyra',
     rol: 'Co-fundador y Producto',
   },
@@ -73,8 +73,8 @@ export default function QuienesSomos() {
                 className="socio-card__avatar"
                 src={s.imagen}
                 alt=""
-                width={54}
-                height={54}
+                width={64}
+                height={64}
               />
               <div>
                 <h4>{s.nombre}</h4>

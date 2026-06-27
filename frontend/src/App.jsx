@@ -1,23 +1,12 @@
-import Navbar from './components/Navbar.jsx'
-import Hero from './components/Hero.jsx'
-import Servicios from './components/Servicios.jsx'
-import Portafolio from './components/Portafolio.jsx'
-import QuienesSomos from './components/QuienesSomos.jsx'
-import Contacto from './components/Contacto.jsx'
-import Footer from './components/Footer.jsx'
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home.jsx'
+import ProyectoDetalle from './pages/ProyectoDetalle.jsx'
 
 export default function App() {
   return (
-    <>
-      <Navbar />
-      <main>
-        <Hero />
-        <Servicios />
-        <Portafolio />
-        <QuienesSomos />
-        <Contacto />
-      </main>
-      <Footer />
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/proyectos/:slug" element={<ProyectoDetalle />} />
+    </Routes>
   )
 }

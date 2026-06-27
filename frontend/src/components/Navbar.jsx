@@ -35,7 +35,39 @@ export default function Navbar() {
           />
         </a>
 
-        <nav className={`navbar__nav ${abierto ? 'is-open' : ''}`}>
+        <nav className={`navbar__links ${abierto ? 'is-open' : ''}`}>
+          <ul>
+            {enlaces.map((e) => (
+              <li key={e.href}>
+                <a href={e.href} onClick={cerrar}>
+                  {e.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="navbar__actions">
+          <a
+            href="#contacto"
+            className="btn btn-rojo navbar__cta"
+            onClick={cerrar}
+          >
+            Hablemos
+          </a>
+          <button
+            className={`navbar__burger ${abierto ? 'is-open' : ''}`}
+            aria-label="Abrir menú"
+            aria-expanded={abierto}
+            onClick={() => setAbierto((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+
+        <nav className={`navbar__drawer ${abierto ? 'is-open' : ''}`}>
           <ul>
             {enlaces.map((e) => (
               <li key={e.href}>
@@ -49,17 +81,6 @@ export default function Navbar() {
             Hablemos
           </a>
         </nav>
-
-        <button
-          className={`navbar__burger ${abierto ? 'is-open' : ''}`}
-          aria-label="Abrir menú"
-          aria-expanded={abierto}
-          onClick={() => setAbierto((v) => !v)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
       </div>
     </header>
   )

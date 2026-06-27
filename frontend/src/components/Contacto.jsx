@@ -1,5 +1,12 @@
 import { useState } from 'react'
 import fondoContacto from '../img/contacto.jpg'
+import {
+  EMAIL,
+  WHATSAPP_DISPLAY,
+  REDES_HANDLE,
+  REDES_URL,
+  urlWhatsApp,
+} from '../config/contacto.js'
 import Reveal from './Reveal.jsx'
 import './Contacto.css'
 
@@ -81,7 +88,9 @@ export default function Contacto() {
               <span className="contacto__icono">✉</span>
               <div>
                 <strong>Email</strong>
-                <a href="mailto:hola@auradev.com">hola@auradev.com</a>
+                <a className="contacto__dato-valor" href={`mailto:${EMAIL}`}>
+                  {EMAIL}
+                </a>
               </div>
             </li>
             <li>
@@ -89,11 +98,12 @@ export default function Contacto() {
               <div>
                 <strong>WhatsApp</strong>
                 <a
-                  href="https://wa.me/0000000000"
+                  className="contacto__dato-valor"
+                  href={urlWhatsApp()}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  +00 000 000 000
+                  {WHATSAPP_DISPLAY}
                 </a>
               </div>
             </li>
@@ -101,8 +111,12 @@ export default function Contacto() {
               <span className="contacto__icono">◍</span>
               <div>
                 <strong>Redes</strong>
-                <a href="#" rel="noreferrer">
-                  @auradev
+                <a
+                  className="contacto__dato-valor"
+                  href={REDES_URL}
+                  rel="noreferrer"
+                >
+                  {REDES_HANDLE}
                 </a>
               </div>
             </li>

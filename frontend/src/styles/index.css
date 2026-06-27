@@ -23,7 +23,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 100px;
+  scroll-padding-top: 108px;
 }
 
 body {
@@ -127,7 +127,7 @@ button {
 .seccion-sub {
   margin-top: 16px;
   font-size: 1.05rem;
-  color: var(--gris);
+  color: var(--negro);
 }
 
 /* Botones */

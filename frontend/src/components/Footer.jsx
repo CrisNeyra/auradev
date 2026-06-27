@@ -1,3 +1,9 @@
+import logo from '../img/AuraDev.jpg'
+import {
+  EMAIL,
+  WHATSAPP_DISPLAY,
+  urlWhatsApp,
+} from '../config/contacto.js'
 import './Footer.css'
 
 const enlaces = [
@@ -16,8 +22,12 @@ export default function Footer() {
       <div className="contenedor footer__inner">
         <div className="footer__brand">
           <a href="#inicio" className="footer__logo">
-            <span className="footer__logo-mark">A</span>
-            Aura<span className="acento-rojo">Dev</span>
+            <img
+              src={logo}
+              alt="AuraDev"
+              className="footer__logo-img"
+              decoding="async"
+            />
           </a>
           <p>
             Estudio de desarrollo digital. Software a medida, automatizaciones,
@@ -38,9 +48,9 @@ export default function Footer() {
 
         <div className="footer__contacto">
           <h4>Contacto</h4>
-          <a href="mailto:hola@auradev.com">hola@auradev.com</a>
-          <a href="https://wa.me/0000000000" target="_blank" rel="noreferrer">
-            +00 000 000 000
+          <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          <a href={urlWhatsApp()} target="_blank" rel="noreferrer">
+            {WHATSAPP_DISPLAY}
           </a>
         </div>
       </div>

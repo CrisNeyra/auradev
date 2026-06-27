@@ -46,8 +46,8 @@
 
 .nosotros__parrafo {
   margin-top: 20px;
-  color: var(--gris);
-  font-size: 1.05rem;
+  color: var(--negro);
+  font-size: 1.35rem;
   max-width: 560px;
 }
 
@@ -71,7 +71,7 @@
 
 .valor p {
   font-size: 0.9rem;
-  color: var(--gris);
+  color: var(--negro);
 }
 
 .nosotros__socios {
@@ -96,8 +96,8 @@
 }
 
 .socio-card__avatar {
-  width: 54px;
-  height: 54px;
+  width: 64px;
+  height: 64px;
   border-radius: 12px;
   object-fit: cover;
   flex-shrink: 0;

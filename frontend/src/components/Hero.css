@@ -103,9 +103,9 @@
 
 .hero__text {
   margin-top: 24px;
-  font-size: 1.12rem;
+  font-size: clamp(1.2rem, 2.2vw, 1.45rem);
   color: var(--negro);
-  max-width: 520px;
+  max-width: 560px;
 }
 
 .hero__actions {

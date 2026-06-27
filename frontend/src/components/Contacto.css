@@ -81,6 +81,13 @@
   transition: color var(--transicion);
 }
 
+.contacto__dato-valor {
+  display: block;
+  color: var(--negro);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
 .contacto__datos a:hover {
   color: var(--rojo);
 }
