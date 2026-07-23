@@ -12,8 +12,8 @@
     "build": "npm --prefix frontend run build"
   },
   "dependencies": {
-    "node-firebird": "^1.1.10",
-    "nodemailer": "^6.9.16"
+    "nodemailer": "^6.9.16",
+    "pg": "^8.22.0"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

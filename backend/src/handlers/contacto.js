@@ -10,7 +10,7 @@ function missing(value) {
 }
 
 export async function handleContacto(req, res) {
-  if (missing(process.env.FB_DATABASE) || missing(process.env.FB_HOST)) {
+  if (missing(process.env.DATABASE_URL)) {
     return res.status(503).json({
       error: 'Servicio temporalmente no disponible. Contacto en mantenimiento.',
     })
@@ -42,7 +42,7 @@ export async function handleContacto(req, res) {
 
   try {
     const result = await query(
-      'INSERT INTO mensajes (nombre, email, mensaje) VALUES (?, ?, ?) RETURNING id, creado_en',
+      'INSERT INTO mensajes (nombre, email, mensaje) VALUES ($1, $2, $3) RETURNING id, creado_en',
       [datos.nombre, datos.email, datos.mensaje]
     )
 
@@ -56,8 +56,8 @@ export async function handleContacto(req, res) {
 
     return res.status(201).json({
       ok: true,
-      id: row ? row.id || row.ID : null,
-      creado_en: row ? row.creado_en || row.CREADO_EN : null,
+      id: row ? row.id : null,
+      creado_en: row ? row.creado_en : null,
     })
   } catch (err) {
     console.error('[AuraDev] Error al guardar el mensaje:', err)

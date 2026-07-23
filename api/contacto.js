@@ -26,11 +26,11 @@ export default async function handler(req, res) {
 
   req.body = await parseBody(req)
 
+  const databaseUrl = process.env.DATABASE_URL
   const missing =
-    !process.env.FB_DATABASE ||
-    !process.env.FB_HOST ||
-    /^(pending|change_me|todo)$/i.test(String(process.env.FB_DATABASE || '')) ||
-    /^(pending|change_me|todo)$/i.test(String(process.env.FB_HOST || ''))
+    !databaseUrl ||
+    !String(databaseUrl).trim() ||
+    /^(pending|change_me|todo)$/i.test(String(databaseUrl).trim())
 
   if (missing) {
     return res.status(503).json({

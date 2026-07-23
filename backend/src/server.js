@@ -7,9 +7,9 @@ import contactoRouter from './routes/contacto.js'
 const app = express()
 const PORT = process.env.PORT || 4000
 
-if (!process.env.FB_DATABASE) {
+if (!process.env.DATABASE_URL) {
   console.warn(
-    '[AuraDev] Advertencia: FB_DATABASE no está definida en .env. El guardado de mensajes fallará hasta configurarla.'
+    '[AuraDev] Advertencia: DATABASE_URL no está definida en .env. El guardado de mensajes fallará hasta configurarla.'
   )
 }
 

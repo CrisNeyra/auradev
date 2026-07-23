@@ -1,57 +1,51 @@
-import Firebird from 'node-firebird'
+import pg from 'pg'
 
-export const options = {}
+const { Pool } = pg
 
-if (process.env.FB_HOST) options.host = process.env.FB_HOST
-if (process.env.FB_PORT) options.port = parseInt(process.env.FB_PORT, 10)
-if (process.env.FB_DATABASE) options.database = process.env.FB_DATABASE
-if (process.env.FB_USER) options.user = process.env.FB_USER
-if (process.env.FB_PASSWORD) options.password = process.env.FB_PASSWORD
-options.lowercase_keys = false
-options.role = null
-options.pageSize = 4096
-// Firebird 3 negocia WireCrypt; node-firebird lo desactiva con 0 (WIRE_CRYPT_DISABLE)
-options.wireCrypt = 0
-// Usar autenticacion Legacy_Auth (evita el bug de SRP de node-firebird con Firebird 3)
-options.pluginName = 'Legacy_Auth'
+const connectionString = process.env.DATABASE_URL
 
-if (!options.database) {
+if (!connectionString) {
   console.warn(
-    '[AuraDev] Advertencia: FB_DATABASE no está definida en .env. Las consultas a la BD fallarán.'
+    '[AuraDev] Advertencia: DATABASE_URL no está definida en .env. Las consultas a la BD fallarán.'
   )
 }
 
-export function query(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    Firebird.attach(options, (err, db) => {
-      if (err) {
-        return reject(err)
-      }
-      db.query(sql, params, (err, result) => {
-        db.detach()
-        if (err) {
-          return reject(err)
-        }
-        resolve(result)
-      })
-    })
-  })
+function needsSsl(url) {
+  if (!url) return false
+  return (
+    url.includes('neon.tech') ||
+    url.includes('sslmode=require') ||
+    url.includes('sslmode=verify-full')
+  )
 }
 
-// Función para ejecutar sentencias sin devolver resultados (como CREATE TABLE)
-export function execute(sql) {
-  return new Promise((resolve, reject) => {
-    Firebird.attach(options, (err, db) => {
-      if (err) {
-        return reject(err)
-      }
-      db.execute(sql, (err, result) => {
-        db.detach()
-        if (err) {
-          return reject(err)
-        }
-        resolve(result)
-      })
-    })
-  })
+function connectionConfig(url) {
+  if (!url) return { connectionString: url }
+  if (!needsSsl(url)) return { connectionString: url }
+
+  // Neon: SSL explícito; quitamos sslmode de la URI para evitar el warning de pg v8
+  const cleaned = url
+    .replace(/[?&]sslmode=[^&]*/g, '')
+    .replace(/\?&/, '?')
+    .replace(/[?&]$/, '')
+
+  return {
+    connectionString: cleaned,
+    ssl: { rejectUnauthorized: false },
+  }
+}
+
+export const pool = new Pool(connectionConfig(connectionString))
+
+export async function query(sql, params = []) {
+  const result = await pool.query(sql, params)
+  return result.rows
+}
+
+export async function execute(sql) {
+  await pool.query(sql)
+}
+
+export async function close() {
+  await pool.end()
 }

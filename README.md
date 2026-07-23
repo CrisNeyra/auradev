@@ -1,6 +1,6 @@
 # AuraDev
 
-Sitio web del estudio **AuraDev** — desarrollo digital a medida. Incluye landing page con portafolio, formulario de contacto y backend con base de datos Firebird.
+Sitio web del estudio **AuraDev** — desarrollo digital a medida. Incluye landing page con portafolio, formulario de contacto y backend con PostgreSQL (Neon).
 
 **Demo en vivo:** [auradev-eta.vercel.app](https://auradev-eta.vercel.app)
 
@@ -22,7 +22,7 @@ Paleta: blanco, negro, amarillo y rojo.
 |------|------------|
 | Frontend | React 18, Vite 6, React Router |
 | Backend | Node.js, Express |
-| Base de datos | Firebird 3 (local) |
+| Base de datos | PostgreSQL (Neon) |
 | Email | Nodemailer (SMTP opcional) |
 | Deploy | Vercel (frontend estático + funciones serverless) |
 
@@ -37,7 +37,7 @@ AuraDev/
 │       ├── data/             # Proyectos del portafolio
 │       ├── config/           # Email, WhatsApp, redes
 │       └── img/              # Assets multimedia
-├── backend/                  # API Express + Firebird
+├── backend/                  # API Express + PostgreSQL
 │   ├── src/
 │   └── scripts/migrate.js
 ├── api/                      # Funciones serverless (Vercel)
@@ -47,7 +47,7 @@ AuraDev/
 ## Requisitos
 
 - Node.js 18+
-- Firebird 3.0+ (solo para desarrollo local con formulario)
+- Cuenta en [Neon](https://neon.tech) (PostgreSQL managed)
 
 ## Instalación
 
@@ -59,15 +59,24 @@ npm run install:all
 
 ### Backend (local)
 
+1. Creá un proyecto en [Neon](https://neon.tech) y copiá la **connection string** (URI, con `sslmode=require`).
+2. Configurá el entorno:
+
 ```bash
 cd backend
 Copy-Item .env.example .env   # Windows PowerShell
+```
+
+3. En `backend/.env`, reemplazá el placeholder de `DATABASE_URL` por tu connection string.
+4. Aplicá el schema:
+
+```bash
 npm run db:migrate
 ```
 
 Variables en `backend/.env`:
 
-- `FB_HOST`, `FB_PORT`, `FB_DATABASE`, `FB_USER`, `FB_PASSWORD`
+- `DATABASE_URL` — connection string de Neon
 - `SMTP_*`, `MAIL_FROM`, `MAIL_TO` (opcional)
 - `CORS_ORIGIN` (por defecto `http://localhost:5173`)
 
@@ -104,7 +113,7 @@ npm run build
 | GET | `/api/health` | Estado del servicio |
 | POST | `/api/contacto` | Recibe `{ nombre, email, mensaje }` |
 
-El formulario valida campos, guarda en Firebird y envía email si SMTP está configurado. Responde `201` en éxito.
+El formulario valida campos, guarda en PostgreSQL y envía email si SMTP está configurado. Responde `201` en éxito.
 
 ## Personalización
 
@@ -136,21 +145,18 @@ Para links externos, editar `tipoLink: 'externo'` y `url` en `proyectos.js`.
 
 | Entorno | Frontend | Formulario |
 |---------|----------|------------|
-| **Local** | OK | OK (con Firebird configurado) |
-| **Vercel** | OK | Responde **503** hasta conectar Firebird remoto o habilitar solo email |
+| **Local** | OK | OK (con `DATABASE_URL` de Neon) |
+| **Vercel** | OK | OK (misma `DATABASE_URL` en Environment Variables) |
 
-### Opción A — Firebird en VPS
+### Configurar Neon + Vercel
 
-1. Instalar Firebird 3 en un servidor accesible desde Vercel.
-2. Correr `npm run db:migrate` en el servidor.
-3. Configurar variables `FB_*` y `SMTP_*` en Vercel → Settings → Environment Variables.
-4. Redeploy.
+1. Creá el proyecto en [Neon](https://neon.tech) y corré `npm run db:migrate` una vez (desde local o CI).
+2. En Vercel → Settings → Environment Variables, agregá:
+   - `DATABASE_URL` — connection string de Neon
+   - `SMTP_*`, `MAIL_FROM`, `MAIL_TO` (si querés notificaciones por email)
+3. Redeploy.
 
-### Opción B — Solo email en producción
-
-1. Configurar SMTP (Resend, SendGrid, Gmail, etc.) en Vercel.
-2. Adaptar `api/contacto.js` para enviar email sin Firebird cuando no haya base remota.
-3. Mantener Firebird solo en local.
+Sin `DATABASE_URL` válida, el endpoint de contacto responde **503**.
 
 ## Contacto AuraDev
 

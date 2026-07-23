@@ -2,56 +2,41 @@ import 'dotenv/config'
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import Firebird from 'node-firebird'
-import { options } from '../src/db.js'
+import { pool, close } from '../src/db.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const schemaPath = join(__dirname, '..', 'schema.sql')
 
-function attachOrCreate() {
-  return new Promise((resolve, reject) => {
-    Firebird.attachOrCreate(options, (err, db) => {
-      if (err) return reject(err)
-      resolve(db)
-    })
-  })
-}
-
-function ejecutar(db, sql) {
-  return new Promise((resolve, reject) => {
-    db.query(sql, [], (err, result) => {
-      if (err) return reject(err)
-      resolve(result)
-    })
-  })
+function missingDatabaseUrl(value) {
+  if (!value || !String(value).trim()) return true
+  const v = String(value).trim()
+  if (/^(pending|change_me|todo)$/i.test(v)) return true
+  if (v.includes('USER:PASSWORD@HOST')) return true
+  return false
 }
 
 async function migrar() {
-  if (!process.env.FB_DATABASE) {
+  if (missingDatabaseUrl(process.env.DATABASE_URL)) {
     console.error(
-      '[AuraDev] No se puede migrar: falta FB_DATABASE en backend/.env.'
+      '[AuraDev] No se puede migrar: configurá DATABASE_URL en backend/.env con la connection string de Neon.'
     )
     process.exit(1)
   }
 
-  let db
   try {
-    const sql = (await readFile(schemaPath, 'utf8')).trim().replace(/;\s*$/, '')
-    console.log('[AuraDev] Conectando/creando la base Firebird...')
-    db = await attachOrCreate()
+    const sql = (await readFile(schemaPath, 'utf8')).trim()
+    console.log('[AuraDev] Conectando a PostgreSQL (Neon)...')
     console.log('[AuraDev] Ejecutando migración desde schema.sql...')
-    await ejecutar(db, sql)
+    await pool.query(sql)
     console.log('[AuraDev] Migración completada. Tabla "mensajes" lista.')
   } catch (err) {
-    const msg = String(err && err.message)
-    if (/already exists|unsuccessful metadata update/i.test(msg)) {
-      console.log('[AuraDev] La tabla "mensajes" ya existe. Nada que migrar.')
-    } else {
-      console.error('[AuraDev] Error al ejecutar la migración:', msg)
-      process.exitCode = 1
-    }
+    console.error(
+      '[AuraDev] Error al ejecutar la migración:',
+      err?.message || err
+    )
+    process.exitCode = 1
   } finally {
-    if (db) db.detach()
+    await close()
   }
 }
 
