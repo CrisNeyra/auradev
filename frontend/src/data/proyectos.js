@@ -17,7 +17,7 @@ export const proyectos = [
     tags: ['React', 'Node.js', 'Fullstack'],
     imagen: imgPortfolioCristian,
     tipoLink: 'externo',
-    url: '#',
+    url: 'https://portfolio-cristian-neyra.vercel.app/',
   },
   {
     slug: 'aura-pro',
@@ -30,20 +30,20 @@ export const proyectos = [
     tags: ['React', 'E-commerce', 'UI/UX'],
     imagen: imgAuraPro,
     tipoLink: 'externo',
-    url: '#',
+    url: 'https://pagina-web-ventapc.vercel.app/',
   },
   {
-    slug: 'mobile-suite',
-    nombre: 'Mobile Suite',
-    categoria: 'App Móvil',
+    slug: 'crowgest',
+    nombre: 'Crowgest',
+    categoria: 'Sistema de Gestión',
     descripcion:
-      'Desarrollo de interfaces móviles nativas e híbridas para iOS y Android.',
+      'Plataforma web de gestión (Gest Crow) con acceso seguro por credenciales para administrar operaciones del negocio.',
     descripcionLarga:
-      'Showcase de desarrollo mobile con foco en apps nativas e híbridas, iconografía consistente, experiencias táctiles fluidas y despliegue en stores. Ideal para marcas que necesitan presencia móvil profesional.',
-    tags: ['React Native', 'iOS', 'Android'],
+      'Sistema de management online con pantalla de inicio de sesión, autenticación por correo y contraseña, y panel orientado a la administración de procesos. Pensado para centralizar la gestión del negocio en una interfaz web moderna y accesible desde cualquier dispositivo.',
+    tags: ['React', 'Auth', 'Vercel'],
     imagen: imgMobileSuite,
-    tipoLink: 'interno',
-    url: '#',
+    tipoLink: 'externo',
+    url: 'https://crowgest.vercel.app/',
   },
   {
     slug: 'modo-zen',
@@ -55,8 +55,8 @@ export const proyectos = [
       'Landing page de bienestar con composición visual serena, tipografía elegante y paleta pastel. Pensada para transmitir calma, equilibrio y conexión con prácticas de mindfulness o retiros de wellness.',
     tags: ['React', 'CSS', 'Branding'],
     imagen: imgModoZen,
-    tipoLink: 'interno',
-    url: '#',
+    tipoLink: 'externo',
+    url: 'https://github.com/CrisNeyra/ModoZen',
   },
   {
     slug: 'crowforza',
@@ -69,7 +69,7 @@ export const proyectos = [
     tags: ['React', 'Express', 'PostgreSQL'],
     imagen: imgCrowforza,
     tipoLink: 'externo',
-    url: '#',
+    url: 'https://crowforza-pagina-web.vercel.app/',
   },
   {
     slug: 'laxmar',
@@ -82,7 +82,7 @@ export const proyectos = [
     tags: ['React', 'Tailwind', 'WhatsApp'],
     imagen: imgLaxmar,
     tipoLink: 'externo',
-    url: '#',
+    url: 'https://laxmar-web.vercel.app/',
   },
 ]
 
@@ -91,16 +91,16 @@ export function getProyectoBySlug(slug) {
 }
 
 export function getProyectoHref(proyecto) {
-  if (proyecto.tipoLink === 'externo' && proyecto.url && proyecto.url !== '#') {
+  if (proyecto.url && /^https?:\/\//i.test(proyecto.url)) {
     return proyecto.url
   }
   return `/proyectos/${proyecto.slug}`
 }
 
 export function isLinkExterno(proyecto) {
-  return proyecto.tipoLink === 'externo' && proyecto.url && proyecto.url !== '#'
+  return Boolean(proyecto.url && /^https?:\/\//i.test(proyecto.url))
 }
 
 export function hasUrlVivo(proyecto) {
-  return Boolean(proyecto.url && proyecto.url !== '#')
+  return Boolean(proyecto.url && /^https?:\/\//i.test(proyecto.url))
 }

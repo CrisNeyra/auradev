@@ -62,7 +62,7 @@ export default function ProyectoDetalle() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Ver sitio en vivo
+                  Ver proyecto
                 </a>
               )}
               <Link to="/#contacto" className="btn btn-borde">

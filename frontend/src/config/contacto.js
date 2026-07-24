@@ -1,10 +1,20 @@
-export const EMAIL = 'cristian.neyra.dev@gmail.com'
-export const WHATSAPP_NUMERO = '5411782111489'
-export const WHATSAPP_DISPLAY = '+54 011 782111489'
+export const EMAIL =
+  import.meta.env.VITE_EMAIL || 'hola@auradev.com'
+
+export const WHATSAPP_NUMERO =
+  import.meta.env.VITE_WHATSAPP_NUMERO || '000000000000'
+
+export const WHATSAPP_DISPLAY =
+  import.meta.env.VITE_WHATSAPP_DISPLAY || '+00 000 000 000'
+
 export const WHATSAPP_MENSAJE =
+  import.meta.env.VITE_WHATSAPP_MENSAJE ||
   'Hola AuraDev, quiero consultar por un proyecto.'
-export const REDES_HANDLE = '@auradev'
-export const REDES_URL = '#'
+
+export const REDES_HANDLE =
+  import.meta.env.VITE_REDES_HANDLE || '@auradev'
+
+export const REDES_URL = import.meta.env.VITE_REDES_URL || '#'
 
 export function urlWhatsApp() {
   const texto = encodeURIComponent(WHATSAPP_MENSAJE)

@@ -123,7 +123,7 @@ El formulario valida campos, guarda en PostgreSQL y envía email si SMTP está c
 
 | Qué cambiar | Archivo |
 |-------------|---------|
-| Email, WhatsApp, redes | [`frontend/src/config/contacto.js`](frontend/src/config/contacto.js) |
+| Email, WhatsApp, redes | `frontend/.env` (local) y variables `VITE_*` en Vercel — ver `.env.example` |
 | Proyectos del portafolio | [`frontend/src/data/proyectos.js`](frontend/src/data/proyectos.js) |
 | Imágenes de proyectos | `frontend/src/img/portafolio/` |
 | Fotos de socios | `frontend/src/img/socios/` (`ezequiel.jpg`, `cristian.jpg`) |
@@ -162,10 +162,18 @@ Para links externos, editar `tipoLink: 'externo'` y `url` en `proyectos.js`.
 
 Sin `DATABASE_URL` válida, el endpoint de contacto responde **503**.
 
-## Contacto AuraDev
+### Contacto en el frontend (privacidad)
 
-- **Email:** cristian.neyra.dev@gmail.com
-- **WhatsApp:** +54 011 782111489
+Email y WhatsApp **no van hardcodeados** en el código. Se configuran con variables `VITE_*`:
+
+1. Copiá `frontend/.env.example` → `frontend/.env` y completá tus datos reales (archivo ignorado por git).
+2. En Vercel → Environment Variables, agregá las mismas claves (`VITE_EMAIL`, `VITE_WHATSAPP_NUMERO`, `VITE_WHATSAPP_DISPLAY`, etc.) y hacé Redeploy.
+
+Sin esas variables, el sitio muestra placeholders genéricos (`hola@auradev.com`).
+
+## Contacto
+
+Usá el [formulario del sitio](https://auradev-eta.vercel.app/#contacto) o el botón de WhatsApp en la demo.
 
 ---
 
