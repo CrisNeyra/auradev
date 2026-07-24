@@ -23,13 +23,18 @@ function prefiereMenosMovimiento() {
 export default function Hero() {
   const [activo, setActivo] = useState(0)
   const seccionRef = useRef(null)
-  const refs = [useRef(null), useRef(null)]
+  const videoRefs = useRef([])
+  const activoRef = useRef(activo)
   const visibleRef = useRef(true)
+
+  useEffect(() => {
+    activoRef.current = activo
+  }, [activo])
 
   // Reproduce el video activo cuando cambia (si esta visible y se permite movimiento)
   useEffect(() => {
     if (prefiereMenosMovimiento()) return
-    const v = refs[activo].current
+    const v = videoRefs.current[activo]
     if (v && visibleRef.current) {
       v.currentTime = 0
       const p = v.play()
@@ -46,13 +51,13 @@ export default function Hero() {
     const obs = new IntersectionObserver(
       ([entry]) => {
         visibleRef.current = entry.isIntersecting
-        const v = refs[activo].current
+        const v = videoRefs.current[activoRef.current]
         if (!v) return
         if (entry.isIntersecting) {
           const p = v.play()
           if (p && typeof p.catch === 'function') p.catch(() => {})
         } else {
-          refs.forEach((r) => r.current && r.current.pause())
+          videoRefs.current.forEach((el) => el && el.pause())
         }
       },
       { threshold: 0.15 }
@@ -60,7 +65,7 @@ export default function Hero() {
 
     obs.observe(seccion)
     return () => obs.disconnect()
-  }, [activo])
+  }, [])
 
   const avanzar = () => setActivo((i) => (i === 0 ? 1 : 0))
 
@@ -70,7 +75,9 @@ export default function Hero() {
         {videos.map((v, i) => (
           <video
             key={i}
-            ref={refs[i]}
+            ref={(el) => {
+              videoRefs.current[i] = el
+            }}
             className={`hero__video ${activo === i ? 'is-activo' : ''}`}
             poster={v.poster}
             muted

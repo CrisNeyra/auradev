@@ -82,7 +82,7 @@ Variables en `backend/.env`:
 
 - `DATABASE_URL` — connection string de Neon
 - `SMTP_*`, `MAIL_FROM`, `MAIL_TO` (opcional)
-- `CORS_ORIGIN` (por defecto `http://localhost:5173`)
+- `CORS_ORIGIN` — origen(es) del frontend; por defecto `http://localhost:5173` (nunca `*`). Varios separados por coma.
 
 ### Frontend
 
@@ -91,7 +91,7 @@ cd frontend
 Copy-Item .env.example .env
 ```
 
-Variable `VITE_API_URL` → URL del backend (`http://localhost:4000` en local).
+Variable `VITE_API_URL` → URL del backend (`http://localhost:4000` en local). En producción (Vercel), si no está definida, el formulario usa la misma origin (`/api/contacto`).
 
 ### Levantar todo
 
@@ -117,7 +117,7 @@ npm run build
 | GET | `/api/health` | Estado del servicio |
 | POST | `/api/contacto` | Recibe `{ nombre, email, mensaje }` |
 
-El formulario valida campos, guarda en PostgreSQL y envía email si SMTP está configurado. Responde `201` en éxito.
+El formulario valida campos, aplica rate-limit (5 envíos / 10 min por IP), guarda en PostgreSQL y envía email si SMTP está configurado. Responde `201` en éxito o `429` si se excede el límite.
 
 ## Personalización
 
@@ -143,7 +143,7 @@ Colocar en `frontend/src/img/portafolio/`:
 | `crowforza.jpg` | Crowforza |
 | `laxmar.jpg` | Laxmar |
 
-Para links externos, editar `tipoLink: 'externo'` y `url` en `proyectos.js`.
+Para links externos del CTA “Ver proyecto”, editar `url` en `proyectos.js`.
 
 ## Producción (Vercel)
 
@@ -157,7 +157,9 @@ Para links externos, editar `tipoLink: 'externo'` y `url` en `proyectos.js`.
 1. Creá el proyecto en [Neon](https://neon.tech) y corré `npm run db:migrate` una vez (desde local o CI).
 2. En Vercel → Settings → Environment Variables, agregá:
    - `DATABASE_URL` — connection string de Neon
+   - `CORS_ORIGIN` — URL pública del sitio (ej. `https://auradev-eta.vercel.app`). Opcional si confías en el auto-allow de `VERCEL_URL`
    - `SMTP_*`, `MAIL_FROM`, `MAIL_TO` (si querés notificaciones por email)
+   - `VITE_API_URL` — **opcional** en Vercel (mismo origen). Solo hace falta si el API está en otro dominio
 3. Redeploy.
 
 Sin `DATABASE_URL` válida, el endpoint de contacto responde **503**.

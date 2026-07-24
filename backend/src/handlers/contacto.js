@@ -1,5 +1,6 @@
 import { query } from '../db.js'
 import { enviarNotificacion } from '../mailer.js'
+import { checkRateLimit, clientIp } from '../rateLimitMemory.js'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -10,6 +11,16 @@ function missing(value) {
 }
 
 export async function handleContacto(req, res) {
+  const ip = clientIp(req)
+  const { limited, remaining, resetAt } = checkRateLimit(`contacto:${ip}`)
+  res.setHeader('X-RateLimit-Remaining', String(remaining))
+  res.setHeader('X-RateLimit-Reset', String(Math.ceil(resetAt / 1000)))
+  if (limited) {
+    return res.status(429).json({
+      error: 'Demasiados envíos. Intentá nuevamente en unos minutos.',
+    })
+  }
+
   if (missing(process.env.DATABASE_URL)) {
     return res.status(503).json({
       error: 'Servicio temporalmente no disponible. Contacto en mantenimiento.',

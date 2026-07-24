@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import logo from '../img/AuraDev.jpg'
 import {
   EMAIL,
@@ -7,11 +8,11 @@ import {
 import './Footer.css'
 
 const enlaces = [
-  { href: '#inicio', label: 'Inicio' },
-  { href: '#servicios', label: 'Servicios' },
-  { href: '#portafolio', label: 'Portafolio' },
-  { href: '#nosotros', label: 'Quiénes Somos' },
-  { href: '#contacto', label: 'Contacto' },
+  { to: '/#inicio', label: 'Inicio' },
+  { to: '/#servicios', label: 'Servicios' },
+  { to: '/#portafolio', label: 'Portafolio' },
+  { to: '/#nosotros', label: 'Quiénes Somos' },
+  { to: '/#contacto', label: 'Contacto' },
 ]
 
 export default function Footer() {
@@ -21,14 +22,14 @@ export default function Footer() {
     <footer className="footer">
       <div className="contenedor footer__inner">
         <div className="footer__brand">
-          <a href="#inicio" className="footer__logo">
+          <Link to="/#inicio" className="footer__logo">
             <img
               src={logo}
               alt="AuraDev"
               className="footer__logo-img"
               decoding="async"
             />
-          </a>
+          </Link>
           <p>
             Estudio de desarrollo digital. Software a medida, automatizaciones,
             CRM e integraciones.
@@ -39,8 +40,8 @@ export default function Footer() {
           <h4>Navegación</h4>
           <ul>
             {enlaces.map((e) => (
-              <li key={e.href}>
-                <a href={e.href}>{e.label}</a>
+              <li key={e.to}>
+                <Link to={e.to}>{e.label}</Link>
               </li>
             ))}
           </ul>

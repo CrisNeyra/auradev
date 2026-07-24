@@ -1,3 +1,5 @@
+import { applyCorsHeaders } from '../backend/src/cors.js'
+
 async function parseBody(req) {
   if (req.body && typeof req.body === 'object') return req.body
   const chunks = []
@@ -12,9 +14,7 @@ async function parseBody(req) {
 }
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  applyCorsHeaders(req, res)
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end()

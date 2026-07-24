@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
+import { isOriginAllowed } from './cors.js'
 import contactoRouter from './routes/contacto.js'
 
 const app = express()
@@ -16,7 +17,13 @@ if (!process.env.DATABASE_URL) {
 app.use(helmet())
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || '*',
+    origin(origin, callback) {
+      if (isOriginAllowed(origin)) {
+        callback(null, true)
+        return
+      }
+      callback(new Error('Origen no permitido por CORS'))
+    },
   })
 )
 app.use(express.json())

@@ -10,7 +10,10 @@ import {
 import Reveal from './Reveal.jsx'
 import './Contacto.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+const API_URL = (
+  import.meta.env.VITE_API_URL ??
+  (import.meta.env.DEV ? 'http://localhost:4000' : '')
+).replace(/\/$/, '')
 
 const estadoInicial = { nombre: '', email: '', mensaje: '', website: '' }
 
