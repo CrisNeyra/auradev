@@ -1,5 +1,9 @@
 # AuraDev
 
+<p align="center">
+  <img src="docs/preview.png" alt="AuraDev - preview del sitio" width="800" />
+</p>
+
 Sitio web del estudio **AuraDev** — desarrollo digital a medida. Incluye landing page con portafolio, formulario de contacto y backend con PostgreSQL (Neon).
 
 **Demo en vivo:** [auradev-eta.vercel.app](https://auradev-eta.vercel.app)
