@@ -1,15 +1,19 @@
 const WINDOW_MS = 10 * 60 * 1000
 const MAX = 5
 
-/** @type {Map<string, { count: number, resetAt: number }>} */
-const hits = new Map()
+interface Hit {
+  count: number;
+  resetAt: number;
+}
+
+const hits = new Map<string, Hit>()
 
 /**
  * Rate limit en memoria (por instancia).
  * En Vercel es best-effort entre cold starts; en Express local es efectivo.
  */
 export function checkRateLimit(
-  key,
+  key: string,
   { windowMs = WINDOW_MS, max = MAX } = {}
 ) {
   const now = Date.now()
@@ -35,7 +39,7 @@ export function checkRateLimit(
   }
 }
 
-export function clientIp(req) {
+export function clientIp(req: any): string {
   const forwarded = req.headers?.['x-forwarded-for']
   if (typeof forwarded === 'string' && forwarded.trim()) {
     return forwarded.split(',')[0].trim()

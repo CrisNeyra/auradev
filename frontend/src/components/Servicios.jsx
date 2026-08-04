@@ -1,25 +1,24 @@
+import { useState } from 'react'
 import { servicios, proyectosEspeciales } from '../config/servicios.js'
-
 import fondoServicios from '../img/servicios-fondo.png'
-
 import IconBullet from './icons/IconBullet.jsx'
-
 import IconCheck from './icons/IconCheck.jsx'
-
 import Reveal from './Reveal.jsx'
-
 import TechnologyAnimation from './TechnologyAnimation.jsx'
-
+import ServicioModal from './ServicioModal.jsx'
 import './Servicios.css'
 
-
-
 export default function Servicios() {
+  const [modalOpen, setModalOpen] = useState(false)
+  const [servicioSeleccionado, setServicioSeleccionado] = useState(null)
+
+  const abrirModal = (servicio) => {
+    setServicioSeleccionado(servicio)
+    setModalOpen(true)
+  }
 
   const mitad = Math.ceil(proyectosEspeciales.items.length / 2)
-
   const columnaIzq = proyectosEspeciales.items.slice(0, mitad)
-
   const columnaDer = proyectosEspeciales.items.slice(mitad)
 
 
@@ -67,66 +66,55 @@ export default function Servicios() {
 
 
         <div className="servicios__grid">
-
           {servicios.map((s, i) => (
-
             <Reveal
-
               as="article"
-
               className="servicio-oferta"
-
               key={s.id}
-
               delay={(i % 3) * 90}
-
             >
+              <div 
+                className="servicio-oferta__card-inner" 
+                onClick={() => abrirModal(s)}
+                role="button"
+                tabIndex="0"
+                aria-label={`Ver más sobre ${s.titulo}`}
+              >
+                <div className="servicio-oferta__media">
+                  <img
+                    className="servicio-oferta__img"
+                    src={s.imagen}
+                    alt={s.imagenAlt}
+                    loading="lazy"
+                  />
+                  <div className="servicio-oferta__overlay" aria-hidden="true" />
+                  <h3 className="servicio-oferta__titulo">{s.titulo}</h3>
+                </div>
 
-              <div className="servicio-oferta__media">
-
-                <img
-
-                  className="servicio-oferta__img"
-
-                  src={s.imagen}
-
-                  alt={s.imagenAlt}
-
-                  loading="lazy"
-
-                />
-
-                <div className="servicio-oferta__overlay" aria-hidden="true" />
-
-                <h3 className="servicio-oferta__titulo">{s.titulo}</h3>
-
+                <div className="servicio-oferta__panel">
+                  <ul className="servicio-oferta__lista">
+                    {s.opciones.map((opcion) => (
+                      <li key={opcion.texto} className="servicio-oferta__item">
+                        <IconBullet className="servicio-oferta__icono" />
+                        <span>{opcion.texto}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="servicio-oferta__mas">
+                    <span className="servicio-oferta__mas-texto">Ver detalles</span>
+                    <span className="servicio-oferta__mas-flecha">→</span>
+                  </div>
+                </div>
               </div>
-
-              <div className="servicio-oferta__panel">
-
-                <ul className="servicio-oferta__lista">
-
-                  {s.opciones.map((opcion) => (
-
-                    <li key={opcion.texto} className="servicio-oferta__item">
-
-                      <IconBullet className="servicio-oferta__icono" />
-
-                      <span>{opcion.texto}</span>
-
-                    </li>
-
-                  ))}
-
-                </ul>
-
-              </div>
-
             </Reveal>
-
           ))}
-
         </div>
+
+        <ServicioModal 
+          isOpen={modalOpen} 
+          servicio={servicioSeleccionado} 
+          onClose={() => setModalOpen(false)} 
+        />
 
 
 

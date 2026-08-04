@@ -1,182 +1,97 @@
-# AuraDev
+# AuraDev 🚀
 
 <p align="center">
   <img src="docs/preview.png" alt="AuraDev - preview del sitio" width="800" />
 </p>
 
-Sitio web del estudio **AuraDev** — desarrollo digital a medida. Incluye landing page con portafolio, formulario de contacto y backend con PostgreSQL (Neon).
+Sitio web oficial del estudio **AuraDev** — Especialistas en desarrollo digital a medida. Esta plataforma es un monorepo moderno que integra un frontend de alta performance con un backend robusto y escalable.
 
 **Demo en vivo:** [auradev-eta.vercel.app](https://auradev-eta.vercel.app)
 
-## Secciones
+---
 
-| Sección | Contenido |
-|---------|-----------|
-| **Inicio** | Hero con video de fondo, estadísticas y CTAs |
-| **Servicios** | 6 servicios con iconos SVG y fondo multimedia |
-| **Portafolio** | 6 proyectos con imagen, descripción y enlace a detalle o sitio en vivo |
-| **Quiénes Somos** | Historia, valores y perfiles de socios |
-| **Contacto** | Formulario conectado al backend + datos de contacto |
+## 💎 Características Principales (UX/UI Wow)
 
-Paleta: blanco, negro, amarillo y rojo.
+- **Performance Extrema:** Optimización de assets con WebP/AVIF y control inteligente de carga de videos.
+- **Interacciones Fluidas:** Micro-animaciones con `Framer Motion` para una sensación de software de alta gama.
+- **Skeleton Screens:** Pantallas de carga elegantes que eliminan saltos visuales.
+- **Contacto Infalible:** Sistema de tres capas (PostgreSQL + Notificaciones Slack + Backup en disco).
+- **Diseño Inmersivo:** Hero con video dinámico y secciones con efectos de revelado progresivo.
 
-## Stack
+## 🛠️ Stack Tecnológico
 
 | Capa | Tecnología |
 |------|------------|
-| Frontend | React 18, Vite 6, React Router |
-| Backend | Node.js, Express |
-| Base de datos | PostgreSQL (Neon) |
-| Email | Nodemailer (SMTP opcional) |
-| Deploy | Vercel (frontend estático + funciones serverless) |
+| **Frontend** | React 18, Vite 6, TypeScript, Framer Motion, Zod |
+| **Backend** | Node.js (Express), TypeScript, Drizzle ORM, Zod |
+| **Base de Datos** | PostgreSQL (Neon - Serverless) |
+| **Seguridad** | Helmet, CORS dinámico, Rate Limiting, Honeypot Anti-spam |
+| **Comunicaciones** | Nodemailer (SMTP), Slack Webhooks |
+| **Deploy** | Vercel (Edge functions ready) |
 
-## Estructura del repositorio
+---
+
+## 📂 Estructura del Repositorio
 
 ```
 AuraDev/
-├── frontend/                 # React + Vite
-│   └── src/
-│       ├── components/       # Secciones del sitio
-│       ├── pages/            # Home y detalle de proyecto
-│       ├── data/             # Proyectos del portafolio
-│       ├── config/           # Email, WhatsApp, redes
-│       └── img/              # Assets multimedia
-├── backend/                  # API Express + PostgreSQL
+├── frontend/                 # React + Vite (TypeScript)
 │   ├── src/
-│   └── scripts/migrate.js
-├── api/                      # Funciones serverless (Vercel)
-└── vercel.json
+│   │   ├── components/       # Componentes interactivos y Skeletons
+│   │   ├── config/           # Configuraciones de servicios y contacto
+│   │   └── data/             # Proyectos y lógica de negocio
+├── backend/                  # API Express (TypeScript)
+│   ├── src/
+│   │   ├── db/               # Esquema de Drizzle y cliente DB
+│   │   ├── handlers/         # Lógica de endpoints (Zod validation)
+│   │   └── utils/            # Logger y helpers de sistema
+├── logs/                     # Respaldo automático de contactos (Git ignored)
+└── vercel.json               # Configuración de deploy monorepo
 ```
 
-## Requisitos
+---
 
-- Node.js 18+
-- Cuenta en [Neon](https://neon.tech) (PostgreSQL managed)
+## 🚀 Instalación y Configuración
 
-## Instalación
+### Requisitos Previos
+- Node.js 20+
+- Cuenta en [Neon.tech](https://neon.tech)
+- Slack Webhook (opcional para notificaciones)
 
-```bash
-git clone https://github.com/CrisNeyra/auradev.git
-cd auradev
-npm run install:all
-```
+### Pasos iniciales
+1. Clonar y preparar:
+   ```bash
+   git clone https://github.com/CrisNeyra/auradev.git
+   cd auradev
+   npm run install:all
+   ```
 
-### Backend (local)
+2. Configurar entorno:
+   - Copiar `.env.example` a `.env` tanto en `frontend/` como en `backend/`.
+   - Completar las variables necesarias (DATABASE_URL, WEBHOOK_URL).
 
-1. Creá un proyecto en [Neon](https://neon.tech) y copiá la **connection string** (URI, con `sslmode=require`).
-2. Configurá el entorno:
-
-```bash
-cd backend
-Copy-Item .env.example .env   # Windows PowerShell
-```
-
-3. En `backend/.env`, reemplazá el placeholder de `DATABASE_URL` por tu connection string.
-4. Aplicá el schema:
-
-```bash
-npm run db:migrate
-```
-
-Variables en `backend/.env`:
-
-- `DATABASE_URL` — connection string de Neon
-- `SMTP_*`, `MAIL_FROM`, `MAIL_TO` (opcional)
-- `CORS_ORIGIN` — origen(es) del frontend; por defecto `http://localhost:5173` (nunca `*`). Varios separados por coma.
-
-### Frontend
-
-```bash
-cd frontend
-Copy-Item .env.example .env
-```
-
-Variable `VITE_API_URL` → URL del backend (`http://localhost:4000` en local). En producción (Vercel), si no está definida, el formulario usa la misma origin (`/api/contacto`).
-
-### Levantar todo
-
-Desde la raíz del proyecto:
-
+### Desarrollo
+Para levantar el entorno completo (Frontend + Backend) simultáneamente:
 ```bash
 npm run dev
 ```
 
-- Frontend: [http://localhost:5173](http://localhost:5173)
-- Backend: [http://localhost:4000](http://localhost:4000)
+---
 
-Build de producción:
+## 📈 Roadmap de Calidad Senior
 
-```bash
-npm run build
-```
-
-## API
-
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/health` | Estado del servicio |
-| POST | `/api/contacto` | Recibe `{ nombre, email, mensaje }` |
-
-El formulario valida campos, aplica rate-limit (5 envíos / 10 min por IP), guarda en PostgreSQL y envía email si SMTP está configurado. Responde `201` en éxito o `429` si se excede el límite.
-
-## Personalización
-
-| Qué cambiar | Archivo |
-|-------------|---------|
-| Email, WhatsApp, redes | `frontend/.env` (local) y variables `VITE_*` en Vercel — ver `.env.example` |
-| Proyectos del portafolio | [`frontend/src/data/proyectos.js`](frontend/src/data/proyectos.js) |
-| Imágenes de proyectos | `frontend/src/img/portafolio/` |
-| Fotos de socios | `frontend/src/img/socios/` (`ezequiel.jpg`, `cristian.jpg`) |
-| Servicios | [`frontend/src/components/Servicios.jsx`](frontend/src/components/Servicios.jsx) |
-| Colores globales | [`frontend/src/styles/index.css`](frontend/src/styles/index.css) |
-
-### Imágenes del portafolio
-
-Colocar en `frontend/src/img/portafolio/`:
-
-| Archivo | Proyecto |
-|---------|----------|
-| `portfolio-cristian.jpg` | Portfolio Cristian |
-| `aura-pro.jpg` | Aura PRO |
-| `mobile-suite.jpg` | Mobile Suite |
-| `modo-zen.jpg` | Modo Zen |
-| `crowforza.jpg` | Crowforza |
-| `laxmar.jpg` | Laxmar |
-
-Para links externos del CTA “Ver proyecto”, editar `url` en `proyectos.js`.
-
-## Producción (Vercel)
-
-| Entorno | Frontend | Formulario |
-|---------|----------|------------|
-| **Local** | OK | OK (con `DATABASE_URL` de Neon) |
-| **Vercel** | OK | OK (misma `DATABASE_URL` en Environment Variables) |
-
-### Configurar Neon + Vercel
-
-1. Creá el proyecto en [Neon](https://neon.tech) y corré `npm run db:migrate` una vez (desde local o CI).
-2. En Vercel → Settings → Environment Variables, agregá:
-   - `DATABASE_URL` — connection string de Neon
-   - `CORS_ORIGIN` — URL pública del sitio (ej. `https://auradev-eta.vercel.app`). Opcional si confías en el auto-allow de `VERCEL_URL`
-   - `SMTP_*`, `MAIL_FROM`, `MAIL_TO` (si querés notificaciones por email)
-   - `VITE_API_URL` — **opcional** en Vercel (mismo origen). Solo hace falta si el API está en otro dominio
-3. Redeploy.
-
-Sin `DATABASE_URL` válida, el endpoint de contacto responde **503**.
-
-### Contacto en el frontend (privacidad)
-
-Email y WhatsApp **no van hardcodeados** en el código. Se configuran con variables `VITE_*`:
-
-1. Copiá `frontend/.env.example` → `frontend/.env` y completá tus datos reales (archivo ignorado por git).
-2. En Vercel → Environment Variables, agregá las mismas claves (`VITE_EMAIL`, `VITE_WHATSAPP_NUMERO`, `VITE_WHATSAPP_DISPLAY`, etc.) y hacé Redeploy.
-
-Sin esas variables, el sitio muestra placeholders genéricos (`hola@auradev.com`).
-
-## Contacto
-
-Usá el [formulario del sitio](https://auradev-eta.vercel.app/#contacto) o el botón de WhatsApp en la demo.
+- [x] Migración total a **TypeScript** para seguridad de tipos.
+- [x] Implementación de **Zod** en ambos extremos para validación robusta.
+- [x] Integración de **Drizzle ORM** para una gestión de datos profesional.
+- [x] Sistema de **Backup en disco** para tolerancia a fallos.
+- [x] Optimización automática de imágenes en el pipeline de build.
+- [x] Notificaciones en tiempo real vía **Slack**.
 
 ---
 
-© AuraDev — Estudio de Desarrollo Digital
+## ✉️ Contacto
+Estudio AuraDev — Transformamos ideas en código.
+[Visita nuestra web](https://auradev-eta.vercel.app/#contacto)
+
+---
+© 2026 AuraDev — Innovación. Experiencia. Código.

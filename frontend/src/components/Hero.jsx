@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import hero0Mp4 from '../img/hero0.mp4'
 import hero0Webm from '../img/hero0.webm'
 import hero0Poster from '../img/hero0.jpg'
@@ -107,27 +108,41 @@ export default function Hero() {
             hacen crecer tu empresa.
           </p>
           <div className="hero__actions">
-            <a href="#contacto" className="btn btn-rojo">
+            <motion.a 
+              href="#contacto" 
+              className="btn btn-rojo"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Contáctanos
-            </a>
-            <a href="#portafolio" className="btn btn-borde">
+            </motion.a>
+            <motion.a 
+              href="#portafolio" 
+              className="btn btn-borde"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Ver proyectos
-            </a>
+            </motion.a>
           </div>
 
           <div className="hero__stats">
-            <div className="hero__stat">
-              <strong>+30</strong>
-              <span>Proyectos entregados</span>
-            </div>
-            <div className="hero__stat">
-              <strong>100%</strong>
-              <span>A medida</span>
-            </div>
-            <div className="hero__stat">
-              <strong>24/7</strong>
-              <span>Soporte continuo</span>
-            </div>
+            {[
+              { n: '+30', t: 'Proyectos entregados' },
+              { n: '100%', t: 'A medida' },
+              { n: '24/7', t: 'Soporte continuo' }
+            ].map((s, i) => (
+              <motion.div 
+                key={i} 
+                className="hero__stat"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 + i * 0.15 }}
+              >
+                <strong>{s.n}</strong>
+                <span>{s.t}</span>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

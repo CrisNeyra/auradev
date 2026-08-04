@@ -65,9 +65,42 @@
   gap: 32px 24px;
 }
 
-.servicio-oferta {
+.servicio-oferta__card-inner {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+  transition: transform var(--transicion);
+  outline: none;
+}
+
+.servicio-oferta__card-inner:hover {
+  transform: translateY(-4px);
+}
+
+.servicio-oferta__mas {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--gris-claro);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--rojo);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.servicio-oferta__card-inner:hover .servicio-oferta__mas-flecha {
+  transform: translateX(4px);
+}
+
+.servicio-oferta__mas-flecha {
+  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+  line-height: 1;
 }
 
 .servicio-oferta__media {

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { z } from 'zod'
 import fondoContacto from '../img/contacto.jpg'
 import {
   EMAIL,
@@ -15,6 +16,13 @@ const API_URL = (
   (import.meta.env.DEV ? 'http://localhost:4000' : '')
 ).replace(/\/$/, '')
 
+const contactoSchema = z.object({
+  nombre: z.string().min(1, 'Por favor, ingresá tu nombre.'),
+  email: z.string().email('Ingresá un email válido.'),
+  mensaje: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres.'),
+  website: z.string().optional(),
+})
+
 const estadoInicial = { nombre: '', email: '', mensaje: '', website: '' }
 
 export default function Contacto() {
@@ -26,21 +34,13 @@ export default function Contacto() {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
   }
 
-  const validar = () => {
-    if (!form.nombre.trim()) return 'Por favor, ingresá tu nombre.'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      return 'Ingresá un email válido.'
-    if (form.mensaje.trim().length < 10)
-      return 'El mensaje debe tener al menos 10 caracteres.'
-    return ''
-  }
-
   const onSubmit = async (e) => {
     e.preventDefault()
-    const errorValidacion = validar()
-    if (errorValidacion) {
+    
+    const result = contactoSchema.safeParse(form)
+    if (!result.success) {
       setEstado('error')
-      setError(errorValidacion)
+      setError(result.error.errors[0].message)
       return
     }
 
