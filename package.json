@@ -4,7 +4,7 @@
   "private": true,
   "description": "AuraDev - Estudio de Desarrollo Digital. Monorepo con frontend (React + Vite) y backend (Express + PostgreSQL).",
   "scripts": {
-    "dev": "concurrently -n backend,frontend -c yellow,red \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "dev": "concurrently -n backend,frontend -c yellow,red \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "npm --prefix backend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "db:migrate": "npm --prefix backend run db:migrate",
