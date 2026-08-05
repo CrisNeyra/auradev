@@ -35,6 +35,43 @@ async function notifyWebhook(datos: { nombre: string; email: string; mensaje: st
   }
 }
 
+async function notifyWhatsApp(datos: { nombre: string; email: string; mensaje: string }) {
+  const phone = process.env.WHATSAPP_PHONE
+  const apiKey = process.env.WHATSAPP_API_KEY
+  
+  if (!phone || !apiKey || apiKey.includes('tu_api_key')) return
+
+  const text = `*Nuevo contacto AuraDev*%0A%0A*Nombre:* ${encodeURIComponent(datos.nombre)}%0A*Email:* ${encodeURIComponent(datos.email)}%0A*Mensaje:* ${encodeURIComponent(datos.mensaje)}`
+  const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${text}&apikey=${apiKey}`
+
+  try {
+    const res = await fetch(url)
+    if (!res.ok) {
+      console.error('[AuraDev] CallMeBot (WhatsApp) respondió con error:', res.status)
+    }
+  } catch (err) {
+    console.error('[AuraDev] Error al enviar notificación a WhatsApp:', err)
+  }
+}
+
+async function notifyTelegram(datos: { nombre: string; email: string; mensaje: string }) {
+  const apiKey = process.env.TELEGRAM_API_KEY
+  
+  if (!apiKey || apiKey.includes('tu_api_key')) return
+
+  const text = `🚀 *Nuevo contacto AuraDev*\n\n*Nombre:* ${datos.nombre}\n*Email:* ${datos.email}\n*Mensaje:* ${datos.mensaje}`
+  const url = `https://api.callmebot.com/telegram.php?apikey=${apiKey}&text=${encodeURIComponent(text)}`
+
+  try {
+    const res = await fetch(url)
+    if (!res.ok) {
+      console.error('[AuraDev] CallMeBot (Telegram) respondió con error:', res.status)
+    }
+  } catch (err) {
+    console.error('[AuraDev] Error al enviar notificación a Telegram:', err)
+  }
+}
+
 export async function handleContacto(req: any, res: any) {
   const ip = clientIp(req)
   const { limited, remaining, resetAt } = checkRateLimit(`contacto:${ip}`)
@@ -89,7 +126,9 @@ export async function handleContacto(req: any, res: any) {
   Promise.all([
     enviarNotificacion(datos),
     enviarConfirmacionCliente(datos),
-    notifyWebhook(datos)
+    notifyWebhook(datos),
+    notifyWhatsApp(datos),
+    notifyTelegram(datos)
   ]).catch(err => logError('NOTIFICATIONS_PROMISE', err))
 
   // 3. Responder al cliente siempre con éxito (ya que respaldamos el dato)
