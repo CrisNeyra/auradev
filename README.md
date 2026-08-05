@@ -78,6 +78,21 @@ npm run dev
 
 ---
 
+## ⚙️ Configuración Senior
+
+### 1. Notificaciones Slack/Discord
+Para recibir alertas en tiempo real, configura la variable `WEBHOOK_URL` en tu `.env`:
+1. Crea una App en Slack (opción "Blank App").
+2. Activa "Incoming Webhooks".
+3. Genera una URL y pégala en el `.env`.
+
+### 2. Auto-respuesta al Cliente
+Para habilitar el envío automático de emails de agradecimiento a los clientes:
+- Asegúrate de configurar las variables `SMTP_*` en el `.env`.
+- Cambia `ENABLE_AUTO_REPLY=true`.
+
+---
+
 ## 📈 Roadmap de Calidad Senior
 
 - [x] Migración total a **TypeScript** para seguridad de tipos.
