@@ -15,8 +15,8 @@ Sitio web oficial del estudio **AuraDev** — Especialistas en desarrollo digita
 - **Performance Extrema:** Optimización de assets con WebP/AVIF y control inteligente de carga de videos.
 - **Interacciones Fluidas:** Micro-animaciones con `Framer Motion` para una sensación de software de alta gama.
 - **Skeleton Screens:** Pantallas de carga elegantes que eliminan saltos visuales.
-- **Contacto Infalible:** Sistema de tres capas (PostgreSQL + Notificaciones Slack + Backup en disco).
-- **Diseño Inmersivo:** Hero con video dinámico y secciones con efectos de revelado progresivo.
+- **Contacto Infalible:** Sistema de capas (PostgreSQL + Email + Slack + Telegram + Backup en disco).
+- **Diseño Inmersivo:** Hero con video dinámico, logo interactivo y secciones con revelado progresivo.
 
 ## 🛠️ Stack Tecnológico
 
@@ -26,7 +26,7 @@ Sitio web oficial del estudio **AuraDev** — Especialistas en desarrollo digita
 | **Backend** | Node.js (Express), TypeScript, Drizzle ORM, Zod |
 | **Base de Datos** | PostgreSQL (Neon - Serverless) |
 | **Seguridad** | Helmet, CORS dinámico, Rate Limiting, Honeypot Anti-spam |
-| **Comunicaciones** | Nodemailer (SMTP), Slack Webhooks |
+| **Comunicaciones** | Nodemailer (SMTP), Slack Webhooks, Telegram Bot API |
 | **Deploy** | Vercel (Edge functions ready) |
 
 ---
@@ -56,7 +56,8 @@ AuraDev/
 ### Requisitos Previos
 - Node.js 20+
 - Cuenta en [Neon.tech](https://neon.tech)
-- Slack Webhook (opcional para notificaciones)
+- Slack Webhook (opcional)
+- Telegram Bot (recomendado para alertas móviles)
 
 ### Pasos iniciales
 1. Clonar y preparar:
@@ -89,7 +90,30 @@ Para recibir alertas en tiempo real, configura la variable `WEBHOOK_URL` en tu `
 ### 2. Auto-respuesta al Cliente
 Para habilitar el envío automático de emails de agradecimiento a los clientes:
 - Asegúrate de configurar las variables `SMTP_*` en el `.env`.
+- Usa una **Contraseña de aplicación** de Google (no tu clave normal de Gmail).
 - Cambia `ENABLE_AUTO_REPLY=true`.
+
+### 3. Telegram (recomendado — gratis, sin Telegram Business)
+
+**No necesitás Telegram Business** para recibir notificaciones del formulario. Es solo para atención al cliente con inbox comercial.
+
+#### Opción A — Bot API oficial (recomendada)
+Todo desde la PC con [web.telegram.org](https://web.telegram.org):
+
+1. Iniciá sesión en Telegram Web (QR con el celular una sola vez).
+2. Buscá **@BotFather** → enviá `/newbot`.
+3. Nombre: `AuraDev Notificaciones` → username tipo `auradev_notify_bot`.
+4. Copiá el **token** → `TELEGRAM_BOT_TOKEN` en `backend/.env` y en Vercel.
+5. Abrí el chat con tu bot y enviá `/start`.
+6. En el navegador abrí: `https://api.telegram.org/bot<TOKEN>/getUpdates`
+7. Copiá el valor de `chat.id` → `TELEGRAM_CHAT_ID`.
+
+#### Opción B — CallMeBot (fallback)
+1. En Telegram Web buscá **@CallMeBot_txtbot** → `/start`.
+2. Copiá la API key → `TELEGRAM_API_KEY`.
+3. Si falla (como suele pasar con WhatsApp), usá la Opción A.
+
+Otras alternativas gratuitas: Discord webhook, Slack (ya soportado), [ntfy.sh](https://ntfy.sh).
 
 ---
 
@@ -101,7 +125,8 @@ Para habilitar el envío automático de emails de agradecimiento a los clientes:
 - [x] Sistema de **Backup en disco** para tolerancia a fallos.
 - [x] Optimización automática de imágenes en el pipeline de build.
 - [x] Notificaciones en tiempo real vía **Slack**.
-
+- [x] Notificaciones **Telegram Bot API** + fallback CallMeBot.
+- [x] Pulido UI para monitores grandes / escala 150% (logo, hero, modal).
 ---
 
 ## ✉️ Contacto

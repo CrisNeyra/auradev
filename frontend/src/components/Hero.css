@@ -1,11 +1,17 @@
 .hero {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  padding: 96px 0 60px;
+  align-items: flex-start;
+  padding: calc(100px + 40px) 0 60px;
   position: relative;
   overflow: hidden;
   background: var(--blanco);
+}
+
+@media (min-height: 820px) {
+  .hero {
+    align-items: center;
+  }
 }
 
 /* Capa de video de fondo (carrusel con crossfade) */
@@ -70,6 +76,7 @@
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.04em;
+  margin-top: 8px;
   margin-bottom: 24px;
 }
 
@@ -134,7 +141,7 @@
 
 @media (max-width: 880px) {
   .hero {
-    padding: 120px 0 70px;
+    padding: calc(92px + 36px) 0 70px;
   }
 }
 

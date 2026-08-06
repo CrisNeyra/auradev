@@ -18,20 +18,13 @@ function missing(value: string | undefined): boolean {
   return !value || PLACEHOLDER_REGEX.test(String(value).trim())
 }
 
-async function notifyWebhook(datos: { nombre: string; email: string; mensaje: string }) {
-  const url = process.env.WEBHOOK_URL
-  if (!url || url.includes('tu_webhook')) return
-
+async function fetchWithTimeout(url: string, options: RequestInit = {}, ms = 8000) {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), ms)
   try {
-    await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text: `🚀 *Nuevo mensaje de contacto en AuraDev*\n\n*Nombre:* ${datos.nombre}\n*Email:* ${datos.email}\n*Mensaje:* ${datos.mensaje}`,
-      }),
-    })
-  } catch (err) {
-    console.error('[AuraDev] Error al enviar notificación al Webhook:', err)
+    return await fetch(url, { ...options, signal: controller.signal })
+  } finally {
+    clearTimeout(timer)
   }
 }
 
@@ -45,30 +38,103 @@ async function notifyWhatsApp(datos: { nombre: string; email: string; mensaje: s
   const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${text}&apikey=${apiKey}`
 
   try {
-    const res = await fetch(url)
+    const res = await fetchWithTimeout(url)
     if (!res.ok) {
       console.error('[AuraDev] CallMeBot (WhatsApp) respondió con error:', res.status)
+    } else {
+      console.log('[AuraDev] Notificación WhatsApp enviada')
     }
   } catch (err) {
     console.error('[AuraDev] Error al enviar notificación a WhatsApp:', err)
   }
 }
 
-async function notifyTelegram(datos: { nombre: string; email: string; mensaje: string }) {
+/** Canal primario: Bot API oficial de Telegram (recomendado). */
+async function notifyTelegramBot(datos: { nombre: string; email: string; mensaje: string }) {
+  const token = process.env.TELEGRAM_BOT_TOKEN
+  const chatId = process.env.TELEGRAM_CHAT_ID
+
+  if (!token || token.includes('tu_token') || !chatId || chatId.includes('tu_chat')) {
+    return false
+  }
+
+  const text = `🚀 *Nuevo contacto AuraDev*\n\n*Nombre:* ${datos.nombre}\n*Email:* ${datos.email}\n*Mensaje:* ${datos.mensaje}`
+
+  try {
+    const res = await fetchWithTimeout(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+        parse_mode: 'Markdown',
+        disable_web_page_preview: true,
+      }),
+    })
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => '')
+      console.error('[AuraDev] Telegram Bot API error:', res.status, body)
+      return false
+    }
+
+    console.log('[AuraDev] Notificación Telegram (Bot API) enviada')
+    return true
+  } catch (err) {
+    console.error('[AuraDev] Error Telegram Bot API:', err)
+    return false
+  }
+}
+
+/** Fallback: CallMeBot Telegram. */
+async function notifyTelegramCallMeBot(datos: { nombre: string; email: string; mensaje: string }) {
   const apiKey = process.env.TELEGRAM_API_KEY
   
-  if (!apiKey || apiKey.includes('tu_api_key')) return
+  if (!apiKey || apiKey.includes('tu_api_key')) return false
 
   const text = `🚀 *Nuevo contacto AuraDev*\n\n*Nombre:* ${datos.nombre}\n*Email:* ${datos.email}\n*Mensaje:* ${datos.mensaje}`
   const url = `https://api.callmebot.com/telegram.php?apikey=${apiKey}&text=${encodeURIComponent(text)}`
 
   try {
-    const res = await fetch(url)
+    const res = await fetchWithTimeout(url)
     if (!res.ok) {
       console.error('[AuraDev] CallMeBot (Telegram) respondió con error:', res.status)
+      return false
+    }
+    console.log('[AuraDev] Notificación Telegram (CallMeBot) enviada')
+    return true
+  } catch (err) {
+    console.error('[AuraDev] Error al enviar notificación a Telegram (CallMeBot):', err)
+    return false
+  }
+}
+
+async function notifyTelegram(datos: { nombre: string; email: string; mensaje: string }) {
+  const sent = await notifyTelegramBot(datos)
+  if (!sent) {
+    await notifyTelegramCallMeBot(datos)
+  }
+}
+
+async function notifyWebhook(datos: { nombre: string; email: string; mensaje: string }) {
+  const url = process.env.WEBHOOK_URL
+  if (!url || url.includes('tu_webhook')) return
+
+  try {
+    const res = await fetchWithTimeout(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: `🚀 *Nuevo mensaje de contacto en AuraDev*\n\n*Nombre:* ${datos.nombre}\n*Email:* ${datos.email}\n*Mensaje:* ${datos.mensaje}`,
+      }),
+    })
+    if (!res.ok) {
+      console.error('[AuraDev] Webhook respondió con error:', res.status)
+    } else {
+      console.log('[AuraDev] Notificación Webhook enviada')
     }
   } catch (err) {
-    console.error('[AuraDev] Error al enviar notificación a Telegram:', err)
+    console.error('[AuraDev] Error al enviar notificación al Webhook:', err)
   }
 }
 

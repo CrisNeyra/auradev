@@ -1,15 +1,32 @@
+import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import IconBullet from './icons/IconBullet.jsx'
 import './ServicioModal.css'
 
 export default function ServicioModal({ servicio, isOpen, onClose }) {
+  useEffect(() => {
+    if (!isOpen) return
+
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.style.overflow = prevOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [isOpen, onClose])
+
   if (!servicio) return null
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             className="modal-backdrop"
             initial={{ opacity: 0 }}
@@ -18,10 +35,12 @@ export default function ServicioModal({ servicio, isOpen, onClose }) {
             onClick={onClose}
           />
 
-          {/* Modal Container */}
           <div className="modal-wrapper">
             <motion.div
               className="modal-content"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-servicio-titulo"
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -32,13 +51,15 @@ export default function ServicioModal({ servicio, isOpen, onClose }) {
               </button>
 
               <div className="modal-header">
-                <div 
-                  className="modal-header__img-bg" 
+                <div
+                  className="modal-header__img-bg"
                   style={{ backgroundImage: `url(${servicio.imagen})` }}
                 />
                 <div className="modal-header__overlay" />
                 <div className="modal-header__text">
-                  <h2 className="modal-titulo">{servicio.titulo}</h2>
+                  <h2 id="modal-servicio-titulo" className="modal-titulo">
+                    {servicio.titulo}
+                  </h2>
                   <p className="modal-resumen">{servicio.resumen}</p>
                 </div>
               </div>
@@ -47,8 +68,8 @@ export default function ServicioModal({ servicio, isOpen, onClose }) {
                 <h3 className="modal-body__titulo">¿Qué incluye este servicio?</h3>
                 <div className="modal-puntos-grid">
                   {servicio.opciones.map((opcion, index) => (
-                    <motion.div 
-                      key={index} 
+                    <motion.div
+                      key={index}
                       className="modal-punto-card"
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -62,13 +83,13 @@ export default function ServicioModal({ servicio, isOpen, onClose }) {
                     </motion.div>
                   ))}
                 </div>
-                
-                <div className="modal-footer">
-                  <p className="modal-footer-texto">¿Te interesa este servicio para tu negocio?</p>
-                  <a href="#contacto" className="btn btn-rojo" onClick={onClose}>
-                    Solicitar presupuesto
-                  </a>
-                </div>
+              </div>
+
+              <div className="modal-footer">
+                <p className="modal-footer-texto">¿Te interesa este servicio para tu negocio?</p>
+                <a href="#contacto" className="btn btn-rojo" onClick={onClose}>
+                  Solicitar presupuesto
+                </a>
               </div>
             </motion.div>
           </div>
