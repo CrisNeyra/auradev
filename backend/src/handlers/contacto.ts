@@ -28,21 +28,53 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}, ms = 800
   }
 }
 
+/** WhatsApp Cloud API (Meta) — oficial. No usar CallMeBot: puede restringir la cuenta. */
 async function notifyWhatsApp(datos: { nombre: string; email: string; mensaje: string }) {
-  const phone = process.env.WHATSAPP_PHONE
-  const apiKey = process.env.WHATSAPP_API_KEY
-  
-  if (!phone || !apiKey || apiKey.includes('tu_api_key')) return
+  const token = process.env.WHATSAPP_TOKEN
+  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID
+  const to = process.env.WHATSAPP_TO || '5491178211489'
 
-  const text = `*Nuevo contacto AuraDev*%0A%0A*Nombre:* ${encodeURIComponent(datos.nombre)}%0A*Email:* ${encodeURIComponent(datos.email)}%0A*Mensaje:* ${encodeURIComponent(datos.mensaje)}`
-  const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${text}&apikey=${apiKey}`
+  if (
+    !token ||
+    token.includes('tu_token') ||
+    !phoneNumberId ||
+    phoneNumberId.includes('tu_phone')
+  ) {
+    return
+  }
+
+  const body = [
+    'Nuevo contacto AuraDev',
+    '',
+    `Nombre: ${datos.nombre}`,
+    `Email: ${datos.email}`,
+    '',
+    `Mensaje: ${datos.mensaje}`,
+  ].join('\n')
+
+  const url = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`
 
   try {
-    const res = await fetchWithTimeout(url)
+    const res = await fetchWithTimeout(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        recipient_type: 'individual',
+        to,
+        type: 'text',
+        text: { body: body.slice(0, 4000) },
+      }),
+    })
+
     if (!res.ok) {
-      console.error('[AuraDev] CallMeBot (WhatsApp) respondió con error:', res.status)
+      const errBody = await res.text().catch(() => '')
+      console.error('[AuraDev] WhatsApp Cloud API error:', res.status, errBody)
     } else {
-      console.log('[AuraDev] Notificación WhatsApp enviada')
+      console.log('[AuraDev] Notificación WhatsApp (Cloud API) enviada')
     }
   } catch (err) {
     console.error('[AuraDev] Error al enviar notificación a WhatsApp:', err)

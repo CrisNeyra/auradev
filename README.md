@@ -26,7 +26,7 @@ Sitio web oficial del estudio **AuraDev** — Especialistas en desarrollo digita
 | **Backend** | Node.js (Express), TypeScript, Drizzle ORM, Zod |
 | **Base de Datos** | PostgreSQL (Neon - Serverless) |
 | **Seguridad** | Helmet, CORS dinámico, Rate Limiting, Honeypot Anti-spam |
-| **Comunicaciones** | Nodemailer (SMTP), Slack Webhooks, Telegram Bot API |
+| **Comunicaciones** | Nodemailer (SMTP), Slack Webhooks, Telegram Bot API, WhatsApp Cloud API (Meta) |
 | **Deploy** | Vercel (Edge functions ready) |
 
 ---
@@ -115,6 +115,43 @@ Todo desde la PC con [web.telegram.org](https://web.telegram.org):
 
 Otras alternativas gratuitas: Discord webhook, Slack (ya soportado), [ntfy.sh](https://ntfy.sh).
 
+### 4. WhatsApp Cloud API (Meta) — notificaciones del formulario
+
+**No uses CallMeBot en WhatsApp:** es no oficial y Meta puede restringir tu cuenta.
+
+#### Notificaciones (formulario → tu celular)
+1. Entrá a [developers.facebook.com](https://developers.facebook.com/) (PC).
+2. **Create App** → tipo **Business**.
+3. Agregá el producto **WhatsApp** → abrí **API Setup**.
+4. Copiá:
+   - **Temporary access token** → `WHATSAPP_TOKEN`
+   - **Phone number ID** (número de prueba de Meta) → `WHATSAPP_PHONE_NUMBER_ID`
+5. En destinatarios de prueba agregá: `5491178211489`.
+6. Desde el panel de Meta enviá el template `hello_world` a tu número (abre ventana de 24h).
+7. En `backend/.env` y en Vercel:
+
+```env
+WHATSAPP_TOKEN=EAAB...
+WHATSAPP_PHONE_NUMBER_ID=123456789012345
+WHATSAPP_TO=5491178211489
+```
+
+8. Reiniciá backend / Redeploy en Vercel.
+9. Probá el formulario de contacto.
+
+Para producción 24/7 (fuera de la ventana de 24h), creá un template aprobado tipo `auradev_nuevo_contacto` en WhatsApp Manager.
+
+#### Botón flotante (visitante → chat AuraDev)
+En `frontend/.env` (y Vercel):
+
+```env
+VITE_WHATSAPP_NUMERO=5491178211489
+VITE_WHATSAPP_DISPLAY=+54 9 11 7821-1489
+```
+
+#### Foto AuraDev en la pantalla de wa.me
+WhatsApp muestra la **foto de perfil** de tu cuenta. Subí `frontend/src/img/AuraDev.jpg` desde el celular (WhatsApp / WhatsApp Business → Perfil).
+
 ---
 
 ## 📈 Roadmap de Calidad Senior
@@ -127,6 +164,7 @@ Otras alternativas gratuitas: Discord webhook, Slack (ya soportado), [ntfy.sh](h
 - [x] Notificaciones en tiempo real vía **Slack**.
 - [x] Notificaciones **Telegram Bot API** + fallback CallMeBot.
 - [x] Pulido UI para monitores grandes / escala 150% (logo, hero, modal).
+- [x] WhatsApp **Cloud API (Meta)** + botón de chat con número real.
 ---
 
 ## ✉️ Contacto

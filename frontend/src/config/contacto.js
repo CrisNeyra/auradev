@@ -2,10 +2,10 @@ export const EMAIL =
   import.meta.env.VITE_EMAIL || 'hola@auradev.com'
 
 export const WHATSAPP_NUMERO =
-  import.meta.env.VITE_WHATSAPP_NUMERO || '000000000000'
+  import.meta.env.VITE_WHATSAPP_NUMERO || '5491178211489'
 
 export const WHATSAPP_DISPLAY =
-  import.meta.env.VITE_WHATSAPP_DISPLAY || '+00 000 000 000'
+  import.meta.env.VITE_WHATSAPP_DISPLAY || '+54 9 11 7821-1489'
 
 export const WHATSAPP_MENSAJE =
   import.meta.env.VITE_WHATSAPP_MENSAJE ||
