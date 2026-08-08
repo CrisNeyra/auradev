@@ -90,7 +90,15 @@ async function notifyTelegramBot(datos: { nombre: string; email: string; mensaje
     return false
   }
 
-  const text = `🚀 *Nuevo contacto AuraDev*\n\n*Nombre:* ${datos.nombre}\n*Email:* ${datos.email}\n*Mensaje:* ${datos.mensaje}`
+  // Sin Markdown: caracteres como _ * ` en nombre/email/mensaje rompen parse_mode
+  const text = [
+    'Nuevo contacto AuraDev',
+    '',
+    `Nombre: ${datos.nombre}`,
+    `Email: ${datos.email}`,
+    '',
+    `Mensaje: ${datos.mensaje}`,
+  ].join('\n')
 
   try {
     const res = await fetchWithTimeout(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -99,7 +107,6 @@ async function notifyTelegramBot(datos: { nombre: string; email: string; mensaje
       body: JSON.stringify({
         chat_id: chatId,
         text,
-        parse_mode: 'Markdown',
         disable_web_page_preview: true,
       }),
     })
