@@ -45,13 +45,14 @@ export async function enviarNotificacion({ nombre, email, mensaje }: Notificacio
   const destino = process.env.MAIL_TO || process.env.SMTP_USER
   const remitente = process.env.MAIL_FROM || process.env.SMTP_USER
 
-  await t.sendMail({
-    from: remitente,
-    to: destino,
-    replyTo: email,
-    subject: `Nuevo contacto de ${nombre} - AuraDev`,
-    text: `Nombre: ${nombre}\nEmail: ${email}\n\nMensaje:\n${mensaje}`,
-    html: `
+  try {
+    await t.sendMail({
+      from: remitente,
+      to: destino,
+      replyTo: email,
+      subject: `Nuevo contacto de ${nombre} - AuraDev`,
+      text: `Nombre: ${nombre}\nEmail: ${email}\n\nMensaje:\n${mensaje}`,
+      html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
         <h2 style="color: #d32f2f;">Nuevo mensaje de contacto</h2>
         <p><strong>Nombre:</strong> ${escapar(nombre)}</p>
@@ -62,9 +63,13 @@ export async function enviarNotificacion({ nombre, email, mensaje }: Notificacio
         <p style="font-size: 12px; color: #999;">Este es un mensaje automático de AuraDev API.</p>
       </div>
     `,
-  })
-
-  return true
+    })
+    console.log('[AuraDev] Email de notificación enviado a', destino)
+    return true
+  } catch (err) {
+    console.error('[AuraDev] Error al enviar email de notificación:', err)
+    return false
+  }
 }
 
 export async function enviarConfirmacionCliente({ nombre, email }: Pick<NotificacionParams, 'nombre' | 'email'>): Promise<boolean> {
