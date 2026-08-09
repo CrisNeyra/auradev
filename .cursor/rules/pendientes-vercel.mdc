@@ -1,0 +1,13 @@
+---
+description: Recordatorio pendiente — Upstash rate limit y plantilla WhatsApp en Vercel/Meta
+alwaysApply: true
+---
+
+# Pendiente manual AuraDev (recordatorio)
+
+El usuario **sigue después** con la configuración manual. Si pregunta por deploy, producción, contacto o WhatsApp, recordá:
+
+1. **Upstash** (rate limit en Vercel): crear Redis en console.upstash.com → vars `UPSTASH_REDIS_REST_URL` y `UPSTASH_REDIS_REST_TOKEN` en Vercel → Redeploy → probar 6 envíos → 429. Guía: `docs/vercel-checklist.md`.
+2. **WhatsApp 24/7**: crear/aprobar plantilla Meta `auradev_nuevo_contacto` (Utility, es, body {{1}} {{2}} {{3}}) → vars `WHATSAPP_TEMPLATE_NAME` / `WHATSAPP_TEMPLATE_LANG` en Vercel → Redeploy. Guía: `docs/whatsapp-template.md`.
+
+No implementar estos pasos por el usuario (son dashboard Meta/Vercel). Solo guiar cuando lo retome.
