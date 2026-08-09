@@ -1,4 +1,4 @@
-import { urlWhatsApp } from '../config/contacto.js'
+import { Link } from 'react-router-dom'
 import './WhatsAppFloat.css'
 
 function IconWhatsApp() {
@@ -14,14 +14,12 @@ function IconWhatsApp() {
 
 export default function WhatsAppFloat() {
   return (
-    <a
-      href={urlWhatsApp()}
+    <Link
+      to="/whatsapp"
       className="whatsapp-float"
-      target="_blank"
-      rel="noreferrer"
       aria-label="Contactar por WhatsApp"
     >
       <IconWhatsApp />
-    </a>
+    </Link>
   )
 }

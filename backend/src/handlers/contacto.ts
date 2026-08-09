@@ -32,7 +32,9 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}, ms = 800
 async function notifyWhatsApp(datos: { nombre: string; email: string; mensaje: string }) {
   const token = process.env.WHATSAPP_TOKEN
   const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID
-  const to = process.env.WHATSAPP_TO || '5491178211489'
+  const to = (process.env.WHATSAPP_TO || '541178211489').replace(/\D/g, '')
+  const templateName = process.env.WHATSAPP_TEMPLATE_NAME?.trim()
+  const templateLang = process.env.WHATSAPP_TEMPLATE_LANG?.trim() || 'en_US'
 
   if (
     !token ||
@@ -43,38 +45,85 @@ async function notifyWhatsApp(datos: { nombre: string; email: string; mensaje: s
     return
   }
 
-  const body = [
-    'Nuevo contacto AuraDev',
-    '',
-    `Nombre: ${datos.nombre}`,
-    `Email: ${datos.email}`,
-    '',
-    `Mensaje: ${datos.mensaje}`,
-  ].join('\n')
-
   const url = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  }
+
+  // Meta: texto libre solo dentro de ventana 24h (el usuario debe escribir primero).
+  // Fuera de esa ventana hace falta una plantilla aprobada (como hello_world).
+  const safe = (value: string, max = 200) =>
+    String(value || '')
+      .replace(/[\r\n\t]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, max) || '-'
 
   try {
-    const res = await fetchWithTimeout(url, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        messaging_product: 'whatsapp',
-        recipient_type: 'individual',
-        to,
-        type: 'text',
-        text: { body: body.slice(0, 4000) },
-      }),
-    })
+    let res: Response
+
+    if (templateName && !templateName.includes('tu_template')) {
+      // Plantilla con variables {{1}} nombre {{2}} email {{3}} mensaje
+      res = await fetchWithTimeout(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          to,
+          type: 'template',
+          template: {
+            name: templateName,
+            language: { code: templateLang },
+            components: [
+              {
+                type: 'body',
+                parameters: [
+                  { type: 'text', text: safe(datos.nombre, 60) },
+                  { type: 'text', text: safe(datos.email, 80) },
+                  { type: 'text', text: safe(datos.mensaje, 500) },
+                ],
+              },
+            ],
+          },
+        }),
+      })
+    } else {
+      const body = [
+        'Nuevo contacto AuraDev',
+        '',
+        `Nombre: ${datos.nombre}`,
+        `Email: ${datos.email}`,
+        '',
+        `Mensaje: ${datos.mensaje}`,
+      ].join('\n')
+
+      res = await fetchWithTimeout(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          recipient_type: 'individual',
+          to,
+          type: 'text',
+          text: { body: body.slice(0, 4000), preview_url: false },
+        }),
+      })
+    }
 
     if (!res.ok) {
       const errBody = await res.text().catch(() => '')
       console.error('[AuraDev] WhatsApp Cloud API error:', res.status, errBody)
+      if (errBody.includes('131047') || errBody.includes('130472')) {
+        console.error(
+          '[AuraDev] Tip WhatsApp: el usuario debe responder al número de prueba (+1 555...) o usá una plantilla (WHATSAPP_TEMPLATE_NAME).'
+        )
+      }
     } else {
-      console.log('[AuraDev] Notificación WhatsApp (Cloud API) enviada')
+      console.log(
+        '[AuraDev] Notificación WhatsApp (Cloud API) enviada',
+        templateName && !templateName.includes('tu_template') ? `(template: ${templateName})` : '(texto libre)'
+      )
     }
   } catch (err) {
     console.error('[AuraDev] Error al enviar notificación a WhatsApp:', err)

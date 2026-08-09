@@ -17,6 +17,7 @@
     { "src": "/api/(.*)", "dest": "/api/$1.ts" },
     { "src": "/assets/(.*)", "dest": "/frontend/assets/$1" },
     { "src": "/proyectos/(.*)", "dest": "/frontend/index.html" },
+    { "src": "/whatsapp", "dest": "/frontend/index.html" },
     { "src": "/(.*)", "dest": "/frontend/$1" }
   ]
 }

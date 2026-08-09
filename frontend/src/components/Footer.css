@@ -30,7 +30,7 @@
   width: auto;
   object-fit: contain;
   display: block;
-  border-radius: 8px;
+  border-radius: 15%;
 }
 
 .footer__brand p {

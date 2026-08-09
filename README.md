@@ -150,7 +150,7 @@ VITE_WHATSAPP_DISPLAY=+54 9 11 7821-1489
 ```
 
 #### Foto AuraDev en la pantalla de wa.me
-WhatsApp muestra la **foto de perfil** de tu cuenta. Subí `frontend/src/img/AuraDev.jpg` desde el celular (WhatsApp / WhatsApp Business → Perfil).
+WhatsApp **no permite** personalizar `api.whatsapp.com`. En AuraDev, el botón flotante y los links pasan primero por `/whatsapp` (pantalla con logo). Además, subí el logo como **foto de perfil** en WhatsApp / WhatsApp Business para que se vea dentro del chat.
 
 ---
 

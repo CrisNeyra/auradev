@@ -33,7 +33,11 @@ export function allowedOrigins(): string[] {
 
 export function isOriginAllowed(origin: string | undefined): boolean {
   if (!origin) return true
-  return allowedOrigins().includes(origin)
+  if (allowedOrigins().includes(origin)) return true
+  // En desarrollo Vite puede usar 5173, 5174, etc. si el puerto está ocupado
+  if (/^http:\/\/localhost:\d+$/i.test(origin)) return true
+  if (/^http:\/\/127\.0\.0\.1:\d+$/i.test(origin)) return true
+  return false
 }
 
 /** Aplica headers CORS reflectivos (sin *). */

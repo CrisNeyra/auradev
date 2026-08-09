@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-self: start;
-  border-radius: 35%;
+  border-radius: 15%;
   overflow: hidden;
   transition: transform var(--transicion);
 }
@@ -37,7 +37,7 @@
   width: auto;
   object-fit: contain;
   display: block;
-  border-radius: 35%;
+  border-radius: 15%;
   transition: transform var(--transicion);
 }
 
@@ -67,14 +67,15 @@
 
 .navbar__links ul {
   display: flex;
-  gap: 30px;
+  gap: 22px;
 }
 
 .navbar__links a {
   font-weight: 500;
-  font-size: 0.97rem;
+  font-size: 0.9rem;
   position: relative;
   transition: color var(--transicion);
+  white-space: nowrap;
 }
 
 .navbar__links a::after {

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { z } from 'zod'
 import fondoContacto from '../img/contacto.jpg'
 import {
@@ -6,7 +7,6 @@ import {
   WHATSAPP_DISPLAY,
   REDES_HANDLE,
   REDES_URL,
-  urlWhatsApp,
 } from '../config/contacto.js'
 import Reveal from './Reveal.jsx'
 import './Contacto.css'
@@ -100,14 +100,9 @@ export default function Contacto() {
               <span className="contacto__icono">☏</span>
               <div>
                 <strong>WhatsApp</strong>
-                <a
-                  className="contacto__dato-valor"
-                  href={urlWhatsApp()}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <Link className="contacto__dato-valor" to="/whatsapp">
                   {WHATSAPP_DISPLAY}
-                </a>
+                </Link>
               </div>
             </li>
             <li>

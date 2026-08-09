@@ -3,6 +3,7 @@ import Hero from '../components/Hero.jsx'
 import Servicios from '../components/Servicios.jsx'
 import Portafolio from '../components/Portafolio.jsx'
 import QuienesSomos from '../components/QuienesSomos.jsx'
+import TrabajaConNosotros from '../components/TrabajaConNosotros.jsx'
 import Contacto from '../components/Contacto.jsx'
 import Footer from '../components/Footer.jsx'
 import WhatsAppFloat from '../components/WhatsAppFloat.jsx'
@@ -16,6 +17,7 @@ export default function Home() {
         <Servicios />
         <Portafolio />
         <QuienesSomos />
+        <TrabajaConNosotros />
         <Contacto />
       </main>
       <Footer />

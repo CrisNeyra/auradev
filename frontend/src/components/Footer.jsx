@@ -3,7 +3,6 @@ import logo from '../img/AuraDev.jpg'
 import {
   EMAIL,
   WHATSAPP_DISPLAY,
-  urlWhatsApp,
 } from '../config/contacto.js'
 import './Footer.css'
 
@@ -12,6 +11,7 @@ const enlaces = [
   { to: '/#servicios', label: 'Servicios' },
   { to: '/#portafolio', label: 'Portafolio' },
   { to: '/#nosotros', label: 'Quiénes Somos' },
+  { to: '/#trabaja', label: 'Trabajá con nosotros' },
   { to: '/#contacto', label: 'Contacto' },
 ]
 
@@ -50,9 +50,7 @@ export default function Footer() {
         <div className="footer__contacto">
           <h4>Contacto</h4>
           <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-          <a href={urlWhatsApp()} target="_blank" rel="noreferrer">
-            {WHATSAPP_DISPLAY}
-          </a>
+          <Link to="/whatsapp">{WHATSAPP_DISPLAY}</Link>
         </div>
       </div>
 

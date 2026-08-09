@@ -8,6 +8,7 @@ const enlaces = [
   { to: '/#servicios', label: 'Servicios' },
   { to: '/#portafolio', label: 'Portafolio' },
   { to: '/#nosotros', label: 'Quiénes Somos' },
+  { to: '/#trabaja', label: 'Trabajá con nosotros' },
   { to: '/#contacto', label: 'Contacto' },
 ]
 
