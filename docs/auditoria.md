@@ -28,7 +28,7 @@
 | Regresión | Mejor | Tests contacto (backend) + proyectos (frontend); CI en `.github/workflows/ci.yml` |
 | Credibilidad copy | OK | Hero `6 / Fullstack / Multi-canal`; sin skeleton fake; CTAs honestos |
 | Portafolio | OK | 6 proyectos; detalle con problema / stack / desafío |
-| Redes | OK en código | Default + `.env.example`: link [Vercel Projects](https://vercel.com/crisneyra13-projects); redeploy Vercel si solo cambiaste env en dashboard |
+| Redes | OK | Default código ignora `@auradev` / `#` legacy en Vercel; link Vercel Projects |
 | WhatsApp | Pendiente Meta | Código + guía plantilla; 24/7 cuando `auradev_nuevo_contacto` aprobada |
 | Documentación | OK | README sobrio, galería PNG, guías screenshots / WhatsApp / Vercel |
 | Deploy | OK demo | Monorepo Vercel; API TypeScript |

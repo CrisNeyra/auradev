@@ -11,19 +11,31 @@ export const WHATSAPP_MENSAJE =
   import.meta.env.VITE_WHATSAPP_MENSAJE ||
   'Hola AuraDev, quiero consultar por un proyecto.'
 
-export const REDES_HANDLE =
-  import.meta.env.VITE_REDES_HANDLE || 'Vercel Projects'
+const DEFAULT_REDES_URL = 'https://vercel.com/crisneyra13-projects'
+const DEFAULT_REDES_HANDLE = 'Vercel Projects'
 
-const redesUrlRaw = (
-  import.meta.env.VITE_REDES_URL ||
-  'https://vercel.com/crisneyra13-projects'
-).trim()
+function isUrlValida(url: string): boolean {
+  if (!url || url === '#') return false
+  return /^https?:\/\//i.test(url)
+}
 
-export const REDES_URL = redesUrlRaw
+function resolveRedesUrl(): string {
+  const env = (import.meta.env.VITE_REDES_URL || '').trim()
+  return isUrlValida(env) ? env : DEFAULT_REDES_URL
+}
 
+function resolveRedesHandle(): string {
+  const env = (import.meta.env.VITE_REDES_HANDLE || '').trim()
+  if (env && env !== '@auradev' && env !== '#') return env
+  return DEFAULT_REDES_HANDLE
+}
+
+export const REDES_URL = resolveRedesUrl()
+export const REDES_HANDLE = resolveRedesHandle()
+
+/** Siempre hay URL válida tras normalización (legacy # o @auradev ignorados). */
 export function hasRedesUrlValida(): boolean {
-  if (!redesUrlRaw || redesUrlRaw === '#') return false
-  return /^https?:\/\//i.test(redesUrlRaw)
+  return isUrlValida(REDES_URL)
 }
 
 export function urlWhatsApp(): string {
