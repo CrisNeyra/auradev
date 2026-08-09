@@ -4,7 +4,7 @@ import {
   getProyectoHref,
   hasUrlVivo,
   proyectos,
-} from './proyectos.js'
+} from './proyectos'
 
 describe('proyectos data helpers', () => {
   it('resuelve un proyecto por slug', () => {

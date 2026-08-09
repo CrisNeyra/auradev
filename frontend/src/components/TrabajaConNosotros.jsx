@@ -1,3 +1,4 @@
+import fondoTrabaja from '../img/trabaja-con-nosotros.jpg'
 import Reveal from './Reveal.jsx'
 import './TrabajaConNosotros.css'
 
@@ -31,8 +32,13 @@ const pilares = [
 
 export default function TrabajaConNosotros() {
   return (
-    <section id="trabaja" className="seccion seccion-alt trabaja">
-      <div className="contenedor">
+    <section id="trabaja" className="seccion trabaja">
+      <div
+        className="trabaja__bg"
+        aria-hidden="true"
+        style={{ backgroundImage: `url(${fondoTrabaja})` }}
+      />
+      <div className="contenedor trabaja__inner">
         <Reveal className="seccion-head trabaja__head">
           <span className="seccion-eyebrow">Trabajá con nosotros</span>
           <h2 className="seccion-titulo">

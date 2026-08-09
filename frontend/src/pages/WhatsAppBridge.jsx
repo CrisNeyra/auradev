@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import logo from '../img/AuraDev.jpg'
-import { urlWhatsApp, WHATSAPP_DISPLAY } from '../config/contacto.js'
+import { urlWhatsApp, WHATSAPP_DISPLAY } from '../config/contacto'
 import './WhatsAppBridge.css'
 
 export default function WhatsAppBridge() {

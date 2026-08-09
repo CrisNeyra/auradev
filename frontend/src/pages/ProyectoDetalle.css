@@ -78,6 +78,25 @@
   margin-bottom: 24px;
 }
 
+.proyecto-detalle__contexto {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.proyecto-detalle__bloque h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--negro);
+}
+
+.proyecto-detalle__bloque p {
+  color: var(--gris);
+  line-height: 1.65;
+  font-size: 0.98rem;
+}
+
 .proyecto-detalle__tags {
   display: flex;
   flex-wrap: wrap;

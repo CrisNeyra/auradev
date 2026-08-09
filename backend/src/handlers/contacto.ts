@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { db } from '../db/index.js'
 import { mensajes } from '../db/schema.js'
 import { enviarNotificacion, enviarConfirmacionCliente } from '../mailer.js'
-import { checkRateLimit, clientIp } from '../rateLimitMemory.js'
+import { checkRateLimit, clientIp } from '../rateLimit.js'
 import { logContactoBackup, logError } from '../utils/logger.js'
 
 const contactoSchema = z.object({
@@ -226,9 +226,27 @@ async function notifyWebhook(datos: { nombre: string; email: string; mensaje: st
   }
 }
 
-export async function handleContacto(req: any, res: any) {
+export async function runContactoNotifications(datos: {
+  nombre: string
+  email: string
+  mensaje: string
+}) {
+  await Promise.all([
+    enviarNotificacion(datos),
+    enviarConfirmacionCliente(datos),
+    notifyWebhook(datos),
+    notifyWhatsApp(datos),
+    notifyTelegram(datos),
+  ])
+}
+
+export async function handleContacto(
+  req: any,
+  res: any,
+  options?: { scheduleNotifications?: (promise: Promise<void>) => void }
+) {
   const ip = clientIp(req)
-  const { limited, remaining, resetAt } = checkRateLimit(`contacto:${ip}`)
+  const { limited, remaining, resetAt } = await checkRateLimit(`contacto:${ip}`)
   res.setHeader('X-RateLimit-Remaining', String(remaining))
   res.setHeader('X-RateLimit-Reset', String(Math.ceil(resetAt / 1000)))
   
@@ -276,14 +294,15 @@ export async function handleContacto(req: any, res: any) {
     logContactoBackup(datos) // Respaldo si no hay DB configurada
   }
 
-  // 2. Notificaciones (Asíncronas, no bloquean la respuesta al cliente)
-  Promise.all([
-    enviarNotificacion(datos),
-    enviarConfirmacionCliente(datos),
-    notifyWebhook(datos),
-    notifyWhatsApp(datos),
-    notifyTelegram(datos)
-  ]).catch(err => logError('NOTIFICATIONS_PROMISE', err))
+  const notifPromise = runContactoNotifications(datos).catch((err) =>
+    logError('NOTIFICATIONS_PROMISE', err)
+  )
+
+  if (options?.scheduleNotifications) {
+    options.scheduleNotifications(notifPromise)
+  } else {
+    void notifPromise
+  }
 
   // 3. Responder al cliente siempre con éxito (ya que respaldamos el dato)
   return res.status(201).json(responseData)

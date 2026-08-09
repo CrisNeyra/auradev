@@ -1,3 +1,45 @@
+.trabaja {
+  position: relative;
+  overflow: hidden;
+  background: var(--blanco);
+}
+
+.trabaja__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: var(--fondo-seccion-opacity);
+}
+
+.trabaja::before,
+.trabaja::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.trabaja::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--blanco), transparent);
+}
+
+.trabaja::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--blanco), transparent);
+}
+
+.trabaja__inner {
+  position: relative;
+  z-index: 2;
+}
+
 .trabaja__head {
   max-width: 640px;
 }

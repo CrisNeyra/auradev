@@ -4,16 +4,21 @@
   "private": true,
   "description": "AuraDev - Estudio de Desarrollo Digital. Monorepo con frontend (React + Vite) y backend (Express + PostgreSQL).",
   "scripts": {
-    "dev": "concurrently -n backend,frontend -c yellow,red \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:clean": "node scripts/kill-dev-ports.mjs",
+    "dev": "npm run dev:clean && concurrently -n backend,frontend -c yellow,red \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "npm --prefix backend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "db:migrate": "npm --prefix backend run db:migrate",
     "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
     "build": "npm --prefix frontend run build",
     "lint": "npm --prefix frontend run lint",
-    "test": "npm --prefix frontend run test"
+    "test": "npm --prefix frontend run test && npm --prefix backend run test",
+    "test:frontend": "npm --prefix frontend run test",
+    "test:backend": "npm --prefix backend run test",
+    "typecheck": "npm --prefix frontend run typecheck && npm --prefix backend run typecheck"
   },
   "dependencies": {
+    "@vercel/functions": "^2.0.0",
     "nodemailer": "^6.9.16",
     "pg": "^8.22.0"
   },

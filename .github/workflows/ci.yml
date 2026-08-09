@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm run install:all
+
+      - name: Lint frontend
+        run: npm --prefix frontend run lint
+
+      - name: Test frontend
+        run: npm --prefix frontend run test
+
+      - name: Test backend
+        run: npm --prefix backend run test
+
+      - name: Typecheck frontend
+        run: npm --prefix frontend run typecheck
+
+      - name: Typecheck backend
+        run: npm --prefix backend run typecheck

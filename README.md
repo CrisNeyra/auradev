@@ -1,175 +1,152 @@
-# AuraDev 🚀
+# AuraDev
 
 <p align="center">
-  <img src="docs/preview.png" alt="AuraDev - preview del sitio" width="800" />
+  <img src="docs/preview.png" alt="AuraDev - sitio corporativo" width="800" />
 </p>
 
-Sitio web oficial del estudio **AuraDev** — Especialistas en desarrollo digital a medida. Esta plataforma es un monorepo moderno que integra un frontend de alta performance con un backend robusto y escalable.
+Sitio web del estudio **AuraDev**: presencia corporativa, portafolio de 6 proyectos y formulario de contacto con persistencia en PostgreSQL y alertas al equipo (email, Slack, Telegram, WhatsApp).
 
 **Demo en vivo:** [auradev-eta.vercel.app](https://auradev-eta.vercel.app)
 
 ---
 
-## 💎 Características Principales (UX/UI Wow)
+## Problema que resuelve
 
-- **Performance Extrema:** Optimización de assets con WebP/AVIF y control inteligente de carga de videos.
-- **Interacciones Fluidas:** Micro-animaciones con `Framer Motion` para una sensación de software de alta gama.
-- **Skeleton Screens:** Pantallas de carga elegantes que eliminan saltos visuales.
-- **Contacto Infalible:** Sistema de capas (PostgreSQL + Email + Slack + Telegram + Backup en disco).
-- **Diseño Inmersivo:** Hero con video dinámico, logo interactivo y secciones con revelado progresivo.
+AuraDev necesita un sitio que presente servicios y proyectos reales, y un canal de contacto que no dependa solo del email manual: cada mensaje se valida, guarda en base de datos y notifica al equipo por varios canales.
 
-## 🛠️ Stack Tecnológico
+## Por qué este stack
+
+| Decisión | Razón |
+|----------|--------|
+| **React + Vite** | Build rápido, SPA con rutas para detalle de proyectos y bridge WhatsApp |
+| **Express + TypeScript (API)** | Handler de contacto tipado, fácil de testear y desplegar en Vercel |
+| **Drizzle + Neon** | PostgreSQL serverless, esquema versionado sin SQL manual disperso |
+| **Zod (front y back)** | Misma validación en cliente y servidor, mensajes de error coherentes |
+| **Vercel monorepo** | Frontend estático + `api/*.ts` en un solo deploy |
+
+## Desafíos técnicos
+
+- **Notificaciones en serverless:** las alertas no pueden perderse al cerrar la función; se usa `waitUntil` en Vercel.
+- **Rate limit distribuido:** límite en memoria no alcanza en serverless; Upstash Redis cuando está configurado.
+- **WhatsApp Cloud API:** texto libre solo dentro de ventana 24h; producción requiere plantilla Meta aprobada (`auradev_nuevo_contacto`).
+- **Accesibilidad:** cards de servicios operables por teclado, modal con focus trap y soporte de `prefers-reduced-motion`.
+
+---
+
+## Stack
 
 | Capa | Tecnología |
 |------|------------|
-| **Frontend** | React 18, Vite 6, TypeScript, Framer Motion, Zod |
-| **Backend** | Node.js (Express), TypeScript, Drizzle ORM, Zod |
-| **Base de Datos** | PostgreSQL (Neon - Serverless) |
-| **Seguridad** | Helmet, CORS dinámico, Rate Limiting, Honeypot Anti-spam |
-| **Comunicaciones** | Nodemailer (SMTP), Slack Webhooks, Telegram Bot API, WhatsApp Cloud API (Meta) |
-| **Deploy** | Vercel (Edge functions ready) |
+| Frontend | React 18, Vite 6, JavaScript (migración gradual a TypeScript en componentes críticos) |
+| API | Node.js, Express, TypeScript, Zod |
+| Base de datos | PostgreSQL (Neon) con Drizzle ORM |
+| Seguridad | Helmet, CORS, honeypot, rate limit (Upstash o memoria en local) |
+| Comunicaciones | SMTP, Slack webhook, Telegram Bot API, WhatsApp Cloud API |
+| Deploy | Vercel |
 
 ---
 
-## 📂 Estructura del Repositorio
+## Estructura
 
 ```
 AuraDev/
-├── frontend/                 # React + Vite (TypeScript)
-│   ├── src/
-│   │   ├── components/       # Componentes interactivos y Skeletons
-│   │   ├── config/           # Configuraciones de servicios y contacto
-│   │   └── data/             # Proyectos y lógica de negocio
-├── backend/                  # API Express (TypeScript)
-│   ├── src/
-│   │   ├── db/               # Esquema de Drizzle y cliente DB
-│   │   ├── handlers/         # Lógica de endpoints (Zod validation)
-│   │   └── utils/            # Logger y helpers de sistema
-├── logs/                     # Respaldo automático de contactos (Git ignored)
-└── vercel.json               # Configuración de deploy monorepo
+├── frontend/          # React + Vite
+├── backend/           # Express + handlers TypeScript
+├── api/               # Entradas serverless Vercel
+├── docs/              # Preview y guía de screenshots
+└── vercel.json
 ```
 
 ---
 
-## 🚀 Instalación y Configuración
+## Instalación local
 
-### Requisitos Previos
+### Requisitos
+
 - Node.js 20+
-- Cuenta en [Neon.tech](https://neon.tech)
-- Slack Webhook (opcional)
-- Telegram Bot (recomendado para alertas móviles)
+- PostgreSQL (recomendado: [Neon](https://neon.tech))
 
-### Pasos iniciales
-1. Clonar y preparar:
-   ```bash
-   git clone https://github.com/CrisNeyra/auradev.git
-   cd auradev
-   npm run install:all
-   ```
+### Pasos
 
-2. Configurar entorno:
-   - Copiar `.env.example` a `.env` tanto en `frontend/` como en `backend/`.
-   - Completar las variables necesarias (DATABASE_URL, WEBHOOK_URL).
+```bash
+git clone https://github.com/CrisNeyra/auradev.git
+cd auradev
+npm run install:all
+```
+
+Copiar variables de entorno:
+
+```bash
+cp frontend/.env.example frontend/.env
+cp backend/.env.example backend/.env
+```
+
+Completar al menos `DATABASE_URL` en `backend/.env` para guardar contactos.
 
 ### Desarrollo
-Para levantar el entorno completo (Frontend + Backend) simultáneamente:
+
 ```bash
 npm run dev
 ```
 
----
+- Frontend: `http://localhost:5173` (o 5174 si 5173 está ocupado)
+- Backend: `http://localhost:4000`
 
-## ⚙️ Configuración Senior
+El script `dev` libera puertos 4000/5173/5174 antes de arrancar. Si ves `EADDRINUSE`, ejecutá:
 
-### 1. Notificaciones Slack/Discord
-Para recibir alertas en tiempo real, configura la variable `WEBHOOK_URL` en tu `.env`:
-1. Crea una App en Slack (opción "Blank App").
-2. Activa "Incoming Webhooks".
-3. Genera una URL y pégala en el `.env`.
-
-### 2. Auto-respuesta al Cliente
-Para habilitar el envío automático de emails de agradecimiento a los clientes:
-- Asegúrate de configurar las variables `SMTP_*` en el `.env`.
-- Usa una **Contraseña de aplicación** de Google (no tu clave normal de Gmail).
-- Cambia `ENABLE_AUTO_REPLY=true`.
-
-### 3. Telegram (recomendado — gratis, sin Telegram Business)
-
-**No necesitás Telegram Business** para recibir notificaciones del formulario. Es solo para atención al cliente con inbox comercial.
-
-#### Opción A — Bot API oficial (recomendada)
-Todo desde la PC con [web.telegram.org](https://web.telegram.org):
-
-1. Iniciá sesión en Telegram Web (QR con el celular una sola vez).
-2. Buscá **@BotFather** → enviá `/newbot`.
-3. Nombre: `AuraDev Notificaciones` → username tipo `auradev_notify_bot`.
-4. Copiá el **token** → `TELEGRAM_BOT_TOKEN` en `backend/.env` y en Vercel.
-5. Abrí el chat con tu bot y enviá `/start`.
-6. En el navegador abrí: `https://api.telegram.org/bot<TOKEN>/getUpdates`
-7. Copiá el valor de `chat.id` → `TELEGRAM_CHAT_ID`.
-
-#### Opción B — CallMeBot (fallback)
-1. En Telegram Web buscá **@CallMeBot_txtbot** → `/start`.
-2. Copiá la API key → `TELEGRAM_API_KEY`.
-3. Si falla (como suele pasar con WhatsApp), usá la Opción A.
-
-Otras alternativas gratuitas: Discord webhook, Slack (ya soportado), [ntfy.sh](https://ntfy.sh).
-
-### 4. WhatsApp Cloud API (Meta) — notificaciones del formulario
-
-**No uses CallMeBot en WhatsApp:** es no oficial y Meta puede restringir tu cuenta.
-
-#### Notificaciones (formulario → tu celular)
-1. Entrá a [developers.facebook.com](https://developers.facebook.com/) (PC).
-2. **Create App** → tipo **Business**.
-3. Agregá el producto **WhatsApp** → abrí **API Setup**.
-4. Copiá:
-   - **Temporary access token** → `WHATSAPP_TOKEN`
-   - **Phone number ID** (número de prueba de Meta) → `WHATSAPP_PHONE_NUMBER_ID`
-5. En destinatarios de prueba agregá: `5491178211489`.
-6. Desde el panel de Meta enviá el template `hello_world` a tu número (abre ventana de 24h).
-7. En `backend/.env` y en Vercel:
-
-```env
-WHATSAPP_TOKEN=EAAB...
-WHATSAPP_PHONE_NUMBER_ID=123456789012345
-WHATSAPP_TO=5491178211489
+```bash
+npm run dev:clean
+npm run dev
 ```
 
-8. Reiniciá backend / Redeploy en Vercel.
-9. Probá el formulario de contacto.
+### Base de datos
 
-Para producción 24/7 (fuera de la ventana de 24h), creá un template aprobado tipo `auradev_nuevo_contacto` en WhatsApp Manager.
+Con `DATABASE_URL` configurado:
 
-#### Botón flotante (visitante → chat AuraDev)
-En `frontend/.env` (y Vercel):
-
-```env
-VITE_WHATSAPP_NUMERO=5491178211489
-VITE_WHATSAPP_DISPLAY=+54 9 11 7821-1489
+```bash
+npm run db:migrate
 ```
 
-#### Foto AuraDev en la pantalla de wa.me
-WhatsApp **no permite** personalizar `api.whatsapp.com`. En AuraDev, el botón flotante y los links pasan primero por `/whatsapp` (pantalla con logo). Además, subí el logo como **foto de perfil** en WhatsApp / WhatsApp Business para que se vea dentro del chat.
+Equivale a `drizzle-kit push` contra el esquema en `backend/src/db/schema.ts`.
+
+### Tests y typecheck
+
+```bash
+npm test
+npm run typecheck
+```
 
 ---
 
-## 📈 Roadmap de Calidad Senior
+## Capturas y documentación visual
 
-- [x] Migración total a **TypeScript** para seguridad de tipos.
-- [x] Implementación de **Zod** en ambos extremos para validación robusta.
-- [x] Integración de **Drizzle ORM** para una gestión de datos profesional.
-- [x] Sistema de **Backup en disco** para tolerancia a fallos.
-- [x] Optimización automática de imágenes en el pipeline de build.
-- [x] Notificaciones en tiempo real vía **Slack**.
-- [x] Notificaciones **Telegram Bot API** + fallback CallMeBot.
-- [x] Pulido UI para monitores grandes / escala 150% (logo, hero, modal).
-- [x] WhatsApp **Cloud API (Meta)** + botón de chat con número real.
----
-
-## ✉️ Contacto
-Estudio AuraDev — Transformamos ideas en código.
-[Visita nuestra web](https://auradev-eta.vercel.app/#contacto)
+Ver [docs/screenshots/README.md](docs/screenshots/README.md) para generar PNG/GIF del hero, servicios, portafolio, contacto y `/whatsapp`.
 
 ---
-© 2026 AuraDev — Innovación. Experiencia. Código.
+
+## Configuración de notificaciones
+
+Detalle en `backend/.env.example`:
+
+- **SMTP** — email al equipo y auto-respuesta al cliente (`ENABLE_AUTO_REPLY`)
+- **WEBHOOK_URL** — Slack o Discord
+- **TELEGRAM_BOT_TOKEN** + **TELEGRAM_CHAT_ID** — Bot API (recomendado)
+- **WHATSAPP_*** — Cloud API Meta; plantilla `auradev_nuevo_contacto` para 24/7 (ver [docs/whatsapp-template.md](docs/whatsapp-template.md))
+
+Variables del frontend (`VITE_*`) en `frontend/.env.example`.
+
+---
+
+## Portafolio
+
+6 proyectos con demo o repositorio enlazado. Cada detalle incluye problema, stack elegido y desafío técnico.
+
+---
+
+## Contacto
+
+[Formulario en la web](https://auradev-eta.vercel.app/#contacto) · hola@auradev.com
+
+---
+
+© AuraDev

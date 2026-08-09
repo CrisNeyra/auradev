@@ -1,7 +1,25 @@
+import { useEffect, useState } from 'react'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import animationData from '../assets/lottie/technology.json'
 
 export default function TechnologyAnimation() {
+  const [reduceMotion, setReduceMotion] = useState(false)
+
+  useEffect(() => {
+    setReduceMotion(
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    )
+  }, [])
+
+  if (reduceMotion) {
+    return (
+      <div
+        className="technology-animation technology-animation--static"
+        aria-hidden="true"
+      />
+    )
+  }
+
   return (
     <div className="technology-animation" aria-hidden="true">
       <DotLottieReact

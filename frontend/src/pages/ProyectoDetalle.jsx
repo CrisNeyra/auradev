@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar.jsx'
 import Footer from '../components/Footer.jsx'
 import WhatsAppFloat from '../components/WhatsAppFloat.jsx'
-import { getProyectoBySlug, hasUrlVivo } from '../data/proyectos.js'
+import { getProyectoBySlug, hasUrlVivo } from '../data/proyectos'
 import './ProyectoDetalle.css'
 
 export default function ProyectoDetalle() {
@@ -47,6 +47,21 @@ export default function ProyectoDetalle() {
           <div className="proyecto-detalle__content">
             <h1>{proyecto.nombre}</h1>
             <p className="proyecto-detalle__desc">{proyecto.descripcionLarga}</p>
+
+            <div className="proyecto-detalle__contexto">
+              <section className="proyecto-detalle__bloque">
+                <h2>Problema que resuelve</h2>
+                <p>{proyecto.problema}</p>
+              </section>
+              <section className="proyecto-detalle__bloque">
+                <h2>Por qué este stack</h2>
+                <p>{proyecto.porQueStack}</p>
+              </section>
+              <section className="proyecto-detalle__bloque">
+                <h2>Desafío técnico</h2>
+                <p>{proyecto.desafio}</p>
+              </section>
+            </div>
 
             <ul className="proyecto-detalle__tags">
               {proyecto.tags.map((tag) => (

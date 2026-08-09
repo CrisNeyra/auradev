@@ -201,6 +201,16 @@
   margin: 0 auto;
 }
 
+.technology-animation--static {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 212, 0, 0.35),
+    rgba(230, 51, 41, 0.15) 55%,
+    transparent 70%
+  );
+  border-radius: 50%;
+}
+
 .servicios__especiales-titulo {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 800;

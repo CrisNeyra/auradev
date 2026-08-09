@@ -1,3 +1,7 @@
+/**
+ * @deprecated Usar `npm run db:push` (drizzle-kit push) con DATABASE_URL en backend/.env.
+ * Este script legacy apuntaba a schema.sql y pool pg directo; el esquema actual está en src/db/schema.ts.
+ */
 import 'dotenv/config'
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'

@@ -158,6 +158,17 @@
   color: #1d7a45;
 }
 
+.campo-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--rojo);
+}
+
+.contacto__feedback:empty {
+  display: none;
+}
+
 .contacto__submit {
   width: 100%;
 }

@@ -3,7 +3,7 @@ import logo from '../img/AuraDev.jpg'
 import {
   EMAIL,
   WHATSAPP_DISPLAY,
-} from '../config/contacto.js'
+} from '../config/contacto'
 import './Footer.css'
 
 const enlaces = [
