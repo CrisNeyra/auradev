@@ -1,7 +1,7 @@
 # AuraDev
 
 <p align="center">
-  <img src="docs/preview.png" alt="AuraDev - sitio corporativo" width="800" />
+  <img src="docs/screenshots/preview.png" alt="AuraDev - sitio corporativo" width="800" />
 </p>
 
 Sitio web del estudio **AuraDev**: presencia corporativa, portafolio de 6 proyectos y formulario de contacto con persistencia en PostgreSQL y alertas al equipo (email, Slack, Telegram, WhatsApp).
@@ -33,11 +33,25 @@ AuraDev necesita un sitio que presente servicios y proyectos reales, y un canal 
 
 ---
 
+## Capturas
+
+| Hero / preview | Servicios |
+|:---:|:---:|
+| ![Preview](docs/screenshots/preview.png) | ![Servicios](docs/screenshots/servicios.png) |
+
+| Portafolio | Contacto |
+|:---:|:---:|
+| ![Portafolio](docs/screenshots/portafolio.png) | ![Contacto](docs/screenshots/contacto.png) |
+
+Más detalle en [docs/screenshots/README.md](docs/screenshots/README.md).
+
+---
+
 ## Stack
 
 | Capa | Tecnología |
 |------|------------|
-| Frontend | React 18, Vite 6, JavaScript (migración gradual a TypeScript en componentes críticos) |
+| Frontend | React 18, Vite 6, TypeScript en componentes críticos |
 | API | Node.js, Express, TypeScript, Zod |
 | Base de datos | PostgreSQL (Neon) con Drizzle ORM |
 | Seguridad | Helmet, CORS, honeypot, rate limit (Upstash o memoria en local) |
@@ -53,7 +67,7 @@ AuraDev/
 ├── frontend/          # React + Vite
 ├── backend/           # Express + handlers TypeScript
 ├── api/               # Entradas serverless Vercel
-├── docs/              # Preview y guía de screenshots
+├── docs/              # Preview, screenshots y guías
 └── vercel.json
 ```
 
@@ -118,9 +132,13 @@ npm run typecheck
 
 ---
 
-## Capturas y documentación visual
+## Deploy en Vercel
 
-Ver [docs/screenshots/README.md](docs/screenshots/README.md) para generar PNG/GIF del hero, servicios, portafolio, contacto y `/whatsapp`.
+Checklist de variables de entorno: [docs/vercel-checklist.md](docs/vercel-checklist.md)
+
+- Upstash (`UPSTASH_REDIS_REST_*`) para rate limit en producción
+- `VITE_REDES_URL` / `VITE_REDES_HANDLE` para link a [perfil Vercel](https://vercel.com/crisneyra13-projects)
+- WhatsApp plantilla: [docs/whatsapp-template.md](docs/whatsapp-template.md)
 
 ---
 
@@ -131,7 +149,7 @@ Detalle en `backend/.env.example`:
 - **SMTP** — email al equipo y auto-respuesta al cliente (`ENABLE_AUTO_REPLY`)
 - **WEBHOOK_URL** — Slack o Discord
 - **TELEGRAM_BOT_TOKEN** + **TELEGRAM_CHAT_ID** — Bot API (recomendado)
-- **WHATSAPP_*** — Cloud API Meta; plantilla `auradev_nuevo_contacto` para 24/7 (ver [docs/whatsapp-template.md](docs/whatsapp-template.md))
+- **WHATSAPP_*** — Cloud API Meta; plantilla `auradev_nuevo_contacto` para 24/7
 
 Variables del frontend (`VITE_*`) en `frontend/.env.example`.
 
@@ -145,7 +163,7 @@ Variables del frontend (`VITE_*`) en `frontend/.env.example`.
 
 ## Contacto
 
-[Formulario en la web](https://auradev-eta.vercel.app/#contacto) · hola@auradev.com
+[Formulario en la web](https://auradev-eta.vercel.app/#contacto) · hola@auradev.com · [Vercel Projects](https://vercel.com/crisneyra13-projects)
 
 ---
 

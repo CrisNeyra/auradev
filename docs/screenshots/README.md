@@ -1,47 +1,29 @@
 # Guía de capturas para el README
 
-Esta guía explica cómo generar y ubicar screenshots o GIFs del sitio AuraDev para documentación profesional en GitHub.
+Capturas actuales del sitio AuraDev para documentación en GitHub.
 
-## Qué capturar
+## Archivos en esta carpeta
 
-| Archivo sugerido | Contenido |
-|------------------|-----------|
-| `docs/preview.png` | Hero completo (ya usado en README principal) |
-| `docs/screenshots/servicios.png` | Grid de servicios con un modal abierto |
-| `docs/screenshots/portafolio.png` | Sección portafolio con las 6 cards |
-| `docs/screenshots/contacto.png` | Formulario de contacto (estado idle o éxito) |
-| `docs/screenshots/whatsapp-bridge.png` | Página `/whatsapp` con logo AuraDev |
-| `docs/screenshots/proyecto-detalle.gif` | Opcional: scroll en detalle de proyecto |
+| Archivo | Contenido |
+|---------|-----------|
+| `preview.png` | Hero / vista principal |
+| `servicios.png` | Sección servicios |
+| `portafolio.png` | Grid de 6 proyectos |
+| `contacto.png` | Formulario de contacto |
 
-## Herramientas en Windows
+El README principal también puede usar `docs/preview.png` en la raíz de `docs/` (misma imagen o copia del preview).
 
-1. **Captura estática:** `Win + Shift + S` (Snipping Tool) o [ShareX](https://getsharex.com/).
-2. **GIF corto:** [ScreenToGif](https://www.screentogif.com/) — exportar &lt; 2 MB.
-3. **Recorte:** mantener ancho ~1200–1400 px para README; GitHub escala a 800 px.
+## Cómo actualizar
 
-## Pasos
+1. Levantar el sitio: `npm run dev` → `http://localhost:5173`
+2. Capturar con **Win + Shift + S** (Snipping Tool) o [ShareX](https://getsharex.com/).
+3. Guardar en esta carpeta con el mismo nombre.
+4. Ancho recomendado: ~1200–1400 px; optimizar PNG (&lt; 500 KB si es posible).
 
-1. Levantar el sitio local: `npm run dev` → abrir `http://localhost:5173`.
-2. Navegar a la sección o ruta indicada.
-3. Capturar solo el contenido relevante (evitar barra del navegador si es posible).
-4. Guardar en `docs/screenshots/` con el nombre de la tabla.
-5. En `README.md`, enlazar:
+Para capturas de producción: [auradev-eta.vercel.app](https://auradev-eta.vercel.app)
+
+## Enlazar en README
 
 ```markdown
 ![Portafolio](docs/screenshots/portafolio.png)
 ```
-
-## Producción (demo en vivo)
-
-Para capturas idénticas a producción, usar la demo:
-
-[https://auradev-eta.vercel.app](https://auradev-eta.vercel.app)
-
-Mismos nombres de archivo; opcionalmente subfolder `docs/screenshots/prod/`.
-
-## Buenas prácticas
-
-- Formato PNG para UI estática; WebP o GIF para animaciones cortas.
-- No incluir datos personales reales en formularios de prueba.
-- Actualizar capturas cuando cambie el diseño de una sección importante.
-- Commitear imágenes optimizadas (&lt; 500 KB por PNG cuando sea posible).

@@ -12,9 +12,12 @@ export const WHATSAPP_MENSAJE =
   'Hola AuraDev, quiero consultar por un proyecto.'
 
 export const REDES_HANDLE =
-  import.meta.env.VITE_REDES_HANDLE || '@auradev'
+  import.meta.env.VITE_REDES_HANDLE || 'Vercel Projects'
 
-const redesUrlRaw = (import.meta.env.VITE_REDES_URL || '').trim()
+const redesUrlRaw = (
+  import.meta.env.VITE_REDES_URL ||
+  'https://vercel.com/crisneyra13-projects'
+).trim()
 
 export const REDES_URL = redesUrlRaw
 
