@@ -39,6 +39,10 @@
   opacity: 0.55;
 }
 
+.hero__poster {
+  opacity: 0.55;
+}
+
 /* Scrim para asegurar legibilidad del texto sobre el video */
 .hero__scrim {
   position: absolute;

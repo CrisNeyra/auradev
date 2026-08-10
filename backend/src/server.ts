@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import { isOriginAllowed } from './cors.js'
+import { getMetricsSnapshot } from './utils/metrics.js'
 import contactoRouter from './routes/contacto.js'
 
 const app = express()
@@ -29,7 +30,12 @@ app.use(
 app.use(express.json())
 
 app.get('/api/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok', servicio: 'AuraDev API' })
+  res.json({
+    status: 'ok',
+    servicio: 'AuraDev API',
+    metrics: getMetricsSnapshot(),
+    rateLimit: process.env.UPSTASH_REDIS_REST_URL ? 'upstash' : 'memory',
+  })
 })
 
 app.use('/api/contacto', contactoRouter)

@@ -5,9 +5,8 @@ import fondoContacto from '../img/contacto.jpg'
 import {
   EMAIL,
   WHATSAPP_DISPLAY,
-  REDES_HANDLE,
-  REDES_URL,
-  hasRedesUrlValida,
+  redesSociales,
+  hasRedesSociales,
 } from '../config/contacto'
 import Reveal from './Reveal.jsx'
 import './Contacto.css'
@@ -123,24 +122,27 @@ export default function Contacto() {
                 </Link>
               </div>
             </li>
-            <li>
-              <span className="contacto__icono">◍</span>
-              <div>
-                <strong>Redes</strong>
-                {hasRedesUrlValida() ? (
-                  <a
-                    className="contacto__dato-valor"
-                    href={REDES_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {REDES_HANDLE}
-                  </a>
-                ) : (
-                  <span className="contacto__dato-valor">{REDES_HANDLE}</span>
-                )}
-              </div>
-            </li>
+            {hasRedesSociales() && (
+              <li>
+                <span className="contacto__icono">◍</span>
+                <div>
+                  <strong>Redes</strong>
+                  <div className="contacto__redes">
+                    {redesSociales.map((red) => (
+                      <a
+                        key={red.id}
+                        className="contacto__dato-valor"
+                        href={red.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {red.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </li>
+            )}
           </ul>
         </Reveal>
 

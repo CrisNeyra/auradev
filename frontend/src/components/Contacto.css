@@ -88,6 +88,16 @@
   font-weight: 700;
 }
 
+.contacto__redes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.contacto__redes .contacto__dato-valor {
+  display: inline;
+}
+
 .contacto__datos a:hover {
   color: var(--rojo);
 }

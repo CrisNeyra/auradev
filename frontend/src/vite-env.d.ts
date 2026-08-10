@@ -6,8 +6,8 @@ interface ImportMetaEnv {
   readonly VITE_WHATSAPP_NUMERO?: string
   readonly VITE_WHATSAPP_DISPLAY?: string
   readonly VITE_WHATSAPP_MENSAJE?: string
-  readonly VITE_REDES_HANDLE?: string
-  readonly VITE_REDES_URL?: string
+  readonly VITE_LINKEDIN_URL?: string
+  readonly VITE_INSTAGRAM_URL?: string
 }
 
 interface ImportMeta {

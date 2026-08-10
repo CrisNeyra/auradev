@@ -20,7 +20,7 @@ El README principal también puede usar `docs/preview.png` en la raíz de `docs/
 3. Guardar en esta carpeta con el mismo nombre.
 4. Ancho recomendado: ~1200–1400 px; optimizar PNG (&lt; 500 KB si es posible).
 
-Para capturas de producción: [auradev-eta.vercel.app](https://auradev-eta.vercel.app)
+Para capturas de producción: [auradevdev.vercel.app](https://auradevdev.vercel.app)
 
 ## Enlazar en README
 

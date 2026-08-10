@@ -3,15 +3,15 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import animationData from '../assets/lottie/technology.json'
 
 export default function TechnologyAnimation() {
-  const [reduceMotion, setReduceMotion] = useState(false)
+  const [mode, setMode] = useState('loading')
 
   useEffect(() => {
-    setReduceMotion(
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    )
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const mobile = window.matchMedia('(max-width: 768px)').matches
+    setMode(reduce || mobile ? 'static' : 'lottie')
   }, [])
 
-  if (reduceMotion) {
+  if (mode !== 'lottie') {
     return (
       <div
         className="technology-animation technology-animation--static"

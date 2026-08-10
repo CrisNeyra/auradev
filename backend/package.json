@@ -7,8 +7,9 @@
   "scripts": {
     "start": "tsx src/server.ts",
     "dev": "tsx watch src/server.ts",
-    "db:migrate": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },

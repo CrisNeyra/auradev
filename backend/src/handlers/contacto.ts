@@ -3,7 +3,7 @@ import { db } from '../db/index.js'
 import { mensajes } from '../db/schema.js'
 import { enviarNotificacion, enviarConfirmacionCliente } from '../mailer.js'
 import { checkRateLimit, clientIp } from '../rateLimit.js'
-import { logContactoBackup, logError } from '../utils/logger.js'
+import { logContactoBackup, logError, logNotifResult } from '../utils/logger.js'
 
 const contactoSchema = z.object({
   nombre: z.string().min(1, 'El nombre es obligatorio.').max(200),
@@ -113,20 +113,27 @@ async function notifyWhatsApp(datos: { nombre: string; email: string; mensaje: s
 
     if (!res.ok) {
       const errBody = await res.text().catch(() => '')
-      console.error('[AuraDev] WhatsApp Cloud API error:', res.status, errBody)
+      logNotifResult('whatsapp', false, `${res.status} ${errBody}`)
       if (errBody.includes('131047') || errBody.includes('130472')) {
         console.error(
           '[AuraDev] Tip WhatsApp: el usuario debe responder al número de prueba (+1 555...) o usá una plantilla (WHATSAPP_TEMPLATE_NAME).'
         )
       }
-    } else {
-      console.log(
-        '[AuraDev] Notificación WhatsApp (Cloud API) enviada',
-        templateName && !templateName.includes('tu_template') ? `(template: ${templateName})` : '(texto libre)'
-      )
+      return
     }
+    logNotifResult(
+      'whatsapp',
+      true,
+      templateName && !templateName.includes('tu_template')
+        ? `template:${templateName}`
+        : 'texto_libre'
+    )
   } catch (err) {
-    console.error('[AuraDev] Error al enviar notificación a WhatsApp:', err)
+    logNotifResult(
+      'whatsapp',
+      false,
+      err instanceof Error ? err.message : String(err)
+    )
   }
 }
 
@@ -162,14 +169,18 @@ async function notifyTelegramBot(datos: { nombre: string; email: string; mensaje
 
     if (!res.ok) {
       const body = await res.text().catch(() => '')
-      console.error('[AuraDev] Telegram Bot API error:', res.status, body)
+      logNotifResult('telegram', false, `bot ${res.status} ${body}`)
       return false
     }
 
-    console.log('[AuraDev] Notificación Telegram (Bot API) enviada')
+    logNotifResult('telegram', true, 'bot_api')
     return true
   } catch (err) {
-    console.error('[AuraDev] Error Telegram Bot API:', err)
+    logNotifResult(
+      'telegram',
+      false,
+      err instanceof Error ? err.message : String(err)
+    )
     return false
   }
 }
@@ -186,13 +197,17 @@ async function notifyTelegramCallMeBot(datos: { nombre: string; email: string; m
   try {
     const res = await fetchWithTimeout(url)
     if (!res.ok) {
-      console.error('[AuraDev] CallMeBot (Telegram) respondió con error:', res.status)
+      logNotifResult('telegram', false, `callmebot ${res.status}`)
       return false
     }
-    console.log('[AuraDev] Notificación Telegram (CallMeBot) enviada')
+    logNotifResult('telegram', true, 'callmebot')
     return true
   } catch (err) {
-    console.error('[AuraDev] Error al enviar notificación a Telegram (CallMeBot):', err)
+    logNotifResult(
+      'telegram',
+      false,
+      err instanceof Error ? err.message : String(err)
+    )
     return false
   }
 }
@@ -200,7 +215,10 @@ async function notifyTelegramCallMeBot(datos: { nombre: string; email: string; m
 async function notifyTelegram(datos: { nombre: string; email: string; mensaje: string }) {
   const sent = await notifyTelegramBot(datos)
   if (!sent) {
-    await notifyTelegramCallMeBot(datos)
+    const fallback = await notifyTelegramCallMeBot(datos)
+    if (!fallback) {
+      // Ambos fallaron o no configurados: ya logueado por canal si hubo intento
+    }
   }
 }
 
@@ -213,16 +231,20 @@ async function notifyWebhook(datos: { nombre: string; email: string; mensaje: st
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        text: `🚀 *Nuevo mensaje de contacto en AuraDev*\n\n*Nombre:* ${datos.nombre}\n*Email:* ${datos.email}\n*Mensaje:* ${datos.mensaje}`,
+        text: `Nuevo mensaje de contacto en AuraDev\n\nNombre: ${datos.nombre}\nEmail: ${datos.email}\nMensaje: ${datos.mensaje}`,
       }),
     })
     if (!res.ok) {
-      console.error('[AuraDev] Webhook respondió con error:', res.status)
+      logNotifResult('webhook', false, String(res.status))
     } else {
-      console.log('[AuraDev] Notificación Webhook enviada')
+      logNotifResult('webhook', true)
     }
   } catch (err) {
-    console.error('[AuraDev] Error al enviar notificación al Webhook:', err)
+    logNotifResult(
+      'webhook',
+      false,
+      err instanceof Error ? err.message : String(err)
+    )
   }
 }
 

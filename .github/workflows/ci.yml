@@ -34,3 +34,11 @@ jobs:
 
       - name: Typecheck backend
         run: npm --prefix backend run typecheck
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E smoke
+        run: npm run test:e2e
+        env:
+          CI: true

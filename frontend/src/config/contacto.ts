@@ -11,31 +11,35 @@ export const WHATSAPP_MENSAJE =
   import.meta.env.VITE_WHATSAPP_MENSAJE ||
   'Hola AuraDev, quiero consultar por un proyecto.'
 
-const DEFAULT_REDES_URL = 'https://vercel.com/crisneyra13-projects'
-const DEFAULT_REDES_HANDLE = 'Vercel Projects'
-
 function isUrlValida(url: string): boolean {
   if (!url || url === '#') return false
   return /^https?:\/\//i.test(url)
 }
 
-function resolveRedesUrl(): string {
-  const env = (import.meta.env.VITE_REDES_URL || '').trim()
-  return isUrlValida(env) ? env : DEFAULT_REDES_URL
+function envUrl(key: string): string {
+  const raw = (import.meta.env[key] as string | undefined)?.trim() || ''
+  return isUrlValida(raw) ? raw : ''
 }
 
-function resolveRedesHandle(): string {
-  const env = (import.meta.env.VITE_REDES_HANDLE || '').trim()
-  if (env && env !== '@auradev' && env !== '#') return env
-  return DEFAULT_REDES_HANDLE
+export const LINKEDIN_URL = envUrl('VITE_LINKEDIN_URL')
+export const INSTAGRAM_URL = envUrl('VITE_INSTAGRAM_URL')
+
+export type RedSocial = {
+  id: 'linkedin' | 'instagram'
+  label: string
+  url: string
 }
 
-export const REDES_URL = resolveRedesUrl()
-export const REDES_HANDLE = resolveRedesHandle()
+/** Redes públicas (sin Vercel Projects). Solo incluye URLs http(s) válidas. */
+export const redesSociales: RedSocial[] = (
+  [
+    { id: 'linkedin' as const, label: 'LinkedIn', url: LINKEDIN_URL },
+    { id: 'instagram' as const, label: 'Instagram', url: INSTAGRAM_URL },
+  ] satisfies RedSocial[]
+).filter((r) => isUrlValida(r.url))
 
-/** Siempre hay URL válida tras normalización (legacy # o @auradev ignorados). */
-export function hasRedesUrlValida(): boolean {
-  return isUrlValida(REDES_URL)
+export function hasRedesSociales(): boolean {
+  return redesSociales.length > 0
 }
 
 export function urlWhatsApp(): string {

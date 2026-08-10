@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import { logNotifResult } from './utils/logger.js'
 
 let transporter: any = null
 
@@ -36,9 +37,7 @@ export async function enviarNotificacion({ nombre, email, mensaje }: Notificacio
   const t = getTransporter()
 
   if (!t) {
-    console.warn(
-      '[AuraDev] SMTP no configurado: se omite el envío de email de notificación.'
-    )
+    logNotifResult('smtp', false, 'smtp_not_configured')
     return false
   }
 
@@ -65,9 +64,14 @@ export async function enviarNotificacion({ nombre, email, mensaje }: Notificacio
     `,
     })
     console.log('[AuraDev] Email de notificación enviado a', destino)
+    logNotifResult('smtp', true)
     return true
   } catch (err) {
-    console.error('[AuraDev] Error al enviar email de notificación:', err)
+    logNotifResult(
+      'smtp',
+      false,
+      err instanceof Error ? err.message : String(err)
+    )
     return false
   }
 }
@@ -100,9 +104,14 @@ export async function enviarConfirmacionCliente({ nombre, email }: Pick<Notifica
         </div>
       `,
     })
+    logNotifResult('smtp_reply', true)
     return true
   } catch (err) {
-    console.error('[AuraDev] Error al enviar auto-respuesta al cliente:', err)
+    logNotifResult(
+      'smtp_reply',
+      false,
+      err instanceof Error ? err.message : String(err)
+    )
     return false
   }
 }

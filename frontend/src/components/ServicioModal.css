@@ -204,47 +204,78 @@
 
 @media (max-width: 900px) {
   .modal-wrapper {
-    padding: 12px;
+    padding: 8px;
     align-items: flex-end;
   }
 
   .modal-content {
-    max-height: 92vh;
-    border-radius: 20px 20px 12px 12px;
+    max-height: 94vh;
+    border-radius: 16px 16px 8px 8px;
   }
 
   .modal-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: 180px 1fr;
-    max-height: 92vh;
+    grid-template-rows: minmax(140px, 28vh) minmax(0, 1fr);
+    max-height: 94vh;
   }
 
   .modal-media {
-    min-height: 180px;
+    min-height: 140px;
+    max-height: 28vh;
+  }
+
+  .modal-main {
+    overflow: hidden;
+    max-height: calc(94vh - 140px);
   }
 
   .modal-intro {
-    padding: 20px 24px 4px;
-    padding-right: 52px;
+    padding: 16px 20px 4px;
+    padding-right: 48px;
+  }
+
+  .modal-titulo {
+    font-size: 1.35rem;
+  }
+
+  .modal-resumen {
+    font-size: 0.9rem;
   }
 
   .modal-body {
-    padding: 12px 24px;
+    padding: 8px 20px 12px;
+    -webkit-overflow-scrolling: touch;
   }
 
   .modal-puntos-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .modal-punto-card {
+    padding: 12px 14px;
   }
 
   .modal-footer {
     flex-direction: column;
     align-items: stretch;
     text-align: center;
-    padding: 16px 24px 20px;
+    padding: 12px 20px 16px;
   }
 
   .modal-footer .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .modal-layout {
+    grid-template-rows: 120px minmax(0, 1fr);
+  }
+
+  .modal-media {
+    min-height: 120px;
+    max-height: 120px;
   }
 }
 

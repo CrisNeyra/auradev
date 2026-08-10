@@ -16,36 +16,46 @@ const videos = [
 function prefiereMenosMovimiento() {
   return (
     typeof window !== 'undefined' &&
-    window.matchMedia &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
+function esViewportMovil() {
+  return (
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(max-width: 768px)').matches
   )
 }
 
 export default function Hero() {
   const [activo, setActivo] = useState(0)
+  const [permitirVideo, setPermitirVideo] = useState(false)
   const seccionRef = useRef<HTMLElement>(null)
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
   const activoRef = useRef(activo)
   const visibleRef = useRef(true)
 
   useEffect(() => {
+    // Poster estático en reduced-motion o móvil (LCP / datos)
+    setPermitirVideo(!prefiereMenosMovimiento() && !esViewportMovil())
+  }, [])
+
+  useEffect(() => {
     activoRef.current = activo
   }, [activo])
 
-  // Reproduce el video activo cuando cambia (si esta visible y se permite movimiento)
   useEffect(() => {
-    if (prefiereMenosMovimiento()) return
+    if (!permitirVideo) return
     const v = videoRefs.current[activo]
     if (v && visibleRef.current) {
       v.currentTime = 0
       const p = v.play()
       if (p && typeof p.catch === 'function') p.catch(() => {})
     }
-  }, [activo])
+  }, [activo, permitirVideo])
 
-  // Pausa los videos cuando el Hero no esta en pantalla
   useEffect(() => {
-    if (prefiereMenosMovimiento()) return
+    if (!permitirVideo) return
     const seccion = seccionRef.current
     if (!seccion || typeof IntersectionObserver === 'undefined') return
 
@@ -66,31 +76,40 @@ export default function Hero() {
 
     obs.observe(seccion)
     return () => obs.disconnect()
-  }, [])
+  }, [permitirVideo])
 
   const avanzar = () => setActivo((i) => (i === 0 ? 1 : 0))
 
   return (
     <section id="inicio" className="hero" ref={seccionRef}>
       <div className="hero__video-layer" aria-hidden="true">
-        {videos.map((v, i) => (
-          <video
-            key={i}
-            ref={(el) => {
-              videoRefs.current[i] = el
-            }}
-            className={`hero__video ${activo === i ? 'is-activo' : ''}`}
-            poster={v.poster}
-            muted
-            autoPlay={i === 0}
-            playsInline
-            preload={i === 0 ? 'auto' : 'metadata'}
-            onEnded={avanzar}
-          >
-            <source src={v.webm} type="video/webm" />
-            <source src={v.mp4} type="video/mp4" />
-          </video>
-        ))}
+        {permitirVideo ? (
+          videos.map((v, i) => (
+            <video
+              key={i}
+              ref={(el) => {
+                videoRefs.current[i] = el
+              }}
+              className={`hero__video ${activo === i ? 'is-activo' : ''}`}
+              poster={v.poster}
+              muted
+              autoPlay={false}
+              playsInline
+              preload={i === 0 ? 'metadata' : 'none'}
+              onEnded={avanzar}
+            >
+              <source src={v.webm} type="video/webm" />
+              <source src={v.mp4} type="video/mp4" />
+            </video>
+          ))
+        ) : (
+          <img
+            className="hero__video is-activo hero__poster"
+            src={videos[0].poster}
+            alt=""
+            fetchPriority="high"
+          />
+        )}
       </div>
 
       <div className="hero__scrim" aria-hidden="true" />
@@ -108,19 +127,19 @@ export default function Hero() {
             hacen crecer tu empresa.
           </p>
           <div className="hero__actions">
-            <motion.a 
-              href="#contacto" 
+            <motion.a
+              href="#contacto"
               className="btn btn-rojo"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={permitirVideo ? { scale: 1.05 } : undefined}
+              whileTap={permitirVideo ? { scale: 0.95 } : undefined}
             >
               Contáctanos
             </motion.a>
-            <motion.a 
-              href="#portafolio" 
+            <motion.a
+              href="#portafolio"
               className="btn btn-borde"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={permitirVideo ? { scale: 1.05 } : undefined}
+              whileTap={permitirVideo ? { scale: 0.95 } : undefined}
             >
               Ver proyectos
             </motion.a>
@@ -132,12 +151,14 @@ export default function Hero() {
               { n: 'Fullstack', t: 'React, API y base de datos' },
               { n: 'Multi-canal', t: 'Alertas al equipo' },
             ].map((s, i) => (
-              <motion.div 
-                key={i} 
+              <motion.div
+                key={i}
                 className="hero__stat"
-                initial={{ opacity: 0, y: 20 }}
+                initial={permitirVideo ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + i * 0.15 }}
+                transition={
+                  permitirVideo ? { delay: 0.6 + i * 0.15 } : { duration: 0 }
+                }
               >
                 <strong>{s.n}</strong>
                 <span>{s.t}</span>
