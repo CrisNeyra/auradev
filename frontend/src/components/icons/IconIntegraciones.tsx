@@ -1,5 +1,5 @@
 /** SVG decorativo: integraciones. */
-export default function IconIntegraciones({ className }) {
+export default function IconIntegraciones({ className }: { className?: string }) {
   return (
     <svg
       className={className}

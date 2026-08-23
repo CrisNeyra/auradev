@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ElementType,
+  type FormEventHandler,
+  type ReactNode,
+} from 'react'
 
 /**
  * Envuelve contenido y lo revela al entrar en viewport (IntersectionObserver).
@@ -13,8 +20,15 @@ export default function Reveal({
   delay = 0,
   className = '',
   ...rest
-}) {
-  const ref = useRef(null)
+}: {
+  children?: ReactNode
+  as?: ElementType
+  delay?: number
+  className?: string
+  onSubmit?: FormEventHandler<HTMLFormElement>
+  noValidate?: boolean
+} & Record<string, unknown>) {
+  const ref = useRef<HTMLElement | null>(null)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {

@@ -1,12 +1,12 @@
-import Navbar from '../components/Navbar.jsx'
+import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import Servicios from '../components/Servicios'
 import Portafolio from '../components/Portafolio'
-import QuienesSomos from '../components/QuienesSomos.jsx'
-import TrabajaConNosotros from '../components/TrabajaConNosotros.jsx'
+import QuienesSomos from '../components/QuienesSomos'
+import TrabajaConNosotros from '../components/TrabajaConNosotros'
 import Contacto from '../components/Contacto'
-import Footer from '../components/Footer.jsx'
-import WhatsAppFloat from '../components/WhatsAppFloat.jsx'
+import Footer from '../components/Footer'
+import WhatsAppFloat from '../components/WhatsAppFloat'
 
 /** Landing: navbar, secciones y footer. */
 export default function Home() {

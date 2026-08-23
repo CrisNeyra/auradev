@@ -4,7 +4,7 @@ import animationData from '../assets/lottie/technology.json'
 
 /** Animación Lottie de tecnología; fallback si el asset no carga. */
 export default function TechnologyAnimation() {
-  const [mode, setMode] = useState('loading')
+  const [mode, setMode] = useState<'loading' | 'static' | 'lottie'>('loading')
 
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches

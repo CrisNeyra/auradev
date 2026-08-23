@@ -8,7 +8,7 @@ import {
   redesSociales,
   hasRedesSociales,
 } from '../config/contacto'
-import Reveal from './Reveal.jsx'
+import Reveal from './Reveal'
 import './Contacto.css'
 
 const API_URL = (

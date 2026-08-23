@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import fondoPortafolio from '../img/portafolio.jpg'
 import { proyectos, getProyectoHref, type Proyecto } from '../data/proyectos'
-import Reveal from './Reveal.jsx'
+import Reveal from './Reveal'
 import './Portafolio.css'
 
 function ProyectoCard({ proyecto }: { proyecto: Proyecto }) {

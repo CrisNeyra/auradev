@@ -29,6 +29,7 @@ flowchart LR
 |------|-----|
 | `frontend/` | React + Vite |
 | `backend/` | Express, Drizzle, handler compartido |
+| `backend/src/notifications/` | Email, WhatsApp, Telegram y webhook (fuera del handler) |
 | `api/` | Entrypoints serverless (`contacto`, `health`) |
 | `docs/` | Arquitectura, DB, Vercel, WhatsApp |
 | `scripts/` | Puertos, verify rate-limit |
@@ -67,7 +68,7 @@ sequenceDiagram
     H->>H: Zod y honeypot
     H->>DB: insert mensajes
     H-->>UI: 201
-    H->>N: email WhatsApp Telegram webhook
+    H->>N: runContactoNotifications
   end
 ```
 

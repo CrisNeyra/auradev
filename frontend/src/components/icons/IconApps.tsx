@@ -1,5 +1,5 @@
 /** SVG decorativo: apps. */
-export default function IconApps({ className }) {
+export default function IconApps({ className }: { className?: string }) {
   return (
     <svg
       className={className}

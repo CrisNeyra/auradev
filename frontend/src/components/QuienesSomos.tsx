@@ -1,7 +1,7 @@
 import fondoNosotros from '../img/quienes-somos.jpg'
 import avatarEzequiel from '../img/socios/ezequiel.jpg'
 import avatarCristian from '../img/socios/cristian.jpg'
-import Reveal from './Reveal.jsx'
+import Reveal from './Reveal'
 import './QuienesSomos.css'
 
 const valores = [

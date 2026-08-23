@@ -1,5 +1,5 @@
 import fondoTrabaja from '../img/trabaja-con-nosotros.jpg'
-import Reveal from './Reveal.jsx'
+import Reveal from './Reveal'
 import './TrabajaConNosotros.css'
 
 const pilares = [

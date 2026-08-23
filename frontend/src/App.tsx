@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
-import ScrollToHash from './components/ScrollToHash.jsx'
-import Home from './pages/Home.jsx'
-import ProyectoDetalle from './pages/ProyectoDetalle.jsx'
-import WhatsAppBridge from './pages/WhatsAppBridge.jsx'
+import ScrollToHash from './components/ScrollToHash'
+import Home from './pages/Home'
+import ProyectoDetalle from './pages/ProyectoDetalle'
+import WhatsAppBridge from './pages/WhatsAppBridge'
 
 /** Rutas principales: home, puente WhatsApp y detalle de proyecto. */
 export default function App() {

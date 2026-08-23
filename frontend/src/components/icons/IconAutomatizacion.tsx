@@ -1,5 +1,5 @@
 /** SVG decorativo: automatización. */
-export default function IconAutomatizacion({ className }) {
+export default function IconAutomatizacion({ className }: { className?: string }) {
   return (
     <svg
       className={className}

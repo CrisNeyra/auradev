@@ -98,6 +98,7 @@ npm run verify:rate-limit   # contra producción (Upstash)
 | [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) | Cómo contribuir y CI |
 | [docs/vercel-checklist.md](docs/vercel-checklist.md) | Variables de producción |
 | [docs/auto-respuesta.md](docs/auto-respuesta.md) | Mail de confirmación, WhatsApp e Instagram |
+| [docs/FASES.md](docs/FASES.md) | Fases 1–2: SMTP y plantilla Meta (cuenta) |
 
 ---
 

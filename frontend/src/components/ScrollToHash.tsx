@@ -19,7 +19,7 @@ export default function ScrollToHash() {
       }
     }
 
-    let timeoutId
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
     const frame = requestAnimationFrame(() => {
       scroll()
       // Reintento corto por si el Home aún monta secciones pesadas

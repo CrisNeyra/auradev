@@ -32,13 +32,13 @@ Las `VITE_*` se embeben en el build: hay que redeployar si cambian.
 
 ## Rutas
 
-Definidas en [`src/App.jsx`](src/App.jsx). En Vercel, `/proyectos/*` y `/whatsapp` reescriben a `index.html`.
+Definidas en [`src/App.tsx`](src/App.tsx). En Vercel, `/proyectos/*` y `/whatsapp` reescriben a `index.html`.
 
 | Ruta | Página | Descripción |
 |------|--------|-------------|
-| `/` | `pages/Home.jsx` | Landing: navbar + secciones + footer |
-| `/whatsapp` | `pages/WhatsAppBridge.jsx` | Intersticial antes de `wa.me` |
-| `/proyectos/:slug` | `pages/ProyectoDetalle.jsx` | Caso del portafolio |
+| `/` | `pages/Home.tsx` | Landing: navbar + secciones + footer |
+| `/whatsapp` | `pages/WhatsAppBridge.tsx` | Intersticial antes de `wa.me` |
+| `/proyectos/:slug` | `pages/ProyectoDetalle.tsx` | Caso del portafolio |
 
 Hashes en home (`/#contacto`, etc.) los resuelve `ScrollToHash`.
 
@@ -58,4 +58,4 @@ Datos: [`src/data/proyectos.ts`](src/data/proyectos.ts), [`src/config/servicios.
 
 ## Tests
 
-Vitest + Testing Library (`src/components/*.test.tsx`, `App.test.jsx`). E2E Playwright desde la raíz (`npm run test:e2e`).
+Vitest + Testing Library (`src/components/*.test.tsx`, `App.test.tsx`). E2E Playwright desde la raíz (`npm run test:e2e`).

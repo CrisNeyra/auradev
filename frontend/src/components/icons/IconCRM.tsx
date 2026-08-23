@@ -1,5 +1,5 @@
 /** SVG decorativo: CRM. */
-export default function IconCRM({ className }) {
+export default function IconCRM({ className }: { className?: string }) {
   return (
     <svg
       className={className}

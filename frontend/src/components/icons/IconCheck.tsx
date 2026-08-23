@@ -1,5 +1,5 @@
 /** SVG decorativo: check. */
-export default function IconCheck({ className }) {
+export default function IconCheck({ className }: { className?: string }) {
   return (
     <svg
       className={className}

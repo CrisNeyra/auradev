@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
-import Navbar from '../components/Navbar.jsx'
-import Footer from '../components/Footer.jsx'
-import WhatsAppFloat from '../components/WhatsAppFloat.jsx'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import WhatsAppFloat from '../components/WhatsAppFloat'
 import { getProyectoBySlug, hasUrlVivo } from '../data/proyectos'
 import './ProyectoDetalle.css'
 

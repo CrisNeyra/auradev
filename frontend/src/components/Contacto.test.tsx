@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Contacto from './Contacto'
 
-vi.mock('./Reveal.jsx', () => ({
+vi.mock('./Reveal', () => ({
   default: ({
     children,
     as: Comp = 'div',

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import IconBullet from './icons/IconBullet.jsx'
+import IconBullet from './icons/IconBullet'
 import './ServicioModal.css'
 
 interface ServicioOpcion {

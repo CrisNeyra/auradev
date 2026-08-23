@@ -1,5 +1,5 @@
 /** SVG decorativo: soporte. */
-export default function IconSoporte({ className }) {
+export default function IconSoporte({ className }: { className?: string }) {
   return (
     <svg
       className={className}

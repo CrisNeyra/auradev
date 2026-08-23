@@ -47,7 +47,7 @@ Headers: `X-RateLimit-Remaining`, `X-RateLimit-Reset`.
 2. Validación Zod.
 3. Honeypot `website` no vacío → 201 sin DB ni notifs.
 4. Insert en `mensajes` si hay `DATABASE_URL`; si falla o no hay DB, backup en logs.
-5. Notificaciones en paralelo: SMTP, auto-reply opcional, webhook Slack/Discord, WhatsApp Cloud API, Telegram. En Vercel se extienden con `waitUntil`.
+5. `runContactoNotifications` (`src/notifications/`): SMTP, auto-reply, webhook, WhatsApp, Telegram. En Vercel se extienden con `waitUntil`.
 
 ## Schema (resumen)
 
