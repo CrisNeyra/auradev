@@ -1,3 +1,4 @@
+/** SVG decorativo: viñeta. */
 export default function IconBullet({ className }) {
   return (
     <svg

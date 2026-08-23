@@ -28,7 +28,10 @@ function getUpstashLimiter() {
 }
 
 /**
- * Rate limit distribuido (Upstash) con fallback en memoria para desarrollo local.
+ * Rate limit distribuido (Upstash sliding window) con fallback en memoria.
+ *
+ * @param key - Clave (p. ej. `contacto:${ip}`)
+ * @returns `limited`, `remaining` y `resetAt`
  */
 export async function checkRateLimit(
   key: string,
@@ -48,4 +51,5 @@ export async function checkRateLimit(
   return checkMemory(key, { windowMs, max })
 }
 
+/** Reexporta `clientIp` desde el módulo en memoria. */
 export { clientIp }

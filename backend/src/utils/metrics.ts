@@ -11,15 +11,18 @@ const counters = {
   contactoBackup: 0,
 }
 
+/** Incrementa el contador de notificaciones OK/fail de esta instancia. */
 export function trackNotif(channel: Channel, ok: boolean) {
   const bag = ok ? counters.notifOk : counters.notifFail
   bag[channel] = (bag[channel] || 0) + 1
 }
 
+/** Incrementa el contador de backups de contacto de esta instancia. */
 export function trackContactoBackup() {
   counters.contactoBackup += 1
 }
 
+/** Snapshot de contadores y uptime del proceso actual. */
 export function getMetricsSnapshot() {
   return {
     notifOk: { ...counters.notifOk },

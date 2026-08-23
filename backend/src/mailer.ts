@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer'
+import type { Transporter } from 'nodemailer'
 import { logNotifResult } from './utils/logger.js'
 
-let transporter: any = null
+let transporter: Transporter | null = null
 
 function getTransporter() {
   if (transporter) return transporter
@@ -33,6 +34,11 @@ interface NotificacionParams {
   mensaje: string;
 }
 
+/**
+ * Envía al estudio el aviso SMTP de un nuevo contacto.
+ *
+ * @returns `true` si se envió; `false` si SMTP no está configurado o falló
+ */
 export async function enviarNotificacion({ nombre, email, mensaje }: NotificacionParams): Promise<boolean> {
   const t = getTransporter()
 
@@ -63,7 +69,6 @@ export async function enviarNotificacion({ nombre, email, mensaje }: Notificacio
       </div>
     `,
     })
-    console.log('[AuraDev] Email de notificación enviado a', destino)
     logNotifResult('smtp', true)
     return true
   } catch (err) {
@@ -76,6 +81,11 @@ export async function enviarNotificacion({ nombre, email, mensaje }: Notificacio
   }
 }
 
+/**
+ * Auto-respuesta al cliente. Solo corre si `ENABLE_AUTO_REPLY=true` y hay SMTP.
+ *
+ * @returns `true` si se envió el correo de confirmación
+ */
 export async function enviarConfirmacionCliente({ nombre, email }: Pick<NotificacionParams, 'nombre' | 'email'>): Promise<boolean> {
   const t = getTransporter()
 
@@ -97,7 +107,7 @@ export async function enviarConfirmacionCliente({ nombre, email }: Pick<Notifica
           <p style="font-size: 18px; color: #666;">Gracias por contactarte con <strong>AuraDev</strong>.</p>
           <p style="color: #888; line-height: 1.6;">Hemos recibido tu mensaje correctamente. Nuestro equipo lo revisará y nos pondremos en contacto contigo a la brevedad para conversar sobre tu proyecto.</p>
           <div style="margin: 30px 0;">
-            <a href="https://auradev.com" style="background: #d32f2f; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">Visitar nuestro sitio</a>
+            <a href="https://auradevdev.vercel.app/" style="background: #c62828; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">Visitar nuestro sitio</a>
           </div>
           <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;" />
           <p style="font-size: 12px; color: #aaa;">AuraDev — Estudio de Desarrollo Digital</p>

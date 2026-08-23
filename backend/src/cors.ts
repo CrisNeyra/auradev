@@ -1,4 +1,6 @@
-function normalizeOrigin(value: any): string | null {
+import type { HttpRequestLike, HttpResponseLike } from './types/http.js'
+
+function normalizeOrigin(value: unknown): string | null {
   if (!value) return null
   const trimmed = String(value).trim().replace(/\/$/, '')
   if (!trimmed) return null
@@ -7,8 +9,10 @@ function normalizeOrigin(value: any): string | null {
 }
 
 /**
- * Orígenes permitidos: CORS_ORIGIN (coma-separado) + URLs de Vercel si existen.
- * Sin config, solo localhost:5173 (nunca *).
+ * Lista de orígenes CORS: `CORS_ORIGIN` (coma-separado) más URLs de Vercel si existen.
+ * Sin config, solo `http://localhost:5173` (nunca `*`).
+ *
+ * @returns Orígenes normalizados sin barra final
  */
 export function allowedOrigins(): string[] {
   const fromEnv = String(process.env.CORS_ORIGIN || '')
@@ -31,6 +35,13 @@ export function allowedOrigins(): string[] {
   return ['http://localhost:5173']
 }
 
+/**
+ * Indica si el `Origin` del browser puede reflejarse en CORS.
+ * Sin header se considera permitido (clientes no-browser).
+ * En local acepta cualquier puerto de localhost / 127.0.0.1.
+ *
+ * @param origin - Header Origin o `undefined`
+ */
 export function isOriginAllowed(origin: string | undefined): boolean {
   if (!origin) return true
   if (allowedOrigins().includes(origin)) return true
@@ -40,9 +51,18 @@ export function isOriginAllowed(origin: string | undefined): boolean {
   return false
 }
 
-/** Aplica headers CORS reflectivos (sin *). */
-export function applyCorsHeaders(req: any, res: any): void {
-  const origin = req.headers?.origin
+/**
+ * Aplica CORS reflectivo (Allow-Origin del request si está permitido) y métodos POST/OPTIONS.
+ *
+ * @param req - Request con `headers.origin`
+ * @param res - Response con `setHeader`
+ */
+export function applyCorsHeaders(
+  req: HttpRequestLike,
+  res: Pick<HttpResponseLike, 'setHeader'>
+): void {
+  const originHeader = req.headers?.origin
+  const origin = Array.isArray(originHeader) ? originHeader[0] : originHeader
   if (origin && isOriginAllowed(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin)
     res.setHeader('Vary', 'Origin')

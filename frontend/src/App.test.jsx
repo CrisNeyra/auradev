@@ -12,6 +12,9 @@ describe('App', () => {
     )
 
     expect(screen.getAllByAltText('AuraDev').length).toBeGreaterThan(0)
+    const skip = screen.getByRole('link', { name: /saltar al contenido/i })
+    expect(skip).toHaveAttribute('href', '#contenido')
+    expect(document.getElementById('contenido')).toBeTruthy()
     expect(
       screen.getByRole('heading', {
         name: /proyectos que hemos construido/i,

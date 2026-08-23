@@ -1,3 +1,4 @@
+/** SVG decorativo: integraciones. */
 export default function IconIntegraciones({ className }) {
   return (
     <svg

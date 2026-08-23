@@ -1,3 +1,4 @@
+/** SVG decorativo: soporte. */
 export default function IconSoporte({ className }) {
   return (
     <svg

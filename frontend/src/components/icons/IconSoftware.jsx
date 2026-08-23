@@ -1,3 +1,4 @@
+/** SVG decorativo: software. */
 export default function IconSoftware({ className }) {
   return (
     <svg

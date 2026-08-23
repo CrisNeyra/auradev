@@ -8,11 +8,12 @@ import Contacto from '../components/Contacto'
 import Footer from '../components/Footer.jsx'
 import WhatsAppFloat from '../components/WhatsAppFloat.jsx'
 
+/** Landing: navbar, secciones y footer. */
 export default function Home() {
   return (
     <>
       <Navbar />
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <Hero />
         <Servicios />
         <Portafolio />

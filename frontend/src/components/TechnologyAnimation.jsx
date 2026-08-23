@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import animationData from '../assets/lottie/technology.json'
 
+/** Animación Lottie de tecnología; fallback si el asset no carga. */
 export default function TechnologyAnimation() {
   const [mode, setMode] = useState('loading')
 

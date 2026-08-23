@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import type { ContactoResponse } from './contacto.js'
 import { handleContacto } from './contacto.js'
+import type { HttpRequestLike, HttpResponseLike } from '../types/http.js'
 
 const mockInsert = vi.fn()
 const mockCheckRateLimit = vi.fn()
@@ -33,24 +35,28 @@ vi.mock('../utils/logger.js', () => ({
 }))
 
 function createMocks(body: Record<string, unknown> = {}) {
-  const req = {
+  const req: HttpRequestLike = {
     body,
     headers: {},
     socket: { remoteAddress: '127.0.0.1' },
   }
 
-  const res = {
+  const res: HttpResponseLike<ContactoResponse> & {
+    statusCode: number
+    headers: Record<string, string>
+    body: unknown
+  } = {
     statusCode: 200,
-    headers: {} as Record<string, string>,
-    body: undefined as unknown,
-    setHeader(key: string, value: string) {
-      this.headers[key] = value
+    headers: {},
+    body: undefined,
+    setHeader(key: string, value: string | number | readonly string[]) {
+      this.headers[key] = String(value)
     },
     status(code: number) {
       this.statusCode = code
       return this
     },
-    json(data: unknown) {
+    json(data: ContactoResponse) {
       this.body = data
       return this
     },

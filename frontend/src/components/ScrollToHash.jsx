@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
+/** Al cambiar de ruta, scrollea al hash o al tope. */
 export default function ScrollToHash() {
   const { pathname, hash } = useLocation()
 

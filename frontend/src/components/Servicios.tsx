@@ -22,6 +22,9 @@ interface Servicio {
   opciones: ServicioOpcion[]
 }
 
+/**
+ * Sección de servicios: cards, modal de detalle y animación Lottie.
+ */
 export default function Servicios() {
   const [modalOpen, setModalOpen] = useState(false)
   const [servicioSeleccionado, setServicioSeleccionado] = useState<Servicio | null>(null)

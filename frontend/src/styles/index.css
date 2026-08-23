@@ -3,7 +3,8 @@
   --negro: #0a0a0a;
   --negro-suave: #1a1a1a;
   --amarillo: #ffd400;
-  --rojo: #e63329;
+  --rojo: #c62828;
+  --rojo-texto: #b71c1c;
   --gris: #6b6b6b;
   --gris-claro: #f4f4f4;
   --borde: #ececec;
@@ -107,7 +108,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--rojo);
+  color: var(--rojo-texto);
   margin-bottom: 16px;
 }
 
@@ -159,11 +160,11 @@ h3 {
 .btn-rojo {
   background: var(--rojo);
   color: var(--blanco);
-  box-shadow: 0 8px 24px rgba(230, 51, 41, 0.28);
+  box-shadow: 0 8px 24px rgba(198, 40, 40, 0.28);
 }
 
 .btn-rojo:hover {
-  box-shadow: 0 12px 30px rgba(230, 51, 41, 0.38);
+  box-shadow: 0 12px 30px rgba(198, 40, 40, 0.38);
 }
 
 .btn-amarillo {
@@ -188,6 +189,33 @@ h3 {
 .btn-borde:hover {
   background: var(--negro);
   color: var(--blanco);
+}
+
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.skip-link:focus-visible {
+  outline: 2px solid var(--negro);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 200;
+  padding: 10px 16px;
+  background: var(--negro);
+  color: var(--blanco);
+  font-weight: 700;
+  border-radius: 8px;
+  transform: translateY(-150%);
+  transition: transform 0.15s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: none;
 }
 
 @media (max-width: 768px) {

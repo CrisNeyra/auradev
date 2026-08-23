@@ -36,6 +36,9 @@ function ProyectoCard({ proyecto }: { proyecto: Proyecto }) {
   )
 }
 
+/**
+ * Grilla de casos del portafolio con enlace a detalle.
+ */
 export default function Portafolio() {
   return (
     <section id="portafolio" className="seccion seccion-alt portafolio">

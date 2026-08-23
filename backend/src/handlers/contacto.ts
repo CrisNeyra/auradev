@@ -3,14 +3,25 @@ import { db } from '../db/index.js'
 import { mensajes } from '../db/schema.js'
 import { enviarNotificacion, enviarConfirmacionCliente } from '../mailer.js'
 import { checkRateLimit, clientIp } from '../rateLimit.js'
+import type { HttpRequestLike, HttpResponseLike } from '../types/http.js'
+import { logger } from '../utils/log.js'
 import { logContactoBackup, logError, logNotifResult } from '../utils/logger.js'
 
-const contactoSchema = z.object({
+/** Validación Zod del body de contacto (`website` es honeypot opcional). */
+export const contactoSchema = z.object({
   nombre: z.string().min(1, 'El nombre es obligatorio.').max(200),
   email: z.string().email('El email no es válido.').max(200),
   mensaje: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres.').max(5000),
   website: z.string().optional(),
 })
+
+/** Body válido de POST /api/contacto. */
+export type ContactoPayload = z.infer<typeof contactoSchema>
+/** Respuesta 201 tras aceptar el mensaje. */
+export type ContactoSuccess = { ok: true; id?: number; creado_en?: Date | string }
+/** Respuesta de error de validación, método o rate limit. */
+export type ContactoError = { error: string }
+export type ContactoResponse = ContactoSuccess | ContactoError
 
 const PLACEHOLDER_REGEX = /^(pending|change_me|todo)$/i
 
@@ -115,8 +126,9 @@ async function notifyWhatsApp(datos: { nombre: string; email: string; mensaje: s
       const errBody = await res.text().catch(() => '')
       logNotifResult('whatsapp', false, `${res.status} ${errBody}`)
       if (errBody.includes('131047') || errBody.includes('130472')) {
-        console.error(
-          '[AuraDev] Tip WhatsApp: el usuario debe responder al número de prueba (+1 555...) o usá una plantilla (WHATSAPP_TEMPLATE_NAME).'
+        logger.warn(
+          { channel: 'whatsapp', code: 'outside_window' },
+          'El usuario debe responder al número de prueba o usá WHATSAPP_TEMPLATE_NAME'
         )
       }
       return
@@ -248,6 +260,12 @@ async function notifyWebhook(datos: { nombre: string; email: string; mensaje: st
   }
 }
 
+/**
+ * Dispara notificaciones en paralelo (SMTP, confirmación, webhook, WhatsApp, Telegram).
+ * Los fallos de cada canal se registran; no se relanzan al cliente HTTP.
+ *
+ * @param datos - Nombre, email y mensaje ya recortados
+ */
 export async function runContactoNotifications(datos: {
   nombre: string
   email: string
@@ -262,9 +280,23 @@ export async function runContactoNotifications(datos: {
   ])
 }
 
+/**
+ * Procesa POST de contacto: rate limit, validación Zod, honeypot,
+ * persistencia (o backup) y notificaciones asíncronas.
+ *
+ * Responde 429 (límite), 400 (validación) o 201 (`{ ok: true, ... }`).
+ * No lanza por datos inválidos.
+ *
+ * @param req - Request HTTP (body sin validar hasta Zod)
+ * @param res - Response tipada como ContactoResponse
+ * @param options.scheduleNotifications - En Vercel, pasar `waitUntil`
+ * @example
+ * // POST /api/contacto
+ * // { "nombre": "Juan", "email": "juan@example.com", "mensaje": "..." }
+ */
 export async function handleContacto(
-  req: any,
-  res: any,
+  req: HttpRequestLike,
+  res: HttpResponseLike<ContactoResponse>,
   options?: { scheduleNotifications?: (promise: Promise<void>) => void }
 ) {
   const ip = clientIp(req)
@@ -296,7 +328,7 @@ export async function handleContacto(
     mensaje: mensaje.trim(),
   }
 
-  let responseData: any = { ok: true }
+  let responseData: ContactoSuccess = { ok: true }
 
   // 1. Intentar Guardar en DB
   const isDbConfigured = !missing(process.env.DATABASE_URL)

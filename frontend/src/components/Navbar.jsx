@@ -12,6 +12,7 @@ const enlaces = [
   { to: '/#contacto', label: 'Contacto' },
 ]
 
+/** Navegación ancla + menú móvil; estilo al hacer scroll. */
 export default function Navbar() {
   const [abierto, setAbierto] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -26,7 +27,11 @@ export default function Navbar() {
   const cerrar = () => setAbierto(false)
 
   return (
-    <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
+    <>
+      <a className="skip-link" href="#contenido">
+        Saltar al contenido
+      </a>
+      <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="contenedor navbar__inner">
         <Link to="/#inicio" className="navbar__logo" onClick={cerrar}>
           <img
@@ -89,5 +94,6 @@ export default function Navbar() {
         </nav>
       </div>
     </header>
+    </>
   )
 }

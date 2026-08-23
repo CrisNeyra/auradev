@@ -5,6 +5,7 @@ import imgModoZen from '../img/portafolio/modo-zen.jpg'
 import imgCrowforza from '../img/portafolio/crowforza.jpg'
 import imgLaxmar from '../img/portafolio/laxmar.jpg'
 
+/** Caso de portafolio (slug, copy, imagen y URL demo o repo). */
 export interface Proyecto {
   slug: string
   nombre: string
@@ -19,6 +20,7 @@ export interface Proyecto {
   url: string
 }
 
+/** Casos publicados en el sitio. */
 export const proyectos: Proyecto[] = [
   {
     slug: 'portfolio-cristian',
@@ -130,14 +132,17 @@ export const proyectos: Proyecto[] = [
   },
 ]
 
+/** Busca un proyecto por `slug` de la URL. */
 export function getProyectoBySlug(slug: string | undefined): Proyecto | undefined {
   return proyectos.find((p) => p.slug === slug)
 }
 
+/** Ruta interna de detalle: `/proyectos/:slug`. */
 export function getProyectoHref(proyecto: Proyecto): string {
   return `/proyectos/${proyecto.slug}`
 }
 
+/** `true` si `url` es un enlace http(s) vivo (no repo placeholder vacío). */
 export function hasUrlVivo(proyecto: Proyecto): boolean {
   return Boolean(proyecto.url && /^https?:\/\//i.test(proyecto.url))
 }

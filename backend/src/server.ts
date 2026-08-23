@@ -3,17 +3,21 @@ import express, { Request, Response } from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import { isOriginAllowed } from './cors.js'
+import { loadEnv } from './env.js'
+import { logger } from './utils/log.js'
 import { getMetricsSnapshot } from './utils/metrics.js'
 import contactoRouter from './routes/contacto.js'
 
-const app = express()
-const PORT = process.env.PORT || 4000
-
-if (!process.env.DATABASE_URL) {
-  console.warn(
-    '[AuraDev] Advertencia: DATABASE_URL no está definida en .env. El guardado de mensajes fallará hasta configurarla.'
+const env = loadEnv()
+if (!env.DATABASE_URL) {
+  logger.warn(
+    { missing: 'DATABASE_URL' },
+    'DATABASE_URL no definida; el insert de mensajes fallará hasta configurarla'
   )
 }
+
+const app = express()
+const PORT = env.PORT || process.env.PORT || 4000
 
 app.use(helmet())
 app.use(
@@ -45,5 +49,8 @@ app.use((_req: Request, res: Response) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`[AuraDev] API escuchando en http://localhost:${PORT}`)
+  logger.info(
+    { port: Number(PORT), env: process.env.NODE_ENV ?? 'development' },
+    'API started'
+  )
 })

@@ -12,6 +12,7 @@ function IconWhatsApp() {
   )
 }
 
+/** Botón flotante hacia `/whatsapp`. */
 export default function WhatsAppFloat() {
   return (
     <Link

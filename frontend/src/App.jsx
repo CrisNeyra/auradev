@@ -4,6 +4,7 @@ import Home from './pages/Home.jsx'
 import ProyectoDetalle from './pages/ProyectoDetalle.jsx'
 import WhatsAppBridge from './pages/WhatsAppBridge.jsx'
 
+/** Rutas principales: home, puente WhatsApp y detalle de proyecto. */
 export default function App() {
   return (
     <>

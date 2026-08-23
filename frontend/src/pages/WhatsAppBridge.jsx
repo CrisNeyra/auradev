@@ -3,9 +3,14 @@ import logo from '../img/AuraDev.jpg'
 import { urlWhatsApp, WHATSAPP_DISPLAY } from '../config/contacto'
 import './WhatsAppBridge.css'
 
+/** Intersticial antes de abrir WhatsApp (`wa.me`). */
 export default function WhatsAppBridge() {
   return (
-    <main className="wa-bridge">
+    <>
+      <a className="skip-link" href="#contenido">
+        Saltar al contenido
+      </a>
+      <main id="contenido" tabIndex={-1} className="wa-bridge">
       <div className="wa-bridge__card">
         <img
           src={logo}
@@ -33,5 +38,6 @@ export default function WhatsAppBridge() {
         </Link>
       </div>
     </main>
+    </>
   )
 }

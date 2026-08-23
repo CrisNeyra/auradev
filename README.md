@@ -87,12 +87,27 @@ npm run verify:rate-limit   # contra producción (Upstash)
 
 ---
 
+## Documentación
+
+| Documento | Contenido |
+|-----------|-----------|
+| [frontend/README.md](frontend/README.md) | Páginas, componentes y scripts Vite |
+| [backend/README.md](backend/README.md) | Endpoints, env y schema |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Diagrama del monorepo y decisiones |
+| [docs/DATABASE.md](docs/DATABASE.md) | Tabla `mensajes` y migraciones Drizzle |
+| [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) | Cómo contribuir y CI |
+| [docs/vercel-checklist.md](docs/vercel-checklist.md) | Variables de producción |
+| [docs/auto-respuesta.md](docs/auto-respuesta.md) | Mail de confirmación, WhatsApp e Instagram |
+
+---
+
 ## Deploy
 
 Checklist: [docs/vercel-checklist.md](docs/vercel-checklist.md)
 
 - Upstash, LinkedIn/Instagram (`VITE_LINKEDIN_URL`, `VITE_INSTAGRAM_URL`)
 - WhatsApp plantilla: [docs/whatsapp-template.md](docs/whatsapp-template.md)
+- Auto-respuesta al cliente: [docs/auto-respuesta.md](docs/auto-respuesta.md)
 
 ---
 

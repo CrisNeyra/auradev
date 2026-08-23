@@ -147,7 +147,7 @@
 .campo textarea:focus {
   outline: none;
   border-color: var(--rojo);
-  box-shadow: 0 0 0 3px rgba(230, 51, 41, 0.12);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.12);
 }
 
 .form-msg {
@@ -159,8 +159,8 @@
 }
 
 .form-msg--error {
-  background: rgba(230, 51, 41, 0.1);
-  color: var(--rojo);
+  background: rgba(183, 28, 28, 0.1);
+  color: var(--rojo-texto);
 }
 
 .form-msg--ok {
@@ -172,7 +172,7 @@
   display: block;
   margin-top: 6px;
   font-size: 0.85rem;
-  color: var(--rojo);
+  color: var(--rojo-texto);
 }
 
 .contacto__feedback:empty {

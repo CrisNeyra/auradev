@@ -5,6 +5,7 @@ import WhatsAppFloat from '../components/WhatsAppFloat.jsx'
 import { getProyectoBySlug, hasUrlVivo } from '../data/proyectos'
 import './ProyectoDetalle.css'
 
+/** Página de caso: copy, tags y CTA si hay URL viva. */
 export default function ProyectoDetalle() {
   const { slug } = useParams()
   const proyecto = getProyectoBySlug(slug)
@@ -13,7 +14,11 @@ export default function ProyectoDetalle() {
     return (
       <>
         <Navbar />
-        <main className="proyecto-detalle proyecto-detalle--404">
+        <main
+          id="contenido"
+          tabIndex={-1}
+          className="proyecto-detalle proyecto-detalle--404"
+        >
           <div className="contenedor">
             <h1>Proyecto no encontrado</h1>
             <p>El proyecto que buscás no existe o fue movido.</p>
@@ -30,7 +35,7 @@ export default function ProyectoDetalle() {
   return (
     <>
       <Navbar />
-      <main className="proyecto-detalle">
+      <main id="contenido" tabIndex={-1} className="proyecto-detalle">
         <div className="contenedor proyecto-detalle__inner">
           <Link to="/#portafolio" className="proyecto-detalle__back">
             ← Volver al portafolio

@@ -15,6 +15,7 @@ const enlaces = [
   { to: '/#contacto', label: 'Contacto' },
 ]
 
+/** Pie con logo, anclas y datos de contacto. */
 export default function Footer() {
   const anio = new Date().getFullYear()
 

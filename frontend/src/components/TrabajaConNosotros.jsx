@@ -30,6 +30,7 @@ const pilares = [
   },
 ]
 
+/** Sección de cultura / “Trabajá con nosotros”. */
 export default function TrabajaConNosotros() {
   return (
     <section id="trabaja" className="seccion trabaja">

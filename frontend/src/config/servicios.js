@@ -5,6 +5,7 @@ import imgCrm from '../img/servicios/crm.jpg'
 import imgIntegraciones from '../img/servicios/integraciones.jpg'
 import imgSoporte from '../img/servicios/soporte.jpg'
 
+/** Catálogo de servicios del sitio (modales y cards). */
 export const servicios = [
   {
     id: 'software',
@@ -182,6 +183,7 @@ export const servicios = [
   },
 ]
 
+/** Bloque extra de “proyectos especiales” en la sección servicios. */
 export const proyectosEspeciales = {
   titulo: 'Integración de proyectos especiales',
   descripcion:

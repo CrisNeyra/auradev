@@ -25,6 +25,9 @@ const contactoSchema = z.object({
 
 const estadoInicial = { nombre: '', email: '', mensaje: '', website: '' }
 
+/**
+ * Sección de contacto: validación Zod, honeypot y POST a `/api/contacto`.
+ */
 export default function Contacto() {
   const [form, setForm] = useState(estadoInicial)
   const [estado, setEstado] = useState('idle') // idle | enviando | ok | error

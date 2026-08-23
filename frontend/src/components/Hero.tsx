@@ -27,6 +27,9 @@ function esViewportMovil() {
   )
 }
 
+/**
+ * Hero de inicio: videos en loop, respeta reduced-motion y viewport móvil.
+ */
 export default function Hero() {
   const [activo, setActivo] = useState(0)
   const [permitirVideo, setPermitirVideo] = useState(false)

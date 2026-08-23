@@ -1,3 +1,4 @@
+/** SVG decorativo: automatización. */
 export default function IconAutomatizacion({ className }) {
   return (
     <svg

@@ -1,3 +1,4 @@
+/** SVG decorativo: apps. */
 export default function IconApps({ className }) {
   return (
     <svg

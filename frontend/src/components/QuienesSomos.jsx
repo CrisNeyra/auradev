@@ -32,6 +32,7 @@ const socios = [
   },
 ]
 
+/** Equipo, valores y copy de “Quiénes somos”. */
 export default function QuienesSomos() {
   return (
     <section id="nosotros" className="seccion nosotros">

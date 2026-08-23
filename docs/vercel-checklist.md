@@ -39,6 +39,25 @@ Ver [whatsapp-template.md](whatsapp-template.md).
 
 ---
 
+## 4. SMTP y auto-reply del formulario
+
+El visitante recibe confirmación solo si hay SMTP **y** `ENABLE_AUTO_REPLY=true`.
+
+| Variable | Ejemplo |
+|----------|---------|
+| `SMTP_HOST` | `smtp.gmail.com` |
+| `SMTP_PORT` | `587` |
+| `SMTP_SECURE` | `false` |
+| `SMTP_USER` | `hola@auradev.com` |
+| `SMTP_PASS` | Contraseña de aplicación Google (no la clave de la cuenta) |
+| `MAIL_FROM` | `AuraDev <hola@auradev.com>` |
+| `MAIL_TO` | `hola@auradev.com` |
+| `ENABLE_AUTO_REPLY` | `true` |
+
+Paso a paso (Gmail, WhatsApp Business, Instagram, ManyChat): [auto-respuesta.md](auto-respuesta.md).
+
+---
+
 ## Variables backend frecuentes
 
 `DATABASE_URL`, `SMTP_*`, `MAIL_*`, `TELEGRAM_*`, `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_TO`

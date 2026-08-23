@@ -31,6 +31,13 @@ function prefiereMenosMovimiento() {
 const FOCUSABLE =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
 
+/**
+ * Modal de un servicio: focus trap, Escape y `prefers-reduced-motion`.
+ *
+ * @param servicio - Item del catálogo o `null`
+ * @param isOpen - Si el modal está visible
+ * @param onClose - Cierra el modal
+ */
 export default function ServicioModal({ servicio, isOpen, onClose }: ServicioModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)

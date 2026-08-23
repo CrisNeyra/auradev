@@ -1,5 +1,6 @@
 import { pgTable, integer, varchar, text, timestamp } from 'drizzle-orm/pg-core';
 
+/** Tabla `mensajes`: leads del formulario de contacto. */
 export const mensajes = pgTable('mensajes', {
   id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   nombre: varchar('nombre', { length: 255 }).notNull(),

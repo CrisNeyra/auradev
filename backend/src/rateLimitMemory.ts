@@ -1,3 +1,5 @@
+import type { HttpRequestLike } from './types/http.js'
+
 const WINDOW_MS = 10 * 60 * 1000
 const MAX = 5
 
@@ -11,6 +13,9 @@ const hits = new Map<string, Hit>()
 /**
  * Rate limit en memoria (por instancia).
  * En Vercel es best-effort entre cold starts; en Express local es efectivo.
+ *
+ * @param key - Clave (p. ej. `contacto:${ip}`)
+ * @returns `limited`, `remaining` y `resetAt` (epoch ms)
  */
 export function checkRateLimit(
   key: string,
@@ -39,7 +44,12 @@ export function checkRateLimit(
   }
 }
 
-export function clientIp(req: any): string {
+/**
+ * IP del cliente: `X-Forwarded-For`, luego `X-Real-Ip`, luego `socket.remoteAddress`.
+ *
+ * @param req - Request HTTP
+ */
+export function clientIp(req: HttpRequestLike): string {
   const forwarded = req.headers?.['x-forwarded-for']
   if (typeof forwarded === 'string' && forwarded.trim()) {
     return forwarded.split(',')[0].trim()

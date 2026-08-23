@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 
+/**
+ * Envuelve contenido y lo revela al entrar en viewport (IntersectionObserver).
+ * Respeta `prefers-reduced-motion`.
+ *
+ * @param as - Tag HTML del wrapper
+ * @param delay - Retraso de animación en ms
+ */
 export default function Reveal({
   children,
   as: Tag = 'div',
