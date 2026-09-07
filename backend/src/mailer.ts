@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 import type { Transporter } from 'nodemailer'
+import type SMTPTransport from 'nodemailer/lib/smtp-transport/index.js'
 import { logNotifResult } from './utils/logger.js'
 
 let transporter: Transporter | null = null
@@ -11,6 +12,8 @@ function getTransporter() {
     return null
   }
 
+  const onVercel = process.env.VERCEL === '1'
+
   transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT) || 587,
@@ -19,11 +22,14 @@ function getTransporter() {
       process.env.SMTP_USER && process.env.SMTP_PASS
         ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
         : undefined,
-    // Optimizaciones para Gmail y otros proveedores
-    pool: true,
-    maxConnections: 5,
-    maxMessages: 100,
-  })
+    // En Vercel el pool deja conexiones colgadas entre invocaciones serverless.
+    pool: !onVercel,
+    maxConnections: onVercel ? 1 : 5,
+    maxMessages: onVercel ? 1 : 100,
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
+  } as SMTPTransport.Options)
 
   return transporter
 }

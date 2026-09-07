@@ -41,7 +41,9 @@ Ver [whatsapp-template.md](whatsapp-template.md).
 
 ## 4. SMTP y auto-reply del formulario
 
-El visitante recibe confirmación solo si hay SMTP **y** `ENABLE_AUTO_REPLY=true`.
+El aviso **a tu Gmail** (`MAIL_TO`) solo necesita SMTP. Telegram sigue en paralelo y no se apaga.
+
+El visitante recibe “Recibimos tu mensaje” solo si además `ENABLE_AUTO_REPLY=true`. Dejalo vacío si no querés auto-reply.
 
 | Variable | Ejemplo |
 |----------|---------|
