@@ -1,6 +1,4 @@
 import { waitUntil } from '@vercel/functions'
-import { applyCorsHeaders } from '../backend/src/cors.js'
-import { loadEnv } from '../backend/src/env.js'
 import type { HttpRequestLike, HttpResponseLike } from '../backend/src/types/http.js'
 
 /**
@@ -8,14 +6,15 @@ import type { HttpRequestLike, HttpResponseLike } from '../backend/src/types/htt
  * Aplica CORS, responde OPTIONS, rechaza otros métodos (405) y delega en `handleContacto`.
  * Las notificaciones se extienden con `waitUntil` para no cortar el isolate.
  *
- * @example
- * // POST /api/contacto
- * // { "nombre": "Juan", "email": "juan@example.com", "mensaje": "..." }
+ * Imports de backend en dinámico: Vercel empaqueta `api/*.ts` como CJS
+ * y no puede `require()` módulos ESM.
  */
 export default async function handler(
   req: HttpRequestLike,
   res: HttpResponseLike
 ) {
+  const { applyCorsHeaders } = await import('../backend/src/cors.js')
+  const { loadEnv } = await import('../backend/src/env.js')
   loadEnv()
   applyCorsHeaders(req, res)
 
