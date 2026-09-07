@@ -23,7 +23,7 @@ Copiar [`.env.example`](.env.example) → `.env`.
 
 | Variable | Uso |
 |----------|-----|
-| `VITE_API_URL` | Local: `http://localhost:4000`. En Vercel vacío (mismo origin). |
+| `VITE_API_URL` | Solo local: `http://localhost:4000`. En el build de producción se ignora (mismo origin `/api/contacto`). |
 | `VITE_EMAIL` | Email mostrado en contacto/footer |
 | `VITE_WHATSAPP_*` | Número, display y mensaje precargado |
 | `VITE_LINKEDIN_URL` / `VITE_INSTAGRAM_URL` | Solo se muestran si son `http(s)` |
