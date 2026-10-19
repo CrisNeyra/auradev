@@ -1,7 +1,7 @@
 import imgPortfolioCristian from '../img/portafolio/portfolio-cristian.jpg'
 import imgAuraPro from '../img/portafolio/aura-pro.jpg'
 import imgMobileSuite from '../img/portafolio/mobile-suite.jpg'
-import imgModoZen from '../img/portafolio/modo-zen.jpg'
+import imgEstudioSardo from '../img/portafolio/estudio-sardo.jpg'
 import imgCrowforza from '../img/portafolio/crowforza.jpg'
 import imgLaxmar from '../img/portafolio/laxmar.jpg'
 
@@ -56,7 +56,7 @@ export const proyectos: Proyecto[] = [
       'Diseño oscuro con contraste suficiente para accesibilidad y carrusel promocional sin penalizar el first paint.',
     tags: ['React', 'E-commerce', 'UI/UX'],
     imagen: imgAuraPro,
-    url: 'https://pagina-web-ventapc.vercel.app/',
+    url: 'https://proaurapro.vercel.app/',
   },
   {
     slug: 'crowgest',
@@ -77,22 +77,22 @@ export const proyectos: Proyecto[] = [
     url: 'https://crowgest.vercel.app/',
   },
   {
-    slug: 'modo-zen',
-    nombre: 'Modo Zen',
-    categoria: 'Landing Page',
+    slug: 'estudio-sardo',
+    nombre: 'Estudio Sardo',
+    categoria: 'Sitio institucional',
     descripcion:
-      'Landing de bienestar y mindfulness con diseño visual inmersivo y estética calmada.',
+      'Sitio del estudio jurídico Dra. Paula F. Sardo, con áreas de práctica, turnos y contacto por WhatsApp.',
     descripcionLarga:
-      'Landing page de bienestar con composición visual serena, tipografía elegante y paleta pastel. Pensada para transmitir calma, equilibrio y conexión con prácticas de mindfulness o retiros de wellness.',
+      'Sitio institucional para un estudio jurídico de CABA y Provincia de Buenos Aires. Presenta áreas de práctica (laboral, familia, penal, civil y sucesiones), el proceso de trabajo, valores del estudio, un asistente para consultas iniciales, pedido de turno y WhatsApp. El diseño formal y la jerarquía tipográfica refuerzan confianza profesional.',
     problema:
-      'Una marca de bienestar necesitaba una landing que transmita calma antes que información técnica o venta agresiva.',
+      'El estudio necesitaba una presencia digital seria para explicar servicios, captar consultas y derivar turnos sin depender solo del teléfono o del boca a boca.',
     porQueStack:
-      'React + CSS puro para control fino de tipografía, espaciado y gradientes sin librerías que impongan estética genérica.',
+      'Next.js en Vercel para un sitio rápido y con buen SEO; WhatsApp y turnos como canales de conversión que el cliente ya usa en la operatoria diaria.',
     desafio:
-      'Lograr inmersión visual con assets livianos y animaciones sutiles que no contradigan el mensaje de tranquilidad.',
-    tags: ['React', 'CSS', 'Branding'],
-    imagen: imgModoZen,
-    url: 'https://github.com/CrisNeyra/ModoZen',
+      'Transmitir seriedad legal en desktop y móvil, y sumar un asistente de consultas que oriente al visitante sin reemplazar el criterio del estudio.',
+    tags: ['Next.js', 'Vercel', 'WhatsApp'],
+    imagen: imgEstudioSardo,
+    url: 'https://estudiosardoflorencia.vercel.app/',
   },
   {
     slug: 'crowforza',

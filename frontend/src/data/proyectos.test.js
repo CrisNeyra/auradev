@@ -13,6 +13,14 @@ describe('proyectos data helpers', () => {
     expect(p.nombre).toBe('Aura PRO')
   })
 
+  it('incluye Estudio Sardo y ya no lista Modo Zen', () => {
+    const sardo = getProyectoBySlug('estudio-sardo')
+    expect(sardo).toBeDefined()
+    expect(sardo.nombre).toBe('Estudio Sardo')
+    expect(sardo.url).toBe('https://estudiosardoflorencia.vercel.app/')
+    expect(getProyectoBySlug('modo-zen')).toBeUndefined()
+  })
+
   it('devuelve undefined si el slug no existe', () => {
     expect(getProyectoBySlug('no-existe')).toBeUndefined()
   })
