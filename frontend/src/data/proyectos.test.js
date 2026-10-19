@@ -13,6 +13,20 @@ describe('proyectos data helpers', () => {
     expect(p.nombre).toBe('Aura PRO')
   })
 
+  it('separa webs y apps móviles', () => {
+    const aura = getProyectoBySlug('aura-pro')
+    const crowgest = getProyectoBySlug('crowgest')
+    const sublimados = getProyectoBySlug('sublimados')
+    const lexmind = getProyectoBySlug('lexmind-os')
+
+    expect(aura.grupo).toBe('web')
+    expect(sublimados.grupo).toBe('web')
+    expect(sublimados.url).toBe('https://sublimados-web.vercel.app/')
+    expect(crowgest.grupo).toBe('app')
+    expect(lexmind.grupo).toBe('app')
+    expect(lexmind.url).toBe('https://lexmind-os-rho.vercel.app/')
+  })
+
   it('incluye Estudio Sardo y ya no lista Modo Zen', () => {
     const sardo = getProyectoBySlug('estudio-sardo')
     expect(sardo).toBeDefined()

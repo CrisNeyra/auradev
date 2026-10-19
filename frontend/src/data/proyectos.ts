@@ -4,11 +4,15 @@ import imgMobileSuite from '../img/portafolio/mobile-suite.jpg'
 import imgEstudioSardo from '../img/portafolio/estudio-sardo.jpg'
 import imgCrowforza from '../img/portafolio/crowforza.jpg'
 import imgLaxmar from '../img/portafolio/laxmar.jpg'
+import imgSublimados from '../img/portafolio/sublimados.jpg'
+import imgLexmind from '../img/portafolio/lexmind-os.jpg'
 
 /** Caso de portafolio (slug, copy, imagen y URL demo o repo). */
 export interface Proyecto {
   slug: string
   nombre: string
+  /** `web`: páginas y tiendas. `app`: aplicaciones móviles. */
+  grupo: 'web' | 'app'
   categoria: string
   descripcion: string
   descripcionLarga: string
@@ -25,6 +29,7 @@ export const proyectos: Proyecto[] = [
   {
     slug: 'portfolio-cristian',
     nombre: 'Portfolio Cristian',
+    grupo: 'web',
     categoria: 'Portfolio Web',
     descripcion:
       'Sitio personal de desarrollador fullstack con experiencia, formación, conocimientos y contacto directo.',
@@ -43,6 +48,7 @@ export const proyectos: Proyecto[] = [
   {
     slug: 'aura-pro',
     nombre: 'Aura PRO',
+    grupo: 'web',
     categoria: 'E-commerce',
     descripcion:
       'Tienda online de periféricos y hardware gamer con catálogo, carrito y promociones en hero carousel.',
@@ -61,7 +67,8 @@ export const proyectos: Proyecto[] = [
   {
     slug: 'crowgest',
     nombre: 'Crowgest',
-    categoria: 'Sistema de Gestión',
+    grupo: 'app',
+    categoria: 'App móvil',
     descripcion:
       'Plataforma web de gestión (Gest Crow) con acceso seguro por credenciales para administrar operaciones del negocio.',
     descripcionLarga:
@@ -79,6 +86,7 @@ export const proyectos: Proyecto[] = [
   {
     slug: 'estudio-sardo',
     nombre: 'Estudio Sardo',
+    grupo: 'web',
     categoria: 'Sitio institucional',
     descripcion:
       'Sitio del estudio jurídico Dra. Paula F. Sardo, con áreas de práctica, turnos y contacto por WhatsApp.',
@@ -97,6 +105,7 @@ export const proyectos: Proyecto[] = [
   {
     slug: 'crowforza',
     nombre: 'Crowforza',
+    grupo: 'web',
     categoria: 'Catálogo Industrial',
     descripcion:
       'Catálogo web de herramientas industriales con búsqueda, categorías y marcas destacadas.',
@@ -115,6 +124,7 @@ export const proyectos: Proyecto[] = [
   {
     slug: 'laxmar',
     nombre: 'Laxmar',
+    grupo: 'web',
     categoria: 'Transporte',
     descripcion:
       'Plataforma de traslados provinciales y nacionales con cotización, flota y contacto WhatsApp.',
@@ -130,7 +140,55 @@ export const proyectos: Proyecto[] = [
     imagen: imgLaxmar,
     url: 'https://laxmar-web.vercel.app/',
   },
+  {
+    slug: 'sublimados',
+    nombre: 'Sublimados',
+    grupo: 'web',
+    categoria: 'Tienda web',
+    descripcion:
+      'Tienda de remeras sublimadas con personalizador en vivo, catálogo y pedido por WhatsApp.',
+    descripcionLarga:
+      'Sitio de ¡¡The Shirt!! para armar remeras en un simulador: color, diseño, posición, rotación, tamaño y talle. Incluye catálogo, trabajos realizados y un formulario que abre WhatsApp con la consulta lista.',
+    problema:
+      'El taller recibía pedidos sueltos por chat y necesitaba que el cliente viera el estampado sobre la remera antes de cotizar.',
+    porQueStack:
+      'Sitio estático en Vercel, rápido de cargar, con el personalizador en el cliente y WhatsApp como cierre de venta, que es el canal real del taller.',
+    desafio:
+      'Que el mockup se entienda en el celular, donde se arman la mayoría de los pedidos, sin prometer una prueba de color de imprenta.',
+    tags: ['React', 'E-commerce', 'WhatsApp'],
+    imagen: imgSublimados,
+    url: 'https://sublimados-web.vercel.app/',
+  },
+  {
+    slug: 'lexmind-os',
+    nombre: 'LexMind OS',
+    grupo: 'app',
+    categoria: 'App móvil',
+    descripcion:
+      'Sistema de gestión legal para estudios: expedientes, agenda, documentos y honorarios.',
+    descripcionLarga:
+      'LexMind OS centraliza la operatoria de un estudio jurídico: panel general, expedientes, agenda y plazos, bóveda documental, asesor, honorarios y conectores. Pensado para usarse desde el teléfono, con los datos del estudio protegidos.',
+    problema:
+      'Causas, vencimientos y documentos vivían en carpetas y chats. El estudio necesitaba un solo lugar para seguir cada expediente.',
+    porQueStack:
+      'App web desplegada en Vercel, accesible desde el celular sin instalar nada, con módulos separados para no mezclar plazos, archivos y honorarios.',
+    desafio:
+      'Mostrar mucha información legal en una pantalla chica y dejar claro qué dato es sensible antes de compartirlo.',
+    tags: ['React', 'Gestión', 'Vercel'],
+    imagen: imgLexmind,
+    url: 'https://lexmind-os-rho.vercel.app/',
+  },
 ]
+
+/** Casos de páginas web y tiendas. */
+export function proyectosWeb(): Proyecto[] {
+  return proyectos.filter((p) => p.grupo === 'web')
+}
+
+/** Casos de aplicaciones móviles. */
+export function proyectosApp(): Proyecto[] {
+  return proyectos.filter((p) => p.grupo === 'app')
+}
 
 /** Busca un proyecto por `slug` de la URL. */
 export function getProyectoBySlug(slug: string | undefined): Proyecto | undefined {

@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom'
 import fondoPortafolio from '../img/portafolio.jpg'
-import { proyectos, getProyectoHref, type Proyecto } from '../data/proyectos'
+import {
+  getProyectoHref,
+  proyectosApp,
+  proyectosWeb,
+  type Proyecto,
+} from '../data/proyectos'
 import Reveal from './Reveal'
 import './Portafolio.css'
 
@@ -36,8 +41,27 @@ function ProyectoCard({ proyecto }: { proyecto: Proyecto }) {
   )
 }
 
+function Grilla({
+  items,
+  className,
+}: {
+  items: Proyecto[]
+  className: string
+}) {
+  return (
+    <div className={className}>
+      {items.map((p) => (
+        <Reveal key={p.slug}>
+          <ProyectoCard proyecto={p} />
+        </Reveal>
+      ))}
+    </div>
+  )
+}
+
 /**
- * Grilla de casos del portafolio con enlace a detalle.
+ * Dos bloques: páginas web y tiendas, y aplicaciones móviles (cards más grandes).
+ * Sigue antes de Quiénes Somos.
  */
 export default function Portafolio() {
   return (
@@ -57,12 +81,15 @@ export default function Portafolio() {
           </p>
         </Reveal>
 
-        <div className="portafolio__grid">
-          {proyectos.map((p) => (
-            <Reveal key={p.slug}>
-              <ProyectoCard proyecto={p} />
-            </Reveal>
-          ))}
+        <h3 className="portafolio__grupo-titulo">Páginas web y tiendas</h3>
+        <Grilla items={proyectosWeb()} className="portafolio__grid" />
+
+        <div className="portafolio__apps">
+          <h3 className="portafolio__grupo-titulo">Aplicaciones móviles</h3>
+          <Grilla
+            items={proyectosApp()}
+            className="portafolio__grid portafolio__grid--apps"
+          />
         </div>
       </div>
     </section>
